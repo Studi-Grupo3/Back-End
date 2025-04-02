@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.application.mappers.ContentMapper;
 import sptech.school.application.service.ContentService;
-import sptech.school.domain.dto.ContentDTO;
+import sptech.school.domain.dto.response.ContentResponseDTO;
 import sptech.school.domain.entity.Content;
 import sptech.school.domain.entity.Student;
 
@@ -27,14 +27,14 @@ public class ContentController {
     private ContentMapper mapper;
 
     @PostMapping
-    public ResponseEntity<@Valid ContentDTO> uploadArquivo(
+    public ResponseEntity<@Valid ContentResponseDTO> uploadArquivo(
             @RequestParam("file") MultipartFile file, @RequestBody Student student) throws IOException {
         Content content = contentService.saveFile(file, student);
         return ResponseEntity.ok(mapper.toResponse(content));
     }
 
     @GetMapping("/{id}/info")
-    public ResponseEntity<@Valid ContentDTO> getMetadata(@PathVariable Long id) {
+    public ResponseEntity<@Valid ContentResponseDTO> getMetadata(@PathVariable Long id) {
         return contentService.getMetadataById(id)
                 .map(mapper::toResponse)
                 .map(ResponseEntity::ok)

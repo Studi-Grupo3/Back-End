@@ -5,15 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sptech.school.application.mappers.ResourceFileMapper;
 import sptech.school.application.mappers.StudentMapper;
 import sptech.school.application.service.JwtService;
 import sptech.school.application.service.StudentService;
-import sptech.school.domain.dto.AuthResponseDTO;
-import sptech.school.domain.dto.ResourceFileDTO;
-import sptech.school.domain.dto.StudentDTO;
-import sptech.school.domain.dto.UserLoginDTO;
-import sptech.school.domain.entity.ResourceFile;
+import sptech.school.domain.dto.request.LoginRequestDTO;
+import sptech.school.domain.dto.request.StudentRequestDTO;
+import sptech.school.domain.dto.request.StudentRequestUpdateDTO;
+import sptech.school.domain.dto.response.AuthResponseDTO;
+import sptech.school.domain.dto.response.ResourceFileResponseDTO;
+import sptech.school.domain.dto.response.StudentResponseDTO;
 import sptech.school.domain.entity.Student;
 
 import java.io.IOException;
@@ -26,37 +26,33 @@ public class StudentController {
     private StudentService studentService;
     @Autowired
     private StudentMapper studentMapper;
-
-    @Autowired
-    private ResourceFileMapper resourceFileMapper;
-
     @Autowired
     private JwtService jwtService;
 
     @PostMapping
-    public ResponseEntity<StudentDTO> create(@RequestBody StudentDTO studentDTO) {
-        Student studentCreated = studentService.create(studentMapper.toEntity(studentDTO));
+    public ResponseEntity<StudentResponseDTO> create(@RequestBody @Valid StudentRequestDTO dto) {
+        Student studentCreated = studentService.create(studentMapper.dtoRequestToEntity(dto));
 
-        return ResponseEntity.status(201).body(studentMapper.toDto(studentCreated));
+        return ResponseEntity.status(201).body(studentMapper.toDtoResponse(studentCreated));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Integer id) {
-        Student studentSearched = studentService.findById(id);
+    public ResponseEntity<StudentResponseDTO> getStudentById(@PathVariable Integer id) {
+        StudentResponseDTO dto = studentMapper.toDtoResponse(studentService.findById(id));
 
-        return ResponseEntity.status(200).body(studentMapper.toDto(studentSearched));
+        return ResponseEntity.status(200).body(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentDTO> updateStudent(@PathVariable Integer id, @RequestBody @Valid StudentDTO studentDTO) {
-        Student studentUpdated = studentService.update(studentDTO, id);
+    public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable Integer id, @RequestBody @Valid StudentRequestUpdateDTO dto) {
+        StudentResponseDTO updated = studentMapper.toDtoResponse(studentService.update(dto, id));
 
-        return ResponseEntity.status(200).body(studentMapper.toDto(studentUpdated));
+        return ResponseEntity.status(200).body(updated);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid UserLoginDTO loginDTO) {
-        StudentDTO studentLogged = studentMapper.toDto(studentService.login(loginDTO));
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginDTO) {
+        StudentRequestUpdateDTO studentLogged = studentMapper.toDto(studentService.login(loginDTO));
         String token = jwtService.generateToken(studentLogged.email(), studentLogged.name(), "STUDENT");
         AuthResponseDTO authResponseDTO = new AuthResponseDTO(studentLogged.name(), studentLogged.cpf(), studentLogged.email(), token);
 
@@ -70,16 +66,16 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> findAll() {
-        List<StudentDTO> studentDTOS = studentService.listAll();
+    public ResponseEntity<List<StudentResponseDTO>> findAll() {
+        List<StudentResponseDTO> dtos = studentService.listAll();
 
-        return ResponseEntity.status(200).body(studentDTOS);
+        return ResponseEntity.status(200).body(dtos);
     }
 
     @PostMapping("/upload-profile-photo")
-    public ResponseEntity<@Valid ResourceFileDTO> uploadArquivo(
+    public ResponseEntity<@Valid ResourceFileResponseDTO> uploadArquivo(
             @RequestParam("file") MultipartFile file) throws IOException {
-        ResourceFile resourceFile = studentService.saveFile(file);
-        return ResponseEntity.ok(resourceFileMapper.toResponse(resourceFile));
+        ResourceFileResponseDTO dto = studentService.saveFile(file);
+        return ResponseEntity.ok(dto);
     }
 }

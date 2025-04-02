@@ -6,8 +6,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.adapters.out.persistence.JpaResourceFileRepository;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
+import sptech.school.application.mappers.ResourceFileMapper;
 import sptech.school.application.service.JwtService;
-import sptech.school.domain.dto.UserLoginDTO;
+import sptech.school.domain.dto.request.LoginRequestDTO;
+import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 import sptech.school.domain.entity.ResourceFile;
 import sptech.school.domain.entity.User;
 import sptech.school.domain.exception.UserException;
@@ -30,6 +32,9 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     @Autowired
     private JpaResourceFileRepository jpaResourceFileRepository;
 
+    @Autowired
+    private ResourceFileMapper resourceFileMapper;
+
     public AbstractUserUseCase(JpaUserRepository<T> repository) {
         this.repository = repository;
     }
@@ -37,7 +42,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     @Override
     public T update(@Valid DTO dto, Integer id) {
         T userTarget = repository.findById(id)
-                .orElseThrow(() -> new UserException("User not found"));
+            .orElseThrow(() -> new UserException("User not found"));
 
         userTarget = validateSpecify(dto, userTarget);
 
@@ -45,7 +50,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     }
 
     @Override
-    public T login(@Valid UserLoginDTO user) {
+    public T login(@Valid LoginRequestDTO user) {
         T foundUser = repository.findByEmailIgnoreCase(user.email());
 
         if (foundUser == null && user.cpf() != null) {
@@ -60,7 +65,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
         return foundUser;
     }
 
-    public ResourceFile saveFile(MultipartFile file) throws IOException {
+    public ResourceFileResponseDTO saveFile(MultipartFile file) throws IOException {
         String location = storageService.saveFile(file);
         ResourceFile resourceFile = new ResourceFile(
                 file.getOriginalFilename()
@@ -68,6 +73,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
                 , location
                 , file.getSize()
         );
-        return jpaResourceFileRepository.save(resourceFile);
+        ResourceFile savedFile = jpaResourceFileRepository.save(resourceFile);
+        return resourceFileMapper.toResponse(savedFile);
     }
 }

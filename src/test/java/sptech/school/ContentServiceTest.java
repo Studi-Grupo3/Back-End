@@ -7,7 +7,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import sptech.school.application.service.ContentService;
 import sptech.school.application.usecase.ContentRepositoryUseCase;
 import sptech.school.application.usecase.StorageServiceUseCase;
-import sptech.school.domain.dto.StudentDTO;
 import sptech.school.domain.entity.Content;
 import sptech.school.domain.entity.Student;
 

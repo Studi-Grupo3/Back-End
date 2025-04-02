@@ -1,4 +1,4 @@
-package sptech.school.domain.dto;
+package sptech.school.domain.dto.response;
 
 import java.io.Serializable;
 

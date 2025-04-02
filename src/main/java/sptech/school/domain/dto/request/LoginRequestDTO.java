@@ -1,12 +1,11 @@
-package sptech.school.domain.dto;
+package sptech.school.domain.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
 
-public record UserLoginDTO(
+public record LoginRequestDTO(
           @Email String email
         , @CPF String cpf
         , @NotBlank String password
-
 ) {}

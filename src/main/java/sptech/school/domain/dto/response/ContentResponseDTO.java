@@ -1,11 +1,10 @@
-package sptech.school.domain.dto;
+package sptech.school.domain.dto.response;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record ContentDTO(
-        Long id
-        , @NotBlank String fileName
+public record ContentResponseDTO(
+        @NotBlank String fileName
         , @NotBlank String fileType
         , @NotBlank Long fileSize
         , @NotBlank String formattedSize

@@ -36,46 +36,44 @@ public class PaymentService {
             MercadoPagoConfig.setAccessToken(accessToken);
 
             logger.info("📤 Enviando pagamento para o Mercado Pago...");
-            logger.info("💰 Valor: {}", request.getTransactionAmount());
-            logger.info("💳 Método de pagamento: {}", request.getPaymentMethodId());
-            logger.info("📦 Descrição: {}", request.getDescription());
-            logger.info("🔢 Parcelas: {}", request.getInstallments());
-            logger.info("🧑 Payer Email: {}", request.getPayer().getEmail());
-            logger.info("👤 Payer First Name: {}", request.getPayer().getIdentification().getType());
-            logger.info("👤 Payer First Name: {}", request.getPayer().getIdentification().getNumber());
+            logger.info("💰 Valor: {}", request.transactionAmount());
+            logger.info("💳 Método de pagamento: {}", request.paymentMethodId());
+            logger.info("📦 Descrição: {}", request.description());
+            logger.info("🔢 Parcelas: {}", request.installments());
+            logger.info("🧑 Payer Email: {}", request.payer().email());
+            logger.info("👤 Payer Identification Type: {}", request.payer().identification().type());
+            logger.info("👤 Payer Identification Number: {}", request.payer().identification().number());
 
             PaymentClient client = new PaymentClient();
 
             PaymentPayerRequest payer = PaymentPayerRequest.builder()
-                    .email(request.getPayer().getEmail())
-                    .firstName(request.getPayer().getFirstName())
+                    .email(request.payer().email())
+                    .firstName(request.payer().firstName())
                     .identification(IdentificationRequest.builder()
-                            .type(request.getPayer().getIdentification().getType())
-                            .number(request.getPayer().getIdentification().getNumber())
+                            .type(request.payer().identification().type())
+                            .number(request.payer().identification().number())
                             .build())
                     .build();
 
             PaymentCreateRequest.PaymentCreateRequestBuilder paymentRequestBuilder = PaymentCreateRequest.builder()
-                    .transactionAmount(request.getTransactionAmount())
-                    .description(request.getDescription())
-                    .paymentMethodId(request.getPaymentMethodId())
+                    .transactionAmount(request.transactionAmount())
+                    .description(request.description())
+                    .paymentMethodId(request.paymentMethodId())
                     .payer(payer)
-                    .installments(request.getInstallments());
+                    .installments(request.installments());
 
-            if ("pix".equalsIgnoreCase(request.getPaymentMethodId()) ||
-                    "bolbradesco".equalsIgnoreCase(request.getPaymentMethodId())) {
+            if ("pix".equalsIgnoreCase(request.paymentMethodId()) ||
+                    "bolbradesco".equalsIgnoreCase(request.paymentMethodId())) {
                 paymentRequestBuilder.dateOfExpiration(OffsetDateTime.now().plusDays(2));
-            }
-
-            else if (!"bolbradesco".equalsIgnoreCase(request.getPaymentMethodId())) {
-                paymentRequestBuilder.token(request.getToken());
+            } else if (!"bolbradesco".equalsIgnoreCase(request.paymentMethodId())) {
+                paymentRequestBuilder.token(request.token());
             }
 
             PaymentCreateRequest paymentCreateRequest = paymentRequestBuilder.build();
             Payment payment = client.create(paymentCreateRequest);
 
             logger.info("✅ Pagamento criado: ID={}, Status={}, Tipo={}",
-                    payment.getId(), payment.getStatus(), request.getPaymentMethodId());
+                    payment.getId(), payment.getStatus(), request.paymentMethodId());
 
             return payment;
 

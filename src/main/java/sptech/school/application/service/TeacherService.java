@@ -7,7 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sptech.school.application.usecase.AbstractUserUseCase;
-import sptech.school.domain.dto.TeacherDTO;
+import sptech.school.domain.dto.request.TeacherRequestDTO;
+import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
+import sptech.school.domain.dto.response.TeacherResponseDTO;
 import sptech.school.domain.entity.Teacher;
 import sptech.school.application.mappers.TeacherMapper;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
@@ -15,7 +17,7 @@ import sptech.school.adapters.out.persistence.JpaUserRepository;
 import java.util.List;
 
 @Service
-public class TeacherService extends AbstractUserUseCase<Teacher, TeacherDTO> {
+public class TeacherService extends AbstractUserUseCase<Teacher, TeacherRequestUpdateDTO> {
     @Autowired
     private TeacherMapper teacherMapper;
 
@@ -27,14 +29,13 @@ public class TeacherService extends AbstractUserUseCase<Teacher, TeacherDTO> {
     }
 
     public Teacher create(@Valid Teacher teacher) {
-        String hashedPassword = passwordEncoder.encode(teacher.getPassword());
-        teacher.setPassword(hashedPassword);
+        teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
 
         return repository.save(teacher);
     }
 
     @Override
-    public Teacher validateSpecify(TeacherDTO dto, Teacher targetUser) {
+    public Teacher validateSpecify(TeacherRequestUpdateDTO dto, Teacher targetUser) {
         teacherMapper.updateTeacherFromDto(dto, targetUser);
         return targetUser;
     }
@@ -44,9 +45,9 @@ public class TeacherService extends AbstractUserUseCase<Teacher, TeacherDTO> {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Teacher not found."));
     }
 
-    public List<TeacherDTO> listAll() {
+    public List<Teacher> listAll() {
         return repository.findAll()
-                .stream().map(teacherMapper::toDto).toList();
+                .stream().toList();
     }
 
     public void delete(Integer id) {

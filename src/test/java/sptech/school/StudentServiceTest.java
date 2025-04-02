@@ -4,19 +4,25 @@ package sptech.school;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-import sptech.school.application.service.StudentService;
-import sptech.school.domain.dto.StudentDTO;
-import sptech.school.domain.entity.Student;
-import sptech.school.application.mappers.StudentMapper;
-import sptech.school.adapters.out.persistence.JpaUserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.server.ResponseStatusException;
+import sptech.school.adapters.out.persistence.JpaUserRepository;
+import sptech.school.application.mappers.StudentMapper;
+import sptech.school.application.service.StudentService;
+import sptech.school.domain.dto.request.StudentRequestUpdateDTO;
+import sptech.school.domain.dto.response.StudentResponseDTO;
+import sptech.school.domain.entity.Student;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Dado o uso da StudentService")
@@ -33,13 +39,17 @@ class StudentServiceTest {
 
     private AutoCloseable mocks;
 
-    private StudentDTO dtoExemplo;
+    private StudentRequestUpdateDTO dtoExemplo;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
         mocks = MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(studentService, "studentMapper", studentMapper);
-        dtoExemplo = new StudentDTO(
+        ReflectionTestUtils.setField(studentService, "passwordEncoder", passwordEncoder);
+        dtoExemplo = new StudentRequestUpdateDTO(
             "Nome Teste",
             "email@exemplo.com",
             "123.456.789-09",
@@ -51,13 +61,20 @@ class StudentServiceTest {
     @Test
     @DisplayName("[1] - Quando um novo estudante for criado, ele deve ser salvo e retornado")
     void deveCriarEstudanteComSucesso() {
+        Student student = new Student("Nome Teste", "email@exemplo.com", "senhaSegura", "11999999999", "1123456789");
         Student estudante = new Student();
+        estudante.setPassword(student.getPassword());
+
+        when(passwordEncoder.encode(estudante.getPassword())).thenReturn("hashedPassword");
+        estudante.setPassword("hashedPassword");
         when(repository.save(estudante)).thenReturn(estudante);
+        StudentResponseDTO responseDto = studentMapper.toDtoResponse(estudante);
+        when(studentMapper.toDtoResponse(estudante)).thenReturn(responseDto);
 
-        Student resultado = studentService.create(estudante);
+        Student result = studentService.create(student);
 
-        assertEquals(estudante, resultado, "Deveria retornar o mesmo estudante salvo");
-        verify(repository).save(estudante);
+        assertEquals(responseDto, studentMapper.toDtoResponse(result), "Deveria retornar o mesmo estudante salvo como DTO");
+        verify(repository).save(student);
     }
 
     @Test
@@ -101,13 +118,24 @@ class StudentServiceTest {
     @DisplayName("[5] - Quando listar estudantes, deve retornar todos como DTOs")
     void deveListarTodosEstudantesComoDTOs() {
         List<Student> estudantes = List.of(new Student(), new Student());
-        when(repository.findAll()).thenReturn(estudantes);
-        when(studentMapper.toDto(any(Student.class))).thenReturn(dtoExemplo, dtoExemplo);
+        // Using proper constructor arguments for StudentResponseDTO (example values)
+        StudentResponseDTO dto1 = new StudentResponseDTO("Test Student", "email@test.com", "1123456789", "1123456789");
+        StudentResponseDTO dto2 = new StudentResponseDTO( "Test Student 2", "email2@test.com", "1198765432", "1123456789");
 
-        List<StudentDTO> resultado = studentService.listAll();
+        when(repository.findAll()).thenReturn(estudantes);
+        when(studentMapper.toDtoResponse(any(Student.class)))
+                .thenReturn(dto1)
+                .thenReturn(dto2);
+
+        when(repository.findAll()).thenReturn(estudantes);
+        when(studentMapper.toDtoResponse(any(Student.class)))
+                .thenReturn(dto1)
+                .thenReturn(dto2);
+
+        List<StudentResponseDTO> resultado = studentService.listAll();
 
         assertEquals(2, resultado.size(), "Deveria listar todos os estudantes convertidos em DTO");
-        verify(studentMapper, times(2)).toDto(any(Student.class));
+        verify(studentMapper, times(2)).toDtoResponse(any(Student.class));
     }
 
     @Test

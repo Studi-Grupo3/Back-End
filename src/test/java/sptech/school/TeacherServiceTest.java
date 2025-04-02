@@ -4,12 +4,15 @@ package sptech.school;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
 import sptech.school.application.mappers.TeacherMapper;
 import sptech.school.application.service.TeacherService;
-import sptech.school.domain.dto.TeacherDTO;
+import sptech.school.domain.dto.request.TeacherRequestDTO;
+import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
+import sptech.school.domain.dto.response.TeacherResponseDTO;
 import sptech.school.domain.entity.Teacher;
 import sptech.school.domain.enumerated.Discipline;
 
@@ -21,31 +24,38 @@ import static org.mockito.Mockito.*;
 @DisplayName("Dado o uso da TeacherService")
 class TeacherServiceTest {
 
-    @Mock private JpaUserRepository<Teacher> repository;
-    @Mock private TeacherMapper teacherMapper;
 
-    @InjectMocks
+    @Mock
+    private JpaUserRepository<Teacher> repository;
+    @Mock
+    private TeacherMapper teacherMapper;
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private TeacherService teacherService;
 
     private AutoCloseable mocks;
     private Teacher teacher;
-    private TeacherDTO dto;
+    private TeacherRequestUpdateDTO dtoUpdated;
+    private Teacher teacherRequest;
 
     @BeforeEach
     void setUp() {
         mocks = MockitoAnnotations.openMocks(this);
         teacherService = new TeacherService(repository);
         ReflectionTestUtils.setField(teacherService, "teacherMapper", teacherMapper);
+        ReflectionTestUtils.setField(teacherService, "passwordEncoder", passwordEncoder);
         teacher = new Teacher();
-        dto = new TeacherDTO("Nome", "email@teste.com", "12345678900", "senha", Discipline.ART);
+        dtoUpdated = new TeacherRequestUpdateDTO("Nome", "email@teste.com", "12345678900", "senha", Discipline.ART);
+        teacherRequest = new Teacher("Lula", "Lula@teste.com", "12345678900", "senha", Discipline.PHILOSOPHY);
     }
 
     @Test
     @DisplayName("[1] - Deve criar professor com sucesso")
     void deveCriarProfessor() {
-        when(repository.save(teacher)).thenReturn(teacher);
-
-        Teacher salvo = teacherService.create(teacher);
+        when(passwordEncoder.encode(teacherRequest.getPassword())).thenReturn("hashedPassword");
+        when(repository.save(any(Teacher.class))).thenReturn(teacher);
+        Teacher salvo = teacherService.create(teacherRequest);
 
         assertEquals(teacher, salvo);
     }
@@ -53,9 +63,9 @@ class TeacherServiceTest {
     @Test
     @DisplayName("[2] - Deve validar e atualizar professor via DTO")
     void deveValidarEDTO() {
-        Teacher result = teacherService.validateSpecify(dto, teacher);
+        Teacher result = teacherService.validateSpecify(dtoUpdated, teacher);
 
-        verify(teacherMapper).updateTeacherFromDto(dto, teacher);
+        verify(teacherMapper).updateTeacherFromDto(dtoUpdated, teacher);
         assertEquals(teacher, result);
     }
 
@@ -84,12 +94,12 @@ class TeacherServiceTest {
     @DisplayName("[5] - Deve listar todos professores convertidos para DTO")
     void deveListarTodos() {
         List<Teacher> lista = List.of(teacher, teacher);
-        TeacherDTO dtoMock = new TeacherDTO("A", "B", "C", "D", Discipline.ART);
+        TeacherRequestUpdateDTO dtoMock = new TeacherRequestUpdateDTO("A", "B", "C", "D", Discipline.ART);
 
         when(repository.findAll()).thenReturn(lista);
         when(teacherMapper.toDto(any())).thenReturn(dtoMock);
 
-        List<TeacherDTO> resultado = teacherService.listAll();
+        List<Teacher> resultado = teacherService.listAll();
 
         assertEquals(2, resultado.size());
     }
@@ -115,7 +125,7 @@ class TeacherServiceTest {
     @Test
     @DisplayName("[8] - Deve validar DTO com campos nulos sem lançar erro")
     void validarComCamposNulos() {
-        TeacherDTO dtoParcial = new TeacherDTO(null, null, null, null, null);
+        TeacherRequestUpdateDTO dtoParcial = new TeacherRequestUpdateDTO(null, null, null, null, null);
 
         Teacher res = teacherService.validateSpecify(dtoParcial, teacher);
 
@@ -127,21 +137,10 @@ class TeacherServiceTest {
     void listarMuitosProfessores() {
         List<Teacher> lista = Arrays.asList(new Teacher(), new Teacher(), new Teacher());
         when(repository.findAll()).thenReturn(lista);
-        when(teacherMapper.toDto(any())).thenReturn(dto);
+        when(teacherMapper.toDto(any())).thenReturn(dtoUpdated);
 
-        List<TeacherDTO> resultado = teacherService.listAll();
+        List<Teacher> resultado = teacherService.listAll();
 
         assertEquals(3, resultado.size());
-    }
-
-    @Test
-    @DisplayName("[10] - Deve criar professor com senha padrão")
-    void deveCriarComSenhaPadrao() {
-        teacher.setPassword("padrao123");
-        when(repository.save(any())).thenReturn(teacher);
-
-        Teacher res = teacherService.create(teacher);
-
-        assertEquals("padrao123", res.getPassword());
     }
 }

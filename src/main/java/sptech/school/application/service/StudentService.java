@@ -9,13 +9,18 @@ import org.springframework.web.server.ResponseStatusException;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
 import sptech.school.application.mappers.StudentMapper;
 import sptech.school.application.usecase.AbstractUserUseCase;
-import sptech.school.domain.dto.StudentDTO;
+import sptech.school.domain.dto.request.StudentRequestDTO;
+import sptech.school.domain.dto.request.StudentRequestUpdateDTO;
+import sptech.school.domain.dto.request.TeacherRequestDTO;
+import sptech.school.domain.dto.response.StudentResponseDTO;
+import sptech.school.domain.dto.response.TeacherResponseDTO;
 import sptech.school.domain.entity.Student;
+import sptech.school.domain.entity.Teacher;
 
 import java.util.List;
 
 @Service
-public class StudentService extends AbstractUserUseCase<Student, StudentDTO> {
+public class StudentService extends AbstractUserUseCase<Student, StudentRequestUpdateDTO> {
     @Autowired
     private StudentMapper studentMapper;
 
@@ -27,14 +32,14 @@ public class StudentService extends AbstractUserUseCase<Student, StudentDTO> {
     }
 
     public Student create(@Valid Student student) {
-        String hashedPassword = passwordEncoder.encode(student.getPassword());
-        student.setPassword(hashedPassword);
+        student.setPassword(passwordEncoder.encode(student.getPassword()));
 
         return repository.save(student);
     }
 
+
     @Override
-    public Student validateSpecify(@Valid StudentDTO dto, Student targetUser) {
+    public Student validateSpecify(@Valid StudentRequestUpdateDTO dto, Student targetUser) {
         studentMapper.updateStudentFromDto(dto, targetUser);
         return targetUser;
     }
@@ -44,9 +49,9 @@ public class StudentService extends AbstractUserUseCase<Student, StudentDTO> {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found."));
     }
 
-    public List<StudentDTO> listAll() {
+    public List<StudentResponseDTO> listAll() {
         return repository.findAll()
-                .stream().map(studentMapper::toDto).toList();
+                .stream().map(studentMapper::toDtoResponse).toList();
     }
 
     public void delete(Integer id) {

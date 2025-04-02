@@ -11,7 +11,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
-import sptech.school.domain.dto.ErrorResponseDTO;
+import sptech.school.domain.dto.response.ErrorResponseDTO;
 import sptech.school.domain.exception.StorageUnavailableException;
 
 import java.io.IOException;

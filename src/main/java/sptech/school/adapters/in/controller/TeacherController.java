@@ -8,20 +8,22 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.application.mappers.ResourceFileMapper;
-import sptech.school.application.mappers.StudentMapper;
 import sptech.school.application.mappers.TeacherMapper;
 import sptech.school.application.service.JwtService;
 import sptech.school.application.service.TeacherService;
-import sptech.school.domain.dto.AuthResponseDTO;
-import sptech.school.domain.dto.ResourceFileDTO;
-import sptech.school.domain.dto.TeacherDTO;
-import sptech.school.domain.dto.UserLoginDTO;
+import sptech.school.domain.dto.response.ResourceFileResponseDTO;
+import sptech.school.domain.dto.request.TeacherRequestDTO;
+import sptech.school.domain.dto.response.AuthResponseDTO;
+import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
+import sptech.school.domain.dto.request.LoginRequestDTO;
+import sptech.school.domain.dto.response.TeacherResponseDTO;
 import sptech.school.domain.entity.ResourceFile;
 import sptech.school.domain.entity.Teacher;
 
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/teachers")
@@ -30,35 +32,31 @@ public class TeacherController {
     private TeacherService teacherService;
     @Autowired
     private TeacherMapper teacherMapper;
-
-    @Autowired
-    private ResourceFileMapper resourceFileMapper;
-
     @Autowired
     private JwtService jwtService;
 
     @PostMapping
-    public ResponseEntity<Teacher> createUser(@RequestBody @Valid TeacherDTO teacherDTO) {
-        Teacher teacherCreated = teacherService.create(teacherMapper.toEntity(teacherDTO));
+    public ResponseEntity<TeacherResponseDTO> createUser(@RequestBody @Valid TeacherRequestDTO dto) {
+        Teacher teacherCreated = teacherService.create(teacherMapper.dtoRequestToEntity(dto));
 
-        return ResponseEntity.status(201).body(teacherCreated);
+        return ResponseEntity.status(201).body(teacherMapper.toDtoResponse(teacherCreated));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable Integer id) {
-        Teacher teacherSearched = teacherService.findById(id);
-        return ResponseEntity.status(200).body(teacherMapper.toDto(teacherSearched));
+    public ResponseEntity<TeacherResponseDTO> getTeacherById(@PathVariable Integer id) {
+        TeacherResponseDTO dto = teacherMapper.toDtoResponse(teacherService.findById(id));
+        return ResponseEntity.status(200).body(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TeacherDTO> updateTeacher(@PathVariable Integer id, @RequestBody @Valid TeacherDTO teacherDTO) {
-        Teacher teacherUpdated = teacherService.update(teacherDTO, id);
-        return ResponseEntity.status(200).body(teacherMapper.toDto(teacherUpdated));
+    public ResponseEntity<TeacherResponseDTO> updateTeacher(@PathVariable Integer id, @RequestBody @Valid TeacherRequestUpdateDTO dto) {
+        Teacher teacherUpdated = teacherService.update(dto, id);
+        return ResponseEntity.status(200).body(teacherMapper.toDtoResponse(teacherUpdated));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid UserLoginDTO loginDTO) {
-        Teacher teacherLogged = teacherService.login(loginDTO);
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid LoginRequestDTO dto) {
+        Teacher teacherLogged = teacherService.login(dto);
         String token = jwtService.generateToken(teacherLogged.getEmail(), teacherLogged.getName(), "TEACHER");
         AuthResponseDTO authResponseDTO = new AuthResponseDTO(teacherLogged.getName(), teacherLogged.getCpf(), teacherLogged.getEmail(), token);
 
@@ -72,15 +70,16 @@ public class TeacherController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TeacherDTO>> findAllTeachers() {
-        List<TeacherDTO> teacherDTOS = teacherService.listAll();
-        return ResponseEntity.status(200).body(teacherDTOS);
+    public ResponseEntity<List<TeacherResponseDTO>> findAllTeachers() {
+        List<TeacherResponseDTO> dtos = teacherService.listAll().stream()
+                .map(teacherMapper::toDtoResponse).collect(Collectors.toList());
+        return ResponseEntity.status(200).body(dtos);
     }
 
     @PostMapping("/upload-profile-photo")
-    public ResponseEntity<@Valid ResourceFileDTO> uploadArquivo(
+    public ResponseEntity<@Valid ResourceFileResponseDTO> uploadArquivo(
             @RequestParam("file") MultipartFile file) throws IOException {
-        ResourceFile resourceFile = teacherService.saveFile(file);
-        return ResponseEntity.ok(resourceFileMapper.toResponse(resourceFile));
+        ResourceFileResponseDTO dto = teacherService.saveFile(file);
+        return ResponseEntity.ok(dto);
     }
 }

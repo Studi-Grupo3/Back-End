@@ -14,20 +14,16 @@ import java.time.LocalDateTime;
 @EnableJpaAuditing
 public abstract class User {
 
-    @NotBlank
     private String name;
 
     @Email
-    @NotBlank
     @Column(unique = true)
     private String email;
 
     @CPF
-    @NotBlank
     @Column(unique = true)
     private String cpf;
 
-    @NotBlank
     private String password;
 
     @CreatedDate
