@@ -8,7 +8,9 @@ import sptech.school.domain.entity.User;
 
 @NoRepositoryBean
 public interface JpaUserRepository<T extends User> extends JpaRepository<T, Integer> {
-    T findByCpf(@CPF(message = "The CPF is invalid") String cpf);
+    T findByCpf(String cpf);
 
-    T findByEmailIgnoreCase(@Email(message = "The email is invalid") String email);
+    T findByEmailIgnoreCase(String email);
+
+    T findByEmailAndPassword(String email, String password);
 }

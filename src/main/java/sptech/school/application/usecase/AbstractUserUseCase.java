@@ -12,6 +12,7 @@ import sptech.school.domain.dto.request.LoginRequestDTO;
 import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 import sptech.school.domain.entity.ResourceFile;
 import sptech.school.domain.entity.User;
+import sptech.school.domain.exception.LoginException;
 import sptech.school.domain.exception.UserException;
 
 import java.io.IOException;
@@ -19,9 +20,6 @@ import java.time.LocalDateTime;
 
 public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUseCase<T, DTO> {
     protected final JpaUserRepository<T> repository;
-
-    @Autowired
-    private JwtService jwtService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -50,15 +48,11 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     }
 
     @Override
-    public T login(@Valid LoginRequestDTO user) {
-        T foundUser = repository.findByEmailIgnoreCase(user.email());
+    public T login(String email, String password) {
+        T foundUser = repository.findByEmailAndPassword(email, passwordEncoder.encode(password));
 
-        if (foundUser == null && user.cpf() != null) {
-            foundUser = repository.findByCpf(user.cpf());
-        }
-
-        if (foundUser == null || !passwordEncoder.matches(user.password(), foundUser.getPassword())) {
-            throw new UserException("Invalid email/CPF or password");
+        if (foundUser == null || !passwordEncoder.matches(password, foundUser.getPassword())) {
+            throw new LoginException("Invalid email or password");
         }
 
         foundUser.setLastLogin(LocalDateTime.now());

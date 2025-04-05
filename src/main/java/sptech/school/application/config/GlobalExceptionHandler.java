@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
 import sptech.school.domain.dto.response.ErrorResponseDTO;
+import sptech.school.domain.exception.LoginException;
 import sptech.school.domain.exception.StorageUnavailableException;
+import sptech.school.domain.exception.UserException;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -39,7 +41,11 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, ex);
     }
 
-    @ExceptionHandler({NoSuchElementException.class, EntityNotFoundException.class})
+    @ExceptionHandler({
+            NoSuchElementException.class,
+            EntityNotFoundException.class,
+            UserException.class
+    })
     public ResponseEntity<ErrorResponseDTO> handleNotFound(Exception ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex);
     }
@@ -69,4 +75,8 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex);
     }
 
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity<ErrorResponseDTO> handleLogin(Exception ex) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, ex);
+    }
 }
