@@ -1,18 +1,15 @@
 package sptech.school.application.service;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sptech.school.application.usecase.AbstractUserUseCase;
-import sptech.school.domain.dto.request.TeacherRequestDTO;
-import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
-import sptech.school.domain.dto.response.TeacherResponseDTO;
-import sptech.school.domain.entity.Teacher;
-import sptech.school.application.mappers.TeacherMapper;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
+import sptech.school.application.mappers.TeacherMapper;
+import sptech.school.application.usecase.AbstractUserUseCase;
+import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
+import sptech.school.domain.entity.Teacher;
 
 import java.util.List;
 
@@ -26,12 +23,6 @@ public class TeacherService extends AbstractUserUseCase<Teacher, TeacherRequestU
 
     public TeacherService(JpaUserRepository<Teacher> repository) {
         super(repository);
-    }
-
-    public Teacher create(@Valid Teacher teacher) {
-        teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
-
-        return repository.save(teacher);
     }
 
     @Override

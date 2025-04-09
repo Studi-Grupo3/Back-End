@@ -1,13 +1,18 @@
 package sptech.school.domain.dto.payments;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
 
 public record PaymentRequestDTO(
-        BigDecimal transactionAmount,
-        String token,
-        String description,
-        Integer installments,
-        String paymentMethodId,
-        PayerDTO payer
+        @NotNull @Positive BigDecimal transactionAmount,
+        @NotBlank String token,
+        @NotBlank String description,
+        @NotNull @Positive Integer installments,
+        @NotNull String paymentMethodId,
+        @Valid PayerDTO payer
 ) {
 }

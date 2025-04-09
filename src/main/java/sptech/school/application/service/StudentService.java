@@ -9,13 +9,9 @@ import org.springframework.web.server.ResponseStatusException;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
 import sptech.school.application.mappers.StudentMapper;
 import sptech.school.application.usecase.AbstractUserUseCase;
-import sptech.school.domain.dto.request.StudentRequestDTO;
 import sptech.school.domain.dto.request.StudentRequestUpdateDTO;
-import sptech.school.domain.dto.request.TeacherRequestDTO;
 import sptech.school.domain.dto.response.StudentResponseDTO;
-import sptech.school.domain.dto.response.TeacherResponseDTO;
 import sptech.school.domain.entity.Student;
-import sptech.school.domain.entity.Teacher;
 
 import java.util.List;
 
@@ -30,13 +26,6 @@ public class StudentService extends AbstractUserUseCase<Student, StudentRequestU
     public StudentService(JpaUserRepository<Student> repository) {
         super(repository);
     }
-
-    public Student create(@Valid Student student) {
-        student.setPassword(passwordEncoder.encode(student.getPassword()));
-
-        return repository.save(student);
-    }
-
 
     @Override
     public Student validateSpecify(@Valid StudentRequestUpdateDTO dto, Student targetUser) {

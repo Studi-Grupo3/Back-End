@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
 import sptech.school.domain.dto.response.ErrorResponseDTO;
-import sptech.school.domain.exception.LoginException;
+import sptech.school.domain.exception.EmailAlreadyExistsException;
 import sptech.school.domain.exception.StorageUnavailableException;
-import sptech.school.domain.exception.UserException;
+import sptech.school.domain.exception.AuthenticationException;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             NoSuchElementException.class,
             EntityNotFoundException.class,
-            UserException.class
+            AuthenticationException.class
     })
     public ResponseEntity<ErrorResponseDTO> handleNotFound(Exception ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex);
@@ -75,8 +75,13 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex);
     }
 
-    @ExceptionHandler(LoginException.class)
+    @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponseDTO> handleLogin(Exception ex) {
         return buildResponse(HttpStatus.UNAUTHORIZED, ex);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleEmailExists(Exception ex){
+        return buildResponse(HttpStatus.CONFLICT, ex);
     }
 }
