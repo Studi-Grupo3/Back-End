@@ -30,8 +30,11 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
-          SONAR_TOKEN: 9c1c26387170dee039d3b7a0a48f0d5d112caf16
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Studi-Grupo3_Back-End
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          echo "Token começa com: ${SONAR_TOKEN}"
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=Studi-Grupo3_Back-End
 
   test:
     needs: build
