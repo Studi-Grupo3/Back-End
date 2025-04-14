@@ -1,19 +1,40 @@
 name: Run Unit Tests
 
 on:
-  push:
-    branches:
-      - actions/pipeline
-  pull_request:
-    branches:
-      - main
-      - develop
-  workflow_dispatch:
+  workflow_call:
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      - name: Setup JDK 21 (Amazon Corretto)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Give mvnw execute permission
+        run: chmod +x ./mvnw
+
+      - name: Run Build (Compile and Package)
+        run: |
+          set -e
+          ./mvnw clean package -DskipTests
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
