@@ -16,4 +16,4 @@ permissions:
 
 jobs:
   run-tests:
-    uses: Studi-Grupo3/Back-End/.github/workflows/ci-main.yml@actions/pipeline
+    uses: Studi-Grupo3/Back-End/.github/workflows/reusable-ci.yml@actions/pipeline
