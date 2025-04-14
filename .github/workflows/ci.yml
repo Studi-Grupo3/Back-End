@@ -4,34 +4,45 @@ on:
   push:
     branches:
       - actions/pipeline
-  workflow_dispatch:
   pull_request:
     branches:
       - main
       - develop
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup JDK 21 (Amazon Corretto)
-      uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'corretto'
-    
+      - name: Setup JDK 21 (Amazon Corretto)
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'corretto'
 
-    - name: Cache Maven packages
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-    - name: Run Unit Tests
-      run: ./mvnw clean verify
+      - name: Give mvnw execute permission
+        run: chmod +x ./mvnw
+
+      - name: Run Unit Tests
+        run: |
+          set -e
+          ./mvnw clean verify
+
+      - name: Save Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: target/surefire-reports/
