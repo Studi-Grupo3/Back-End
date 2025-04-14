@@ -1,4 +1,4 @@
-name: Call Run Unit Tests
+name: Build and Analysis
 
 on:
   push:
