@@ -10,6 +10,10 @@ on:
       - develop
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   run-tests:
     uses: Studi-Grupo3/Back-End/.github/workflows/ci-main.yml@actions/pipeline
