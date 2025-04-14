@@ -1,6 +1,9 @@
 name: Run Unit Tests
 
 on:
+  push:
+    branches:
+      - actions/pipeline
   workflow_dispatch:
   pull_request:
     branches:
