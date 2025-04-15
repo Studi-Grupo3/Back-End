@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<sonar.projectKey>Studi-Grupo3_Back-End</sonar.projectKey>
 		<sonar.organization>studi-grupo3</sonar.organization>
   		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
