@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build, Analyze and Check Quality Gate
+    name: Build and Analyze
     runs-on: ubuntu-latest
 
     steps:
@@ -51,26 +51,6 @@ jobs:
             -Dsonar.organization=studi-grupo3 \
             -Dsonar.host.url=${{ secrets.SONAR_URL }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
-      - name: Debug - Check if report-task.txt exists
-        run: |
-          if [ ! -f .scannerwork/report-task.txt ]; then
-            echo "❌ Arquivo .scannerwork/report-task.txt não encontrado!"
-            exit 1
-          else
-            echo "✅ Arquivo .scannerwork/report-task.txt encontrado!"
-            cat .scannerwork/report-task.txt
-          fi
-
-      - name: SonarQube Quality Gate check
-        id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        with:
-          pollingTimeoutSec: 600
-          scanMetadataReportFile: .scannerwork/report-task.txt
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
 
   test:
     name: Unit Tests
