@@ -1,9 +1,6 @@
 name: Build and Analysis
 
 on:
-  push:
-    branches:
-      - actions/pipeline
   pull_request:
     branches:
       - main
@@ -12,7 +9,7 @@ on:
 
 jobs:
   analysis:
-    uses: Studi-Grupo3/Back-End/.github/workflows/reusable-ci.yml@actions/pipeline
+    uses: Studi-Grupo3/Back-End/.github/workflows/reusable-ci.yml@develop
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SONAR_URL: ${{ secrets.SONAR_URL }}
