@@ -39,10 +39,13 @@ jobs:
 
       - name: Build and analyze
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.projectKey=Studi-Grupo3_Back-End
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          run: |
+            mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+              -Dsonar.projectKey=Studi-Grupo3_Back-End \
+              -Dsonar.organization=studi-grupo3 \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=${SONAR_TOKEN}
 
   test:
     name: Unit Tests
