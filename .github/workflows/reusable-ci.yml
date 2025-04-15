@@ -84,6 +84,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
+          SONAR_ORGANIZATION: >
+            -Dsonar.projectKey=Studi-Grupo3_Back-End
+            -Dsonar.organization=studi-grupo3
 
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
