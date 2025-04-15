@@ -84,7 +84,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
-          SONAR_ORGANIZATION: >
+          SONAR_SCANNER_OPTS: >
             -Dsonar.projectKey=Studi-Grupo3_Back-End
             -Dsonar.organization=studi-grupo3
 
