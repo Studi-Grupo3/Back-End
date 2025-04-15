@@ -1,9 +1,11 @@
-name: Run Unit Tests
+name: Studi/Back-End
 
 on:
   workflow_call:
     secrets:
       SONAR_TOKEN:
+        required: true
+      SONAR_URL:
         required: true
 
 jobs:
@@ -14,38 +16,40 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: 21
           distribution: 'corretto' 
+
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          echo "Token começa com: ${SONAR_TOKEN}"
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=Studi-Grupo3_Back-End
 
   test:
+    name: Unit Tests
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - name: Setup JDK 21 (Amazon Corretto)
         uses: actions/setup-java@v3
         with:
@@ -65,5 +69,24 @@ jobs:
 
       - name: Run Unit Tests
         run: |
-          set -e
           ./mvnw clean verify
+
+  quality-gate:
+    name: Check SonarCloud Quality Gate
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
+
+      - name: SonarQube Quality Gate check
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        with:
+          pollingTimeoutSec: 600
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
