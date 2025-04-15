@@ -7,6 +7,10 @@ on:
         required: true
       SONAR_URL:
         required: true
+      SONAR_PROJECT_KEY: 
+        required: true
+      SONAR_ORGANIZATION:
+        required: true
 
 jobs:
   build:
@@ -47,8 +51,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.projectKey=Studi-Grupo3_Back-End \
-            -Dsonar.organization=studi-grupo3 \
+            -Dsonar.projectKey= ${{ secrets.SONAR_PROJECT_KEY }} \
+            -Dsonar.organization= ${{ secrets.SONAR_ORGANIZATION }} \
             -Dsonar.host.url=${{ secrets.SONAR_URL }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 

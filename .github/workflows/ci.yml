@@ -11,8 +11,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-tests:
+  analysis:
     uses: Studi-Grupo3/Back-End/.github/workflows/reusable-ci.yml@actions/pipeline
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SONAR_URL: ${{ secrets.SONAR_URL }}
+      SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+      SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
