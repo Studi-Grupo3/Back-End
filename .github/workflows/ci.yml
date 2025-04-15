@@ -13,3 +13,5 @@ on:
 jobs:
   run-tests:
     uses: Studi-Grupo3/Back-End/.github/workflows/reusable-ci.yml@actions/pipeline
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
