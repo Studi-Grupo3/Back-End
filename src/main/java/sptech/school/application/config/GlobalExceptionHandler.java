@@ -43,8 +43,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             NoSuchElementException.class,
-            EntityNotFoundException.class,
-            AuthenticationException.class
+            EntityNotFoundException.class
     })
     public ResponseEntity<ErrorResponseDTO> handleNotFound(Exception ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex);

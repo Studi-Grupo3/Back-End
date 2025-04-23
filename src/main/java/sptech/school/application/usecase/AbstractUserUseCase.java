@@ -22,7 +22,6 @@ import java.util.Optional;
 public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUseCase<T, DTO> {
     protected final JpaUserRepository<T> repository;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -40,8 +39,9 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     @Autowired
     StudentRepositoryJpa studentRepository;
 
-    public AbstractUserUseCase(JpaUserRepository<T> repository) {
+    public AbstractUserUseCase(JpaUserRepository<T> repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public T create(@Valid T entity) {

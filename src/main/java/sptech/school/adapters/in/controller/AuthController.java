@@ -16,6 +16,7 @@ import sptech.school.domain.dto.request.LoginRequestDTO;
 import sptech.school.domain.dto.response.AuthResponseDTO;
 import sptech.school.domain.entity.Student;
 import sptech.school.domain.entity.Teacher;
+import sptech.school.domain.enumerated.Role;
 import sptech.school.domain.exception.AuthenticationException;
 
 @RestController
@@ -48,11 +49,11 @@ public class AuthController {
         System.out.println("Teacher: " + teacher);
         if (student != null) {
             token = jwtService.generateToken(student.getEmail(), student.getName(), "STUDENT");
-            AuthResponseDTO authResponseDTO = new AuthResponseDTO(student.getName(), student.getCpf(), student.getEmail(), token);
+            AuthResponseDTO authResponseDTO = new AuthResponseDTO(student.getName(), student.getCpf(), student.getEmail(), token, Role.STUDENT);
             return ResponseEntity.ok(authResponseDTO);
         } else if (teacher != null) {
             token = jwtService.generateToken(teacher.getEmail(), teacher.getName(), "TEACHER");
-            AuthResponseDTO authResponseDTO = new AuthResponseDTO(teacher.getName(), teacher.getCpf(), teacher.getEmail(), token);
+            AuthResponseDTO authResponseDTO = new AuthResponseDTO(teacher.getName(), teacher.getCpf(), teacher.getEmail(), token, Role.TEACHER);
             return ResponseEntity.ok(authResponseDTO);
         }
         throw new AuthenticationException("Invalid credentials");

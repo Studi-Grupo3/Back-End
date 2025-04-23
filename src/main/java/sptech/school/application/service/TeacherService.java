@@ -18,11 +18,8 @@ public class TeacherService extends AbstractUserUseCase<Teacher, TeacherRequestU
     @Autowired
     private TeacherMapper teacherMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public TeacherService(JpaUserRepository<Teacher> repository) {
-        super(repository);
+    public TeacherService(JpaUserRepository<Teacher> repository, PasswordEncoder passwordEncoder) {
+        super(repository, passwordEncoder);
     }
 
     @Override

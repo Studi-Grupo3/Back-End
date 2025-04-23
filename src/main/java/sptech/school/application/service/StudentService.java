@@ -20,11 +20,8 @@ public class StudentService extends AbstractUserUseCase<Student, StudentRequestU
     @Autowired
     private StudentMapper studentMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public StudentService(JpaUserRepository<Student> repository) {
-        super(repository);
+    public StudentService(JpaUserRepository<Student> repository, PasswordEncoder passwordEncoder) {
+        super(repository, passwordEncoder);
     }
 
     @Override
