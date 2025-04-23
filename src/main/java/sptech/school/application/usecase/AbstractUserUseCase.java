@@ -6,24 +6,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.adapters.out.persistence.JpaResourceFileRepository;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
+import sptech.school.adapters.out.persistence.StudentRepositoryJpa;
+import sptech.school.adapters.out.persistence.TeacherRepositoryJpa;
 import sptech.school.application.mappers.ResourceFileMapper;
-import sptech.school.application.service.JwtService;
-import sptech.school.domain.dto.request.LoginRequestDTO;
 import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 import sptech.school.domain.entity.ResourceFile;
 import sptech.school.domain.entity.User;
-import sptech.school.domain.exception.UserException;
+import sptech.school.domain.exception.AuthenticationException;
+import sptech.school.domain.exception.EmailAlreadyExistsException;
+import sptech.school.domain.exception.UserNullException;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.Optional;
 
 public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUseCase<T, DTO> {
     protected final JpaUserRepository<T> repository;
 
-    @Autowired
-    private JwtService jwtService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -35,14 +33,31 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     @Autowired
     private ResourceFileMapper resourceFileMapper;
 
-    public AbstractUserUseCase(JpaUserRepository<T> repository) {
+    @Autowired
+    TeacherRepositoryJpa teacherRepository;
+
+    @Autowired
+    StudentRepositoryJpa studentRepository;
+
+    public AbstractUserUseCase(JpaUserRepository<T> repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public T create(@Valid T entity) {
+        if (entity == null) throw new UserNullException("The user cannot be null.");
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        if (studentRepository.existsByEmail(entity.getEmail()) || teacherRepository.existsByEmail(entity.getEmail())) {
+            throw new EmailAlreadyExistsException("Email already registered for another user.");
+        }
+
+        return repository.save(entity);
     }
 
     @Override
     public T update(@Valid DTO dto, Integer id) {
         T userTarget = repository.findById(id)
-            .orElseThrow(() -> new UserException("User not found"));
+                .orElseThrow(() -> new UserNullException("User not found"));
 
         userTarget = validateSpecify(dto, userTarget);
 
@@ -50,19 +65,12 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     }
 
     @Override
-    public T login(@Valid LoginRequestDTO user) {
-        T foundUser = repository.findByEmailIgnoreCase(user.email());
-
-        if (foundUser == null && user.cpf() != null) {
-            foundUser = repository.findByCpf(user.cpf());
+    public T login(String email, String password) {
+        Optional<T> foundUser = repository.findByEmail(email);
+        if (foundUser.isPresent() && passwordEncoder.matches(password, foundUser.get().getPassword())) {
+            return foundUser.get();
         }
-
-        if (foundUser == null || !passwordEncoder.matches(user.password(), foundUser.getPassword())) {
-            throw new UserException("Invalid email/CPF or password");
-        }
-
-        foundUser.setLastLogin(LocalDateTime.now());
-        return foundUser;
+        throw new AuthenticationException("Invalid credentials");
     }
 
     public ResourceFileResponseDTO saveFile(MultipartFile file) throws IOException {

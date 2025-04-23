@@ -1,8 +1,11 @@
 
 package sptech.school;
 
-import org.junit.jupiter.api.*;
-import org.mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -10,13 +13,13 @@ import org.springframework.web.server.ResponseStatusException;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
 import sptech.school.application.mappers.TeacherMapper;
 import sptech.school.application.service.TeacherService;
-import sptech.school.domain.dto.request.TeacherRequestDTO;
 import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
-import sptech.school.domain.dto.response.TeacherResponseDTO;
 import sptech.school.domain.entity.Teacher;
 import sptech.school.domain.enumerated.Discipline;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -42,7 +45,7 @@ class TeacherServiceTest {
     @BeforeEach
     void setUp() {
         mocks = MockitoAnnotations.openMocks(this);
-        teacherService = new TeacherService(repository);
+        teacherService = new TeacherService(repository, passwordEncoder);
         ReflectionTestUtils.setField(teacherService, "teacherMapper", teacherMapper);
         ReflectionTestUtils.setField(teacherService, "passwordEncoder", passwordEncoder);
         teacher = new Teacher();

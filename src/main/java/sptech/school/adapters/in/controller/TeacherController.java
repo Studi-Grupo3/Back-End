@@ -54,14 +54,6 @@ public class TeacherController {
         return ResponseEntity.status(200).body(teacherMapper.toDtoResponse(teacherUpdated));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid LoginRequestDTO dto) {
-        Teacher teacherLogged = teacherService.login(dto);
-        String token = jwtService.generateToken(teacherLogged.getEmail(), teacherLogged.getName(), "TEACHER");
-        AuthResponseDTO authResponseDTO = new AuthResponseDTO(teacherLogged.getName(), teacherLogged.getCpf(), teacherLogged.getEmail(), token);
-
-        return ResponseEntity.status(200).body(authResponseDTO);
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeacher(@PathVariable Integer id) {

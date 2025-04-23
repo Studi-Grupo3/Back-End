@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,21 +41,27 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
+                .headers(headers -> headers.frameOptions().disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/h2-console/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST,"/students/login", "/students").permitAll()
-                        .requestMatchers(HttpMethod.POST,("/teachers/login"), "/teachers").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/students", "/students").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/teachers", "/teachers").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auths/login", "/auths").permitAll()
                         .requestMatchers(HttpMethod.POST, "/payments", "/payments/preference").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtService, teacherUserDetailsService, studentUserDetailsService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(
+                        new JwtAuthenticationFilter(jwtService, teacherUserDetailsService, studentUserDetailsService),
+                        UsernamePasswordAuthenticationFilter.class
+                )
                 .build();
     }
 

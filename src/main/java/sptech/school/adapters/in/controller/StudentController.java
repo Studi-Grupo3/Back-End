@@ -50,15 +50,6 @@ public class StudentController {
         return ResponseEntity.status(200).body(updated);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginDTO) {
-        StudentRequestUpdateDTO studentLogged = studentMapper.toDto(studentService.login(loginDTO));
-        String token = jwtService.generateToken(studentLogged.email(), studentLogged.name(), "STUDENT");
-        AuthResponseDTO authResponseDTO = new AuthResponseDTO(studentLogged.name(), studentLogged.cpf(), studentLogged.email(), token);
-
-        return ResponseEntity.status(200).body(authResponseDTO);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Integer id) {
         studentService.delete(id);

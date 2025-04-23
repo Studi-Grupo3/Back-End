@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
 
 public record LoginRequestDTO(
-          @Email String email
-        , @CPF String cpf
+          @Email @NotBlank String email
         , @NotBlank String password
 ) {}

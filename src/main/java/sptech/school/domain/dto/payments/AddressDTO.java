@@ -1,8 +1,10 @@
 package sptech.school.domain.dto.payments;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record AddressDTO(
-        String streetName,
-        String streetNumber,
-        String zipCode
+       @NotBlank String streetName,
+       @NotBlank String streetNumber,
+       @NotBlank String zipCode
 ) {
 }
