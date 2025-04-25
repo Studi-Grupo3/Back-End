@@ -10,7 +10,6 @@ public class Student extends User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
     private String responsibleCellphone;
 
     public Student() {

@@ -58,10 +58,10 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(
-                        new JwtAuthenticationFilter(jwtService, teacherUserDetailsService, studentUserDetailsService),
-                        UsernamePasswordAuthenticationFilter.class
-                )
+//                .addFilterBefore(
+//                        new JwtAuthenticationFilter(jwtService, teacherUserDetailsService, studentUserDetailsService),
+//                        UsernamePasswordAuthenticationFilter.class
+//                )
                 .build();
     }
 

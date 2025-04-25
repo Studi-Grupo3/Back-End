@@ -9,6 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 public record AuthResponseDTO(
+        Integer id,
         @NotBlank String username
         , @NotBlank @CPF String cpf
         , @NotBlank @Email String email

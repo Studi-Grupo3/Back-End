@@ -21,7 +21,7 @@ public abstract class User {
     private String email;
 
     @CPF
-    @Column(unique = true)
+    @Column(unique = true, nullable = true)
     private String cpf;
 
     private String password;

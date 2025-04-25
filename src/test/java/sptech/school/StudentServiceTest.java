@@ -119,8 +119,8 @@ class StudentServiceTest {
     void deveListarTodosEstudantesComoDTOs() {
         List<Student> estudantes = List.of(new Student(), new Student());
         // Using proper constructor arguments for StudentResponseDTO (example values)
-        StudentResponseDTO dto1 = new StudentResponseDTO("Test Student", "email@test.com", "1123456789", "1123456789");
-        StudentResponseDTO dto2 = new StudentResponseDTO( "Test Student 2", "email2@test.com", "1198765432", "1123456789");
+        StudentResponseDTO dto1 = new StudentResponseDTO("Test Student", "email@test.com");
+        StudentResponseDTO dto2 = new StudentResponseDTO( "Test Student 2", "email2@test.com");
 
         when(repository.findAll()).thenReturn(estudantes);
         when(studentMapper.toDtoResponse(any(Student.class)))
