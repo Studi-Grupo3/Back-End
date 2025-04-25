@@ -39,6 +39,7 @@ public class AuthController {
         Teacher teacher = null;
         try {
             student = studentService.login(dto.email(), dto.password());
+            System.out.println(student.getEmail() + student.getName());
         } catch (AuthenticationException ignored) {}
 
         try {
@@ -49,11 +50,11 @@ public class AuthController {
         System.out.println("Teacher: " + teacher);
         if (student != null) {
             token = jwtService.generateToken(student.getEmail(), student.getName(), "STUDENT");
-            AuthResponseDTO authResponseDTO = new AuthResponseDTO(student.getName(), student.getCpf(), student.getEmail(), token, Role.STUDENT);
+            AuthResponseDTO authResponseDTO = new AuthResponseDTO(student.getId(), student.getName(), student.getCpf(), student.getEmail(), token, Role.STUDENT);
             return ResponseEntity.ok(authResponseDTO);
         } else if (teacher != null) {
             token = jwtService.generateToken(teacher.getEmail(), teacher.getName(), "TEACHER");
-            AuthResponseDTO authResponseDTO = new AuthResponseDTO(teacher.getName(), teacher.getCpf(), teacher.getEmail(), token, Role.TEACHER);
+            AuthResponseDTO authResponseDTO = new AuthResponseDTO(teacher.getId(), teacher.getName(), teacher.getCpf(), teacher.getEmail(), token, Role.TEACHER);
             return ResponseEntity.ok(authResponseDTO);
         }
         throw new AuthenticationException("Invalid credentials");

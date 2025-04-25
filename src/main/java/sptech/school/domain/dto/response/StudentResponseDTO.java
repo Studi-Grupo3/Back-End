@@ -7,6 +7,4 @@ import org.hibernate.validator.constraints.br.CPF;
 public record StudentResponseDTO(
         @NotBlank String name
         , @Email @NotBlank String email
-        , @CPF @NotBlank String cpf
-        , @NotBlank String responsibleCellphone
 ) { }
