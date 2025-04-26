@@ -50,8 +50,9 @@ public class SecurityConfig {
                                 "/h2-console/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST,"/students", "/students").permitAll()
+                        .requestMatchers(HttpMethod.PATCH,"/students/reset-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/teachers", "/teachers").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auths/login", "/auths").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auths/login", "/auths/verify-code", "/auths/forgot-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/payments", "/payments/preference").permitAll()
                         .anyRequest().authenticated()
                 )

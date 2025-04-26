@@ -4,12 +4,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
-import sptech.school.adapters.out.persistence.JpaResourceFileRepository;
-import sptech.school.adapters.out.persistence.JpaUserRepository;
-import sptech.school.adapters.out.persistence.StudentRepositoryJpa;
-import sptech.school.adapters.out.persistence.TeacherRepositoryJpa;
+import sptech.school.adapters.out.persistence.*;
 import sptech.school.application.mappers.ResourceFileMapper;
 import sptech.school.domain.dto.response.ResourceFileResponseDTO;
+import sptech.school.domain.entity.PasswordResetToken;
 import sptech.school.domain.entity.ResourceFile;
 import sptech.school.domain.entity.User;
 import sptech.school.domain.exception.AuthenticationException;
@@ -17,12 +15,18 @@ import sptech.school.domain.exception.EmailAlreadyExistsException;
 import sptech.school.domain.exception.UserNullException;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUseCase<T, DTO> {
-    protected final JpaUserRepository<T> repository;
+        protected final JpaUserRepository<T> repository;
 
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordResetTokenRepository tokenRepository;
+    @Autowired
+    private EmailSender emailSender;
+
 
     @Autowired
     private StorageServiceUseCase storageService;
@@ -38,6 +42,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
 
     @Autowired
     StudentRepositoryJpa studentRepository;
+
 
     public AbstractUserUseCase(JpaUserRepository<T> repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
@@ -83,5 +88,39 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
         );
         ResourceFile savedFile = jpaResourceFileRepository.save(resourceFile);
         return resourceFileMapper.toResponse(savedFile);
+    }
+
+    public void resetPassword(String email, String newPassword) {
+        Optional<T> optionalUser = repository.findByEmail(email);
+
+        if (optionalUser.isEmpty()) {
+            throw new UserNullException("User not found with email: " + email);
+        }
+
+        T user = optionalUser.get();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        repository.save(user);
+    }
+
+    public void sendResetCode(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("O e-mail não pode ser nulo ou vazio.");
+        }
+
+        Optional<T> optionalUser = repository.findByEmail(email);
+
+        if (optionalUser.isEmpty()) {
+            throw new UserNullException("Usuário não encontrado com o e-mail: " + email);
+        }
+
+        String code = generateCode(); // você precisa ter esse método ou passá-lo como dependência
+        PasswordResetToken token = new PasswordResetToken(email, code, LocalDateTime.now().plusMinutes(10));
+        tokenRepository.save(token);
+
+        emailSender.send(email, "Código de Redefinição de Senha", "Seu código é: " + code);
+    }
+
+    private String generateCode() {
+        return String.valueOf((int)(Math.random() * 900000) + 100000);  // Gera um código de 6 dígitos
     }
 }

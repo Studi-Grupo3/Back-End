@@ -9,6 +9,7 @@ import sptech.school.application.mappers.StudentMapper;
 import sptech.school.application.service.JwtService;
 import sptech.school.application.service.StudentService;
 import sptech.school.domain.dto.request.LoginRequestDTO;
+import sptech.school.domain.dto.request.ResetPasswordRequestDTO;
 import sptech.school.domain.dto.request.StudentRequestDTO;
 import sptech.school.domain.dto.request.StudentRequestUpdateDTO;
 import sptech.school.domain.dto.response.AuthResponseDTO;
@@ -68,5 +69,11 @@ public class StudentController {
             @RequestParam("file") MultipartFile file) throws IOException {
         ResourceFileResponseDTO dto = studentService.saveFile(file);
         return ResponseEntity.ok(dto);
+    }
+
+    @PatchMapping("/reset-password")
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequestDTO request) {
+        studentService.resetPassword(request.email(), request.newPassword());
+        return ResponseEntity.noContent().build();
     }
 }
