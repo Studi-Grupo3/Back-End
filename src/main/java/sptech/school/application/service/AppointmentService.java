@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sptech.school.domain.dto.AppointmentDTO;
+import sptech.school.domain.dto.response.AppointmentResponseDTO;
 import sptech.school.domain.entity.Appointment;
 import sptech.school.domain.entity.Student;
 import sptech.school.domain.entity.Teacher;
@@ -29,14 +30,13 @@ public class AppointmentService {
 
     public Appointment create(AppointmentDTO dto) {
         Student student = studentService.findById(dto.idStudent());
-
         Teacher teacher = teacherService.findById(dto.idTeacher());
 
         if (appointmentRepository.existsByStudentIdAndTeacherIdAndDateTime(dto.idStudent(), dto.idTeacher(), dto.dateTime())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Users already have an appointment at this time.");
         }
 
-        Appointment appointment = new Appointment(student, teacher,dto.dateTime(), dto.lessonDuration(), dto.location());
+        Appointment appointment = new Appointment(student, teacher, dto.dateTime(), dto.lessonDuration(), dto.location());
         return appointmentRepository.save(appointment);
     }
 
@@ -45,9 +45,18 @@ public class AppointmentService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment not found."));
     }
 
-    public List<AppointmentDTO> listAll() {
+    public List<AppointmentResponseDTO> listAll() {
         return appointmentRepository.findAll()
-                .stream().map(appointmentMapper::toDto).toList();
+                .stream()
+                .map(appointmentMapper::toResponseDto)
+                .toList();
+    }
+
+    public List<AppointmentResponseDTO> listAllResponse() {
+        return appointmentRepository.findAll()
+                .stream()
+                .map(appointmentMapper::toResponseDto)
+                .toList();
     }
 
     public Appointment update(AppointmentDTO dto, Integer id) {
