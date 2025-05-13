@@ -12,6 +12,7 @@ import sptech.school.application.service.AppointmentService;
 import sptech.school.application.service.StudentService;
 import sptech.school.application.service.TeacherService;
 import sptech.school.domain.dto.AppointmentDTO;
+import sptech.school.domain.dto.response.AppointmentResponseDTO;
 import sptech.school.domain.entity.Appointment;
 import sptech.school.domain.entity.Student;
 import sptech.school.domain.entity.Teacher;
@@ -45,7 +46,7 @@ class AppointmentServiceTest {
     void setUp() {
         mocks = MockitoAnnotations.openMocks(this);
 
-        dto = new AppointmentDTO(1, 2, LocalDateTime.now().plusHours(1), 60.0, AppointmentStatus.SCHEDULED, "Sala A", PaymentStatus.PENDING);
+        dto = new AppointmentDTO(1, 2, LocalDateTime.now().plusHours(1), 60.0, "SCHEDULED", "Sala A" );
         student = new Student();
         teacher = new Teacher();
         appointment = new Appointment(student, teacher, dto.dateTime(), dto.lessonDuration(), dto.location());
@@ -100,7 +101,7 @@ class AppointmentServiceTest {
         when(appointmentRepository.findAll()).thenReturn(lista);
         when(appointmentMapper.toDto(any())).thenReturn(dto);
 
-        List<AppointmentDTO> resultado = appointmentService.listAll();
+        List<AppointmentResponseDTO> resultado = appointmentService.listAll();
 
         assertEquals(2, resultado.size());
     }

@@ -2,6 +2,7 @@ package sptech.school.adapters.in.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,14 +11,20 @@ import org.springframework.web.bind.annotation.RestController;
 import sptech.school.application.mappers.StudentMapper;
 import sptech.school.application.mappers.TeacherMapper;
 import sptech.school.application.service.JwtService;
+import sptech.school.application.service.PasswordResetService;
 import sptech.school.application.service.StudentService;
 import sptech.school.application.service.TeacherService;
+import sptech.school.domain.dto.request.ForgotPasswordRequest;
 import sptech.school.domain.dto.request.LoginRequestDTO;
+import sptech.school.domain.dto.request.VerifyCodeRequest;
 import sptech.school.domain.dto.response.AuthResponseDTO;
 import sptech.school.domain.entity.Student;
 import sptech.school.domain.entity.Teacher;
 import sptech.school.domain.enumerated.Role;
 import sptech.school.domain.exception.AuthenticationException;
+import sptech.school.domain.exception.UserNullException;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auths")
@@ -30,6 +37,8 @@ public class AuthController {
     private StudentMapper studentMapper;
     @Autowired
     private TeacherMapper teacherMapper;
+    @Autowired
+    private PasswordResetService service;
     @Autowired
     private JwtService jwtService;
 
@@ -58,5 +67,37 @@ public class AuthController {
             return ResponseEntity.ok(authResponseDTO);
         }
         throw new AuthenticationException("Invalid credentials");
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Void> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        boolean sent = false;
+
+        try {
+            studentService.sendResetCode(request.getEmail());
+            sent = true;
+        } catch (UserNullException ignored) {}
+
+        try {
+            teacherService.sendResetCode(request.getEmail());
+            sent = true;
+        } catch (UserNullException ignored) {}
+
+        if (!sent) {
+            throw new UserNullException("E-mail inválido");
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PostMapping("/verify-code")
+    public ResponseEntity<String> verifyCode(@RequestBody VerifyCodeRequest body) {
+        boolean valid = service.verifyCode(body.getEmail(), body.getCode());
+        if (valid) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Código de verificação inválido.");
+        }
     }
 }

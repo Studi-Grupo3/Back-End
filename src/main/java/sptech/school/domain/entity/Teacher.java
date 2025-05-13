@@ -2,7 +2,7 @@ package sptech.school.domain.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import sptech.school.domain.enumerated.Discipline;
+import sptech.school.domain.enumerated.Subject;
 
 @Entity
 @Table(name = "tb_teacher")
@@ -13,21 +13,22 @@ public class Teacher extends User {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private Discipline discipline;
+    private Subject subject;
+    private Double hourlyRate;
 
     public Teacher() {
     }
 
-    public Teacher(String name, String email, String cpf, String password, Discipline discipline) {
+    public Teacher(String name, String email, String cpf, String password, Subject subject) {
         super(name, email, cpf, password);
-        this.discipline = discipline;
+        this.subject = subject;
     }
 
     @Override
     public String toString() {
         return "Teacher{" +
                 "id=" + id +
-                ", discipline='" + discipline + '\'' +
+                ", subject='" + subject + '\'' +
                 '}';
     }
 
@@ -39,11 +40,19 @@ public class Teacher extends User {
         this.id = id;
     }
 
-    public Discipline getDiscipline() {
-        return discipline;
+    public Double getHourlyRate() {
+        return hourlyRate;
     }
 
-    public void setDiscipline(Discipline discipline) {
-        this.discipline = discipline;
+    public void setHourlyRate(Double hourlyRate) {
+        this.hourlyRate = hourlyRate;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

@@ -1,7 +1,7 @@
 package sptech.school.domain.enumerated;
 
 
-public enum Discipline {
+public enum Subject {
     PORTUGUESE("Português"),
     MATHEMATICS("Matemática"),
     GEOGRAPHY("Geografia"),
@@ -19,7 +19,7 @@ public enum Discipline {
 
     private final String description;
 
-    Discipline(String description) {
+    Subject(String description) {
         this.description = description;
     }
 
