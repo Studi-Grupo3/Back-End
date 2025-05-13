@@ -15,7 +15,7 @@ import sptech.school.application.mappers.TeacherMapper;
 import sptech.school.application.service.TeacherService;
 import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
 import sptech.school.domain.entity.Teacher;
-import sptech.school.domain.enumerated.Discipline;
+import sptech.school.domain.enumerated.Subject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,8 +49,8 @@ class TeacherServiceTest {
         ReflectionTestUtils.setField(teacherService, "teacherMapper", teacherMapper);
         ReflectionTestUtils.setField(teacherService, "passwordEncoder", passwordEncoder);
         teacher = new Teacher();
-        dtoUpdated = new TeacherRequestUpdateDTO("Nome", "email@teste.com", "12345678900", "senha", Discipline.ART);
-        teacherRequest = new Teacher("Lula", "Lula@teste.com", "12345678900", "senha", Discipline.PHILOSOPHY);
+        dtoUpdated = new TeacherRequestUpdateDTO("Nome", "email@teste.com", "12345678900", "senha", Subject.ART);
+        teacherRequest = new Teacher("Lula", "Lula@teste.com", "12345678900", "senha", Subject.PHILOSOPHY);
     }
 
     @Test
@@ -97,7 +97,7 @@ class TeacherServiceTest {
     @DisplayName("[5] - Deve listar todos professores convertidos para DTO")
     void deveListarTodos() {
         List<Teacher> lista = List.of(teacher, teacher);
-        TeacherRequestUpdateDTO dtoMock = new TeacherRequestUpdateDTO("A", "B", "C", "D", Discipline.ART);
+        TeacherRequestUpdateDTO dtoMock = new TeacherRequestUpdateDTO("A", "B", "C", "D", Subject.ART);
 
         when(repository.findAll()).thenReturn(lista);
         when(teacherMapper.toDto(any())).thenReturn(dtoMock);
