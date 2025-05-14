@@ -1,4 +1,4 @@
-package sptech.school.adapters.in.controller;
+package sptech.school.adapters.in.controller.dashboard;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
