@@ -92,6 +92,10 @@ public class Appointment {
         return status;
     }
 
+    public void setStatus(AppointmentStatus status) {
+        this.status = status;
+    }
+
     public String getLocation() {
         return location;
     }
