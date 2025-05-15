@@ -46,7 +46,7 @@ class AppointmentServiceTest {
     void setUp() {
         mocks = MockitoAnnotations.openMocks(this);
 
-        dto = new AppointmentDTO(1, 2, LocalDateTime.now().plusHours(1), 60.0, "SCHEDULED", "Sala A" );
+        dto = new AppointmentDTO(1, 2, LocalDateTime.now().plusHours(1), 60.0, "SCHEDULED", 60.0, "Location");
         student = new Student();
         teacher = new Teacher();
         appointment = new Appointment(student, teacher, dto.dateTime(), dto.lessonDuration(), dto.location());

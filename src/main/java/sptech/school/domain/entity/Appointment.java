@@ -32,6 +32,9 @@ public class Appointment {
 
     private String location;
 
+    @Column(nullable = false)
+    private Double totalValue;
+
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
@@ -94,6 +97,18 @@ public class Appointment {
 
     public void setStatus(AppointmentStatus status) {
         this.status = status;
+    }
+
+    public Double getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(Double totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public String getLocation() {
