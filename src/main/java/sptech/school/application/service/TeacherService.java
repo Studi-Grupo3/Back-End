@@ -40,10 +40,10 @@ public class TeacherService extends AbstractUserUseCase<Teacher, TeacherRequestU
     }
 
     @Transactional
-    public void delete(String cpf) {
-        if (!repository.existsByCpf(cpf)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment not found.");
+    public void delete(Integer id) {
+        if(!repository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Teacher not found.");
         }
-        repository.deleteByCpf(cpf);
+        repository.deleteById(id);
     }
 }

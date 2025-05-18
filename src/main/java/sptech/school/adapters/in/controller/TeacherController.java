@@ -56,8 +56,8 @@ public class TeacherController {
     }
 
     @DeleteMapping("/{cpf}")
-    public ResponseEntity<Void> deleteTeacher(@PathVariable String cpf) {
-        teacherService.delete(cpf);
+    public ResponseEntity<Void> deleteTeacher(@PathVariable Integer id) {
+        teacherService.delete(id);
         return ResponseEntity.status(204).build();
     }
 
