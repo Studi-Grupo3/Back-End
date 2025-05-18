@@ -1,5 +1,6 @@
 package sptech.school.application.usecase;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,6 +60,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
         return repository.save(entity);
     }
 
+    @Transactional  
     @Override
     public T update(@Valid DTO dto, Integer id) {
         T userTarget = repository.findById(id)

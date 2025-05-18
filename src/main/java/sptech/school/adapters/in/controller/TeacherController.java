@@ -1,5 +1,6 @@
 package sptech.school.adapters.in.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,8 +55,7 @@ public class TeacherController {
         return ResponseEntity.status(200).body(teacherMapper.toDtoResponse(teacherUpdated));
     }
 
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{cpf}")
     public ResponseEntity<Void> deleteTeacher(@PathVariable Integer id) {
         teacherService.delete(id);
         return ResponseEntity.status(204).build();
