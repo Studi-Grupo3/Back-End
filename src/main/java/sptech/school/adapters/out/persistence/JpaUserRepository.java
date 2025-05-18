@@ -9,4 +9,6 @@ import java.util.Optional;
 @NoRepositoryBean
 public interface JpaUserRepository<T extends User> extends JpaRepository<T, Integer> {
     Optional<T> findByEmail(String email);
+    boolean existsByCpf(String cpf);
+    void deleteByCpf(String cpf);
 }

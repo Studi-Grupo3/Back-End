@@ -1,5 +1,6 @@
 package sptech.school.application.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,10 +39,11 @@ public class TeacherService extends AbstractUserUseCase<Teacher, TeacherRequestU
                 .stream().toList();
     }
 
-    public void delete(Integer id) {
-        if (!repository.existsById(id)) {
+    @Transactional
+    public void delete(String cpf) {
+        if (!repository.existsByCpf(cpf)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment not found.");
         }
-        repository.deleteById(id);
+        repository.deleteByCpf(cpf);
     }
 }
