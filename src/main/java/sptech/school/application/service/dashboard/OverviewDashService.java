@@ -15,6 +15,9 @@ import sptech.school.domain.enumerated.PaymentStatus;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+import static org.apache.coyote.http11.Constants.a;
+
 @Service
 public class OverviewDashService {
 
@@ -74,12 +77,11 @@ public class OverviewDashService {
         int recentPaymentsLimit = 5;
         List<OverviewTableDTO> recentPayments = allAppointments.stream()
                 .filter(a -> a.getPaymentStatus() == PaymentStatus.PAID)
-                .sorted(Comparator.comparing(Appointment::getDateTime).reversed())
                 .limit(recentPaymentsLimit)
                 .map(a -> new OverviewTableDTO(
                         a.getTeacher().getName(),
-                        a.getDateTime(),
-                        a.getTotalValue(),
+                        a.getTeacher().getSubject().toString(),
+                        a.getTeacher().getHourlyRate(),
                         a.getLessonDuration(),
                         a.getPaymentStatus().toString()
                 ))

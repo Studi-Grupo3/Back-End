@@ -87,8 +87,8 @@ class OverviewDashServiceTest {
         assertTrue(result.getMonthlyRevenue().stream().anyMatch(m -> m.getMonth().equals("APRIL")));
 
         assertEquals(2, result.getRecentPayments().size());
-        assertEquals("Prof. João", result.getRecentPayments().get(0).getProfessor());
-        assertEquals("Prof. João", result.getRecentPayments().get(1).getProfessor());
+        assertEquals("Prof. João", result.getRecentPayments().get(0).getTeacher());
+        assertEquals("Prof. João", result.getRecentPayments().get(1).getTeacher());
 
         assertEquals(2, result.getLessonsPerDay().size());
         assertTrue(result.getLessonsPerDay().stream().anyMatch(d -> d.getLabel().equals(DayOfWeek.SATURDAY.toString())));
