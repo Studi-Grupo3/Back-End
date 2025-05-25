@@ -1,55 +1,52 @@
 package sptech.school.domain.dto.response.dashboard.overview;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 public class OverviewTableDTO {
     private String teacher;
-    private LocalDateTime date;
-    private double value;
-    private double hours;
+    private String subject;
+    private Double hourlyRate;
+    private Double durationClass;
     private String status;
 
     public OverviewTableDTO() {}
 
-    public OverviewTableDTO(String teacher, LocalDateTime date, double value, double hours, String status) {
+    public OverviewTableDTO(String teacher, String subject, Double hourlyRate, Double durationClass, String status) {
         this.teacher = teacher;
-        this.date = date;
-        this.value = value;
-        this.hours = hours;
+        this.subject = subject;
+        this.hourlyRate = hourlyRate;
+        this.durationClass = durationClass;
         this.status = status;
     }
 
-    public String getProfessor() {
+    public String getTeacher() {
         return teacher;
     }
 
-    public void setProfessor(String teacher) {
+    public void setTeacher(String teacher) {
         this.teacher = teacher;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public double getValue() {
-        return value;
+    public Double getHourlyRate() {
+        return hourlyRate;
     }
 
-    public void setValue(double value) {
-        this.value = value;
+    public void setHourlyRate(Double hourlyRate) {
+        this.hourlyRate = hourlyRate;
     }
 
-    public double getHours() {
-        return hours;
+    public Double getDurationClass() {
+        return durationClass;
     }
 
-    public void setHours(double hours) {
-        this.hours = hours;
+    public void setDurationClass(Double durationClass) {
+        this.durationClass = durationClass;
     }
 
     public String getStatus() {
