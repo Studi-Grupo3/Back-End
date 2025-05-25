@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.domain.dto.AppointmentDTO;
+import sptech.school.domain.dto.request.AppointmentStatusDTO;
 import sptech.school.domain.dto.response.AppointmentResponseDTO;
 import sptech.school.domain.entity.Appointment;
 import sptech.school.application.mappers.AppointmentMapper;
@@ -39,6 +40,16 @@ public class AppointmentController {
     @PutMapping("/{id}")
     public ResponseEntity<Appointment> updateAppointments(@RequestBody @Valid AppointmentDTO dto, @PathVariable Integer id) {
         return ResponseEntity.ok(appointmentService.update(dto, id));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<AppointmentResponseDTO> patchStatus(
+            @PathVariable Integer id,
+            @RequestBody @Valid AppointmentStatusDTO statusDto
+    ) {
+        Appointment updated = appointmentService.patchStatus(id, statusDto.getStatus());
+        AppointmentResponseDTO responseDto = appointmentMapper.toResponseDto(updated);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/{id}")
