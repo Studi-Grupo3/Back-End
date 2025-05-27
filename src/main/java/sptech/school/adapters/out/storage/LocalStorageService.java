@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
+@Service("localStorageService")
 public class LocalStorageService implements StorageServiceUseCase {
     // Esse diretório é setado no application.properties
     @Value("${file.upload-dir}")

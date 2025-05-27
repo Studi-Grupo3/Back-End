@@ -3,6 +3,7 @@ package sptech.school.application.usecase;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.adapters.out.persistence.*;
@@ -22,7 +23,7 @@ import java.util.Optional;
 public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUseCase<T, DTO> {
         protected final JpaUserRepository<T> repository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
     private PasswordResetTokenRepository tokenRepository;
     @Autowired
@@ -30,6 +31,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
 
 
     @Autowired
+    @Qualifier("azureStorageService")
     private StorageServiceUseCase storageService;
 
     @Autowired

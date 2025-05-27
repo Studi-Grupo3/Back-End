@@ -73,7 +73,7 @@
 //
 //        AdminSettingsRequestDTO dto = new AdminSettingsRequestDTO();
 //        dto.setEmail("new@teste.com");
-//        dto.setPassword("");   // senha em branco não altera
+//        dto.setCurrentPassword("");   // senha em branco não altera
 //        dto.setNotifyPayments(true);
 //        dto.setNotifyAppointments(true);
 //        dto.setNotifyCancellations(false);
