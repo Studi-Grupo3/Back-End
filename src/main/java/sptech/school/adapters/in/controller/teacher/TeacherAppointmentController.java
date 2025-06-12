@@ -17,7 +17,7 @@ public class TeacherAppointmentController {
     @Autowired
     private TeacherAppointmentService teacherAppointmentService;
 
-    @GetMapping("/{teacherId}/proximas-aulas")
+    @GetMapping("/{teacherId}/lessons/upcoming")
     public ResponseEntity<List<UpcomingLessonDTO>> getUpcomingLessons(
             @PathVariable("teacherId") Integer teacherId) {
         List<UpcomingLessonDTO> dtos = teacherAppointmentService.getUpcomingLessonsForTeacher(teacherId);
