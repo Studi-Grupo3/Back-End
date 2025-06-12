@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface StorageServiceUseCase {
     String saveFile(MultipartFile file) throws IOException;
     Optional<InputStream> findFile(String fileLocation) throws IOException;
+    void deleteFile(String fileLocation) throws IOException;
 }

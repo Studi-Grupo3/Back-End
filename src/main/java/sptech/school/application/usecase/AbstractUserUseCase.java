@@ -1,5 +1,6 @@
 package sptech.school.application.usecase;
 
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +83,17 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
         throw new AuthenticationException("Invalid credentials");
     }
 
-    public ResourceFileResponseDTO saveFile(MultipartFile file) throws IOException {
+    public ResourceFileResponseDTO uploadProfileImage(MultipartFile file, Integer id) throws IOException {
+        T userTarget = repository.findById(id)
+                .orElseThrow(() -> new UserNullException("User not found"));
+
+        ResourceFile oldProfileImage = userTarget.getProfileImage();
+        if (oldProfileImage != null) {
+            // remove o arquivo antigo do Azure Blob Storage, caso ele já exista
+            storageService.deleteFile(oldProfileImage.getFileLocation());
+            jpaResourceFileRepository.deleteById(oldProfileImage.getId());
+        }
+
         String location = storageService.saveFile(file);
         ResourceFile resourceFile = new ResourceFile(
                 file.getOriginalFilename()
@@ -90,6 +101,8 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
                 , location
                 , file.getSize()
         );
+        userTarget.setProfileImage(resourceFile);
+        repository.save(userTarget);
         ResourceFile savedFile = jpaResourceFileRepository.save(resourceFile);
         return resourceFileMapper.toResponse(savedFile);
     }
@@ -100,7 +113,6 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
         if (optionalUser.isEmpty()) {
             throw new UserNullException("User not found with email: " + email);
         }
-
         T user = optionalUser.get();
         user.setPassword(passwordEncoder.encode(newPassword));
         repository.save(user);

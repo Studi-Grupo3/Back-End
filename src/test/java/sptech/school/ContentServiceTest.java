@@ -42,8 +42,7 @@ class ContentServiceTest {
                 "Nome Teste",
                 "email@exemplo.com",
                 "123.456.789-09",
-                "senhaSegura",
-                "11999999999"
+                "senhaSegura"
         );
     }
 

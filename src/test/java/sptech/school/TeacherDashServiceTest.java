@@ -50,9 +50,9 @@ class TeacherDashServiceTest {
         when(teacherRepository.findAll()).thenReturn(List.of(teacher1, teacher2));
 
         // Mockando os estudantes
-        Student student1 = new Student("Aluno A", "alunoA@escola.com", "12345678900", "senha123", "11999999999");
+        Student student1 = new Student("Aluno A", "alunoA@escola.com", "12345678900", "senha123");
         student1.setId(1);
-        Student student2 = new Student("Aluno B", "alunoB@escola.com", "98765432111", "senha456", "11988888888");
+        Student student2 = new Student("Aluno B", "alunoB@escola.com", "98765432111", "senha456");
         student2.setId(2);
 
         // Mockando os agendamentos
@@ -84,7 +84,7 @@ class TeacherDashServiceTest {
         teacher2.setHourlyRate(60.0);
         when(teacherRepository.findAll()).thenReturn(List.of(teacher1, teacher2));
 
-        Student aluno = new Student("Aluno", "aluno@email.com", "000", "senha", "11999999999");
+        Student aluno = new Student("Aluno", "aluno@email.com", "000", "senha");
         aluno.setId(1);
 
         // Ap1 dá 1.5h ao Prof A, Ap2 dá 3.0h ao Prof B
@@ -140,7 +140,7 @@ class TeacherDashServiceTest {
 
         when(teacherRepository.findAll()).thenReturn(List.of(teacher1));
 
-        Student student = new Student("Aluno", "aluno@email.com", "000", "senha", "11999999999");
+        Student student = new Student("Aluno", "aluno@email.com", "000", "senha");
         student.setId(1);
 
         Appointment ap1 = new Appointment(student, teacher1, LocalDateTime.now(), 2.0, "Sala");

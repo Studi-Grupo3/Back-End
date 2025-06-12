@@ -43,4 +43,14 @@ public class LocalStorageService implements StorageServiceUseCase {
                 ? Optional.of(Files.newInputStream(filePath))
                 : Optional.empty();
     }
+
+    @Override
+    public void deleteFile(String fileLocation) throws IOException {
+        Path filePath = Paths.get(fileLocation);
+        if (Files.exists(filePath)) {
+            Files.delete(filePath);
+        } else {
+            throw new IOException("Arquivo não encontrado: " + fileLocation);
+        }
+    }
 }

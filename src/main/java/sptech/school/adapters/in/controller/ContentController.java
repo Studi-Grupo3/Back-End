@@ -34,7 +34,7 @@ public class ContentController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<@Valid ContentResponseDTO> uploadArquivo(
-            @RequestPart("file") MultipartFile file, @RequestParam Integer idStudent) throws IOException {
+            @RequestPart("file") MultipartFile file, @RequestParam(value = "id") Integer idStudent) throws IOException {
         Student student = studentService.findById(idStudent);
         Content content = contentService.saveFile(file, student);
         return ResponseEntity.ok(mapper.toResponse(content));

@@ -1,7 +1,9 @@
 package sptech.school.domain.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,6 +11,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
@@ -34,7 +37,13 @@ public abstract class User {
 
     private LocalDateTime lastLogin;
 
-    private String profileImage;
+    @OneToOne
+    @JoinColumn(name = "profile_image_id", nullable = true)
+    private ResourceFile profileImage;
+
+    private String cellphoneNumber;
+
+    private LocalDate dateBirth;
 
     public User() {
     }
@@ -44,6 +53,30 @@ public abstract class User {
         this.email = email;
         this.cpf = cpf;
         this.password = password;
+    }
+
+    public ResourceFile getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(ResourceFile profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getCellphoneNumber() {
+        return cellphoneNumber;
+    }
+
+    public void setCellphoneNumber(String cellphoneNumber) {
+        this.cellphoneNumber = cellphoneNumber;
+    }
+
+    public LocalDate getDateBirth() {
+        return dateBirth;
+    }
+
+    public void setDateBirth(LocalDate dateBirth) {
+        this.dateBirth = dateBirth;
     }
 
     public String getName() {

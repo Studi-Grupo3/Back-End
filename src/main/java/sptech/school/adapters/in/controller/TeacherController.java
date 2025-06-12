@@ -1,24 +1,20 @@
 package sptech.school.adapters.in.controller;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import org.springframework.web.multipart.MultipartFile;
-import sptech.school.application.mappers.ResourceFileMapper;
 import sptech.school.application.mappers.TeacherMapper;
 import sptech.school.application.service.JwtService;
 import sptech.school.application.service.TeacherService;
 import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 import sptech.school.domain.dto.request.TeacherRequestDTO;
-import sptech.school.domain.dto.response.AuthResponseDTO;
 import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
-import sptech.school.domain.dto.request.LoginRequestDTO;
 import sptech.school.domain.dto.response.TeacherResponseDTO;
-import sptech.school.domain.entity.ResourceFile;
 import sptech.school.domain.entity.Teacher;
 
 
@@ -68,10 +64,12 @@ public class TeacherController {
         return ResponseEntity.status(200).body(dtos);
     }
 
-    @PostMapping("/upload-profile-photo")
-    public ResponseEntity<@Valid ResourceFileResponseDTO> uploadArquivo(
-            @RequestParam("file") MultipartFile file) throws IOException {
-        ResourceFileResponseDTO dto = teacherService.saveFile(file);
+    @PostMapping(value = "/upload-profile-photo",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<@Valid ResourceFileResponseDTO> UploadImage(
+            @RequestPart("file") MultipartFile file, @RequestParam(value = "id") Integer idTeacher) throws IOException {
+        ResourceFileResponseDTO dto = teacherService.uploadProfileImage(file, idTeacher);
         return ResponseEntity.ok(dto);
     }
 }

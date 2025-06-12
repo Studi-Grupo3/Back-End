@@ -15,6 +15,7 @@ public class Teacher extends User {
     @NotNull
     private Subject subject;
     private Double hourlyRate;
+    private String resumeTeacher;
 
     public Teacher() {
     }

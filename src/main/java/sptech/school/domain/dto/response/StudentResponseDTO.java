@@ -5,6 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
 
 public record StudentResponseDTO(
-        @NotBlank String name
-        , @Email @NotBlank String email
+        @NotBlank String name,
+        @Email @NotBlank String email,
+        @CPF String cpf,
+        String schoolName,
+        String schoolGrade,
+        String cellphoneNumber,
+        @NotBlank String responsibleName,
+        @Email String responsibleEmail,
+        @CPF String responsibleCpf,
+        String responsibleCellphoneNumber
 ) { }

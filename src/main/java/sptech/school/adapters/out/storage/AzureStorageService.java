@@ -36,6 +36,7 @@ public class AzureStorageService implements StorageServiceUseCase {
     @Override
     public String saveFile(MultipartFile file) throws IOException {
         // Gera nome único para evitar sobrescrita
+
         String blobName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         BlockBlobClient blobClient = containerClient
                 .getBlobClient(blobName)
@@ -71,5 +72,15 @@ public class AzureStorageService implements StorageServiceUseCase {
             return fileLocation.substring(fileLocation.lastIndexOf('/') + 1);
         }
         return fileLocation;
+    }
+
+    @Override
+    public void deleteFile(String fileLocation) throws IOException {
+        String blobName = extractBlobName(fileLocation);
+        BlockBlobClient blobClient = containerClient.getBlobClient(blobName).getBlockBlobClient();
+
+        if (blobClient.exists()) {
+            blobClient.delete();
+        }
     }
 }

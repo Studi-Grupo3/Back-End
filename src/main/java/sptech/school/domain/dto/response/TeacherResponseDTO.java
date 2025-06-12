@@ -8,10 +8,15 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 import sptech.school.domain.enumerated.Subject;
 
+import java.time.LocalDate;
+
 public record TeacherResponseDTO(
-        @NotNull Integer id,
-        @NotBlank String name
+        @NotNull Integer id
+        , @NotBlank String name
         , @Email @NotBlank String email
-        , @CPF @NotBlank String cpf
-        , @NotNull @Enumerated(EnumType.STRING) Subject subject) {
-}
+        , @CPF String cpf
+        , @Enumerated(EnumType.STRING) Subject subject
+        , String schoolName
+        , String cellphoneNumber
+        , @NotNull LocalDate dateBirth)
+{}
