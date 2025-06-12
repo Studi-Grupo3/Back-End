@@ -39,9 +39,20 @@ public class OverviewDashService {
 
         long totalTeachers = teacherRepository.count();
 
-        double totalHours = allAppointments.stream()
-                .filter(a -> a.getStatus() == AppointmentStatus.SCHEDULED)
-                .mapToDouble(Appointment::getLessonDuration)
+        List<Appointment> pendentes = appointmentRepository
+                .findByPaymentStatus(PaymentStatus.PENDING);
+
+        double pendingAmount = pendentes.stream()
+                .map(a -> {
+                    double hours = a.getLessonDuration() == null
+                            ? 0
+                            : a.getLessonDuration();
+                    double rate  = a.getTeacher().getHourlyRate() == null
+                            ? 0
+                            : a.getTeacher().getHourlyRate();
+                    return rate * hours;
+                })
+                .mapToDouble(Double::doubleValue)
                 .sum();
 
         int totalAppointments = allAppointments.size();
@@ -49,7 +60,7 @@ public class OverviewDashService {
         OverviewStatsDTO statsDTO = new OverviewStatsDTO(
                 totalRevenue,
                 totalTeachers,
-                totalHours,
+                pendingAmount,
                 totalAppointments
         );
 

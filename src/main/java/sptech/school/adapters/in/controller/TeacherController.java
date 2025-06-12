@@ -55,7 +55,7 @@ public class TeacherController {
         return ResponseEntity.status(200).body(teacherMapper.toDtoResponse(teacherUpdated));
     }
 
-    @DeleteMapping("/{cpf}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeacher(@PathVariable Integer id) {
         teacherService.delete(id);
         return ResponseEntity.status(204).build();

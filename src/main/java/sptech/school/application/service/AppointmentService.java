@@ -75,6 +75,21 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
+    public List<AppointmentResponseDTO> listByTeacher(Integer teacherId, AppointmentStatus status) {
+        List<Appointment> appointments;
+
+        if (status != null) {
+            appointments = appointmentRepository.findByTeacherIdAndStatus(teacherId, status);
+        } else {
+            appointments = appointmentRepository.findByTeacherId(teacherId);
+        }
+
+        return appointments
+                .stream()
+                .map(appointmentMapper::toResponseDto)
+                .toList();
+    }
+
     public Appointment patchStatus(Integer id, AppointmentStatus newStatus) {
         Appointment appointment = findById(id);
         appointment.setStatus(newStatus);

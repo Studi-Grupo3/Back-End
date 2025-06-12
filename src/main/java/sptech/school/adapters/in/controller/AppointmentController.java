@@ -10,6 +10,7 @@ import sptech.school.domain.dto.response.AppointmentResponseDTO;
 import sptech.school.domain.entity.Appointment;
 import sptech.school.application.mappers.AppointmentMapper;
 import sptech.school.application.service.AppointmentService;
+import sptech.school.domain.enumerated.AppointmentStatus;
 
 import java.util.List;
 
@@ -56,5 +57,14 @@ public class AppointmentController {
     public ResponseEntity<Void> deleteAppointment(@PathVariable Integer id) {
         appointmentService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/teacher/{teacherId}")
+    public ResponseEntity<List<AppointmentResponseDTO>> listByTeacher(
+            @PathVariable Integer teacherId,
+            @RequestParam(required = false) AppointmentStatus status
+    ) {
+        List<AppointmentResponseDTO> appointments = appointmentService.listByTeacher(teacherId, status);
+        return ResponseEntity.ok(appointments);
     }
 }

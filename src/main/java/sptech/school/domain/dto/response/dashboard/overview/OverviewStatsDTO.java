@@ -3,15 +3,15 @@ package sptech.school.domain.dto.response.dashboard.overview;
 public class OverviewStatsDTO {
     private double totalRevenue;
     private long totalTeachers;
-    private double totalHours;
+    private double pendingAmount;
     private int totalAppointments;
 
     public OverviewStatsDTO() {}
 
-    public OverviewStatsDTO(double totalRevenue, long totalTeachers, double totalHours, int totalAppointments) {
+    public OverviewStatsDTO(double totalRevenue, long totalTeachers, double pendingAmount, int totalAppointments) {
         this.totalRevenue = totalRevenue;
         this.totalTeachers = totalTeachers;
-        this.totalHours = totalHours;
+        this.pendingAmount = pendingAmount;
         this.totalAppointments = totalAppointments;
     }
 
@@ -31,12 +31,12 @@ public class OverviewStatsDTO {
         this.totalTeachers = totalTeachers;
     }
 
-    public double getTotalHours() {
-        return totalHours;
+    public double getPendingAmount() {
+        return pendingAmount;
     }
 
-    public void setTotalHours(double totalHours) {
-        this.totalHours = totalHours;
+    public void setPendingAmount(double pendingAmount) {
+        this.pendingAmount = pendingAmount;
     }
 
     public int getTotalAppointments() {
