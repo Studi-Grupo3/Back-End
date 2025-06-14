@@ -11,8 +11,8 @@ import sptech.school.domain.enumerated.Subject;
 public record TeacherRequestDTO(
         @NotBlank String name
         , @Email @NotBlank String email
-        , @CPF @NotBlank String cpf
+        , @CPF String cpf
         , @NotBlank String password
-        , @NotNull @Enumerated(EnumType.STRING) Subject subject
+        , @Enumerated(EnumType.STRING) Subject subject
 ) {
 }

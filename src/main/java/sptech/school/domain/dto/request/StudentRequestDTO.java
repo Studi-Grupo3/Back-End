@@ -9,6 +9,5 @@ public record StudentRequestDTO(
         , @Email @NotBlank String email
         , @CPF String cpf
         , @NotBlank String password
-        , String responsibleCellphone
 ) {
 }

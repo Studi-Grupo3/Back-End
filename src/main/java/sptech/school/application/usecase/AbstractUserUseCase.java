@@ -30,7 +30,6 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     @Autowired
     private EmailSender emailSender;
 
-
     @Autowired
     @Qualifier("azureStorageService")
     private StorageServiceUseCase storageService;
