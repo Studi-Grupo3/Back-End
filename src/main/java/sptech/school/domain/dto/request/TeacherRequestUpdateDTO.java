@@ -12,10 +12,8 @@ public record TeacherRequestUpdateDTO(
           String name
         , @Email String email
         , @CPF String cpf
-        , String password
         , Subject subject
-        , @Pattern(regexp = "\\d{8,12}", message = "The cellphone number must contain 8 - 12 digits.")
-          String cellphoneNumber
+        , String cellphoneNumber
         , @Past LocalDate dateBirth
-        , String schoolName
-) { }
+        , String resume
+) {}

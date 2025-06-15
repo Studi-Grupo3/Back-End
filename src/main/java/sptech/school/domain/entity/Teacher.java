@@ -33,6 +33,14 @@ public class Teacher extends User {
                 '}';
     }
 
+    public String getResumeTeacher() {
+        return resumeTeacher;
+    }
+
+    public void setResumeTeacher(String resumeTeacher) {
+        this.resumeTeacher = resumeTeacher;
+    }
+
     public Integer getId() {
         return id;
     }

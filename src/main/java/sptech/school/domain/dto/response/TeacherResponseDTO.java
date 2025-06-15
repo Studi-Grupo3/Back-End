@@ -16,7 +16,6 @@ public record TeacherResponseDTO(
         , @Email @NotBlank String email
         , @CPF String cpf
         , @Enumerated(EnumType.STRING) Subject subject
-        , String schoolName
         , String cellphoneNumber
         , @NotNull LocalDate dateBirth)
 {}

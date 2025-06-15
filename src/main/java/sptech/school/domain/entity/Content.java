@@ -1,14 +1,17 @@
 package sptech.school.domain.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_content")
 public class Content extends ResourceFile {
     @ManyToOne
     @JoinColumn(name = "fkStudent", nullable = false)
-    @NotBlank
+    @NotNull
     private Student student;
 
     public Content() {}
