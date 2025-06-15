@@ -9,6 +9,6 @@ public class StringMapperUtil {
             return null;
         }
         String trimmed = value.trim();
-        return trimmed.isEmpty() ? null : trimmed;
+        return trimmed.isBlank() ? null : trimmed;
     }
 }
