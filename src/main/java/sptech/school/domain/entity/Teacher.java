@@ -76,11 +76,11 @@ public class Teacher extends User {
         this.hourlyRate = hourlyRate;
     }
 
-    public @NotNull List<Subject> getSubjects() {
+    public List<Subject> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(@NotNull List<Subject> subjects) {
+    public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
     }
 }
