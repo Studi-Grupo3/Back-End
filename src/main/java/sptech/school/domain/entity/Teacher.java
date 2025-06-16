@@ -16,6 +16,8 @@ public class Teacher extends User {
     private Subject subject;
     private Double hourlyRate;
     private String resumeTeacher;
+    private String yearsExperience;
+    private String academicFormation;
 
     public Teacher() {
     }
@@ -23,6 +25,22 @@ public class Teacher extends User {
     public Teacher(String name, String email, String cpf, String password, Subject subject) {
         super(name, email, cpf, password);
         this.subject = subject;
+    }
+
+    public String getYearsExperience() {
+        return yearsExperience;
+    }
+
+    public void setYearsExperience(String yearsExperience) {
+        this.yearsExperience = yearsExperience;
+    }
+
+    public String getAcademicFormation() {
+        return academicFormation;
+    }
+
+    public void setAcademicFormation(String academicFormation) {
+        this.academicFormation = academicFormation;
     }
 
     @Override
