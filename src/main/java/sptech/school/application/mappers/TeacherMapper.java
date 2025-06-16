@@ -33,9 +33,9 @@ public interface TeacherMapper {
             System.out.println("Atualizou o Cpf");
             teacher.setCpf(dto.cpf());
         }
-        if (dto.subject() != null && teacher.getSubject() == null) {
+        if (dto.subject() != null && teacher.getSubjects() == null) {
             System.out.println("Atualizou o Subject");
-            teacher.setSubject(dto.subject());
+            teacher.setSubjects(dto.subject());
         }
         if (dto.cellphoneNumber() != null && teacher.getCellphoneNumber() == null) {
             System.out.println("Atualizou o CellphoneNumber");

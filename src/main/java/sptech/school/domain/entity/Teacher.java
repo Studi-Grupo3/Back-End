@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import sptech.school.domain.enumerated.Subject;
 
+import java.util.List;
+
 @Entity
 @Table(name = "tb_teacher")
 public class Teacher extends User {
@@ -11,9 +13,8 @@ public class Teacher extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private Subject subject;
+    @ElementCollection @Enumerated(EnumType.STRING)
+    private List<Subject> subjects;
     private Double hourlyRate;
     private String resumeTeacher;
     private String yearsExperience;
@@ -22,9 +23,9 @@ public class Teacher extends User {
     public Teacher() {
     }
 
-    public Teacher(String name, String email, String cpf, String password, Subject subject) {
+    public Teacher(String name, String email, String cpf, String password, List<Subject> subjects) {
         super(name, email, cpf, password);
-        this.subject = subject;
+        this.subjects = subjects;
     }
 
     public String getYearsExperience() {
@@ -47,7 +48,7 @@ public class Teacher extends User {
     public String toString() {
         return "Teacher{" +
                 "id=" + id +
-                ", subject='" + subject + '\'' +
+                ", subjects='" + subjects + '\'' +
                 '}';
     }
 
@@ -75,11 +76,11 @@ public class Teacher extends User {
         this.hourlyRate = hourlyRate;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public @NotNull List<Subject> getSubjects() {
+        return subjects;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setSubjects(@NotNull List<Subject> subjects) {
+        this.subjects = subjects;
     }
 }

@@ -17,5 +17,5 @@ public record TeacherResponseDTO(
         , @CPF String cpf
         , @Enumerated(EnumType.STRING) Subject subject
         , String cellphoneNumber
-        , @NotNull LocalDate dateBirth)
+        , LocalDate dateBirth)
 {}

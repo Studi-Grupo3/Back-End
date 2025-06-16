@@ -13,6 +13,5 @@ public record TeacherRequestDTO(
         , @Email @NotBlank String email
         , @CPF String cpf
         , @NotBlank String password
-        , @Enumerated(EnumType.STRING) Subject subject
 ) {
 }
