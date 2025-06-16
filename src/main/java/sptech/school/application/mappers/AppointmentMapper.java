@@ -26,6 +26,7 @@ public interface AppointmentMapper {
     @Mapping(target = "dateTime", source = "dateTime")
     @Mapping(target = "duration", source = "lessonDuration")  // Diretamente mapeando o campo lessonDuration
     @Mapping(target = "status", source = "status")
+    @Mapping(target = "totalValue", source = "totalValue")
     @Mapping(target = "location", source = "location")
     @Mapping(target = "online", expression = "java(appointment.getLocation().equalsIgnoreCase(\"Online\"))")
     AppointmentResponseDTO toResponseDto(Appointment appointment);

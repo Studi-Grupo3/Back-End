@@ -13,5 +13,6 @@ public record AppointmentResponseDTO(
         Double duration,
         String location,
         String status,
+        Double totalValue,
         boolean online
 ) {}

@@ -24,26 +24,32 @@ public class TeacherService extends AbstractUserUseCase<Teacher, TeacherRequestU
     }
 
     @Override
-    public Teacher validateSpecify(TeacherRequestUpdateDTO dto, Teacher targetUser) {
+    public Teacher validateSpecify(TeacherRequestUpdateDTO dto,
+                                   Teacher targetUser) {
         teacherMapper.updateTeacherFromDto(dto, targetUser);
         return targetUser;
     }
 
-    public Teacher findById(Integer id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Teacher not found."));
+    public List<Teacher> listAll() {
+        return repository.findAllByDeletedFalse();
     }
 
-    public List<Teacher> listAll() {
-        return repository.findAll()
-                .stream().toList();
+    public Teacher findById(Integer id) {
+        return repository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Professor não encontrado.")
+                );
     }
 
     @Transactional
     public void delete(Integer id) {
-        if(!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Teacher not found.");
-        }
-        repository.deleteById(id);
+        Teacher teacher = repository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Professor não encontrado.")
+                );
+        teacher.setDeleted(true);
+        repository.save(teacher);
     }
 }

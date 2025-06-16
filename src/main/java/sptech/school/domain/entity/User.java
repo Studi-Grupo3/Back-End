@@ -45,6 +45,8 @@ public abstract class User {
 
     private LocalDate dateBirth;
 
+    private boolean deleted = false;
+
     public User() {
     }
 
@@ -109,6 +111,22 @@ public abstract class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public LocalDateTime getLastLogin() {
