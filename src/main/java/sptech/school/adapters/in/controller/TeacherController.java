@@ -64,8 +64,6 @@ public class TeacherController {
         return ResponseEntity.status(200).body(dtos);
     }
 
-    @GetMapping()
-
     @PostMapping(value = "/upload-profile-photo",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
