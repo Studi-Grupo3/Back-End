@@ -18,6 +18,7 @@ import sptech.school.domain.dto.response.ErrorResponseDTO;
 import sptech.school.domain.exception.EmailAlreadyExistsException;
 import sptech.school.domain.exception.StorageUnavailableException;
 import sptech.school.domain.exception.AuthenticationException;
+import sptech.school.domain.exception.UserDontHaveProfilePhoto;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -58,7 +59,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             NoSuchElementException.class,
-            EntityNotFoundException.class
+            EntityNotFoundException.class,
+            UserDontHaveProfilePhoto.class
     })
     public ResponseEntity<ErrorResponseDTO> handleNotFound(Exception ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex);

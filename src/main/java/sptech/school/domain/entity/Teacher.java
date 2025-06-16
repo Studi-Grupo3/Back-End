@@ -14,7 +14,7 @@ public class Teacher extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ElementCollection @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER) @Enumerated(EnumType.STRING)
     private List<Subject> subjects;
     private Double hourlyRate;
     private String resumeTeacher;

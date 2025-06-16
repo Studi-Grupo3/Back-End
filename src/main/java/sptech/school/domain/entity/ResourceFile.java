@@ -3,6 +3,8 @@ package sptech.school.domain.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.io.InputStream;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ResourceFile {
@@ -19,6 +21,9 @@ public class ResourceFile {
     @NotBlank
     private Long fileSize;
 
+    @Transient
+    private InputStream inputStream;
+
     public ResourceFile() {}
 
     public ResourceFile(String fileName, String fileType, String fileLocation, Long fileSize) {
@@ -26,6 +31,14 @@ public class ResourceFile {
         this.fileType = fileType;
         this.fileLocation = fileLocation;
         this.fileSize = fileSize;
+    }
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
     }
 
     public Integer getId() {
@@ -67,4 +80,5 @@ public class ResourceFile {
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
+
 }

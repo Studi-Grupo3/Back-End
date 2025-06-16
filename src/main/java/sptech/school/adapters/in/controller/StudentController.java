@@ -2,6 +2,8 @@ package sptech.school.adapters.in.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,13 @@ import sptech.school.domain.dto.request.StudentRequestDTO;
 import sptech.school.domain.dto.request.StudentRequestUpdateDTO;
 import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 import sptech.school.domain.dto.response.StudentResponseDTO;
+import sptech.school.domain.entity.ResourceFile;
 import sptech.school.domain.entity.Student;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/students")
@@ -71,6 +76,20 @@ public class StudentController {
         ResourceFileResponseDTO dto = studentService.uploadProfileImage(file, idStudent);
         return ResponseEntity.ok(dto);
     }
+
+    @GetMapping("/profile-photo/{id}")
+    public ResponseEntity<InputStreamResource> getProfilePhoto(@PathVariable Integer id) throws IOException {
+        ResourceFile profileImage = studentService.getProfileImage(id);
+
+        InputStreamResource resource = new InputStreamResource(profileImage.getInputStream());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(profileImage.getFileType()))
+                .contentLength(profileImage.getFileSize())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + profileImage.getFileName() + "\"")
+                .body(resource);
+    }
+
 
     @PatchMapping("/reset-password")
     public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequestDTO request) {

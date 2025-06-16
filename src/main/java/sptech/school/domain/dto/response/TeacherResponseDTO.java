@@ -19,5 +19,9 @@ public record TeacherResponseDTO(
         , @CPF String cpf
         , @ElementCollection @Enumerated(EnumType.STRING) List<Subject> subject
         , String cellphoneNumber
-        , LocalDate dateBirth)
+        , LocalDate dateBirth
+        , String resume
+        , String yearsExperience
+        , String academicFormation
+)
 {}

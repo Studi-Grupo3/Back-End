@@ -1,10 +1,10 @@
 package sptech.school.application.usecase;
 
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.adapters.out.persistence.*;
@@ -15,9 +15,11 @@ import sptech.school.domain.entity.ResourceFile;
 import sptech.school.domain.entity.User;
 import sptech.school.domain.exception.AuthenticationException;
 import sptech.school.domain.exception.EmailAlreadyExistsException;
+import sptech.school.domain.exception.UserDontHaveProfilePhoto;
 import sptech.school.domain.exception.UserNullException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -80,6 +82,24 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
             return foundUser.get();
         }
         throw new AuthenticationException("Invalid credentials");
+    }
+
+    public ResourceFile getProfileImage(Integer id) throws IOException {
+        T userTarget = repository.findById(id)
+                .orElseThrow(() -> new UserNullException("User not found"));
+
+        ResourceFile profileImage = userTarget.getProfileImage();
+        if (profileImage == null) {
+            throw new UserDontHaveProfilePhoto("Profile image not found for user.");
+        }
+
+        Optional<InputStream> streamOpt = storageService.findFile(profileImage.getFileLocation());
+        if (streamOpt.isEmpty()) {
+            throw new IOException("File not found in Azure Storage.");
+        }
+
+        profileImage.setInputStream(streamOpt.get());
+        return profileImage;
     }
 
     public ResourceFileResponseDTO uploadProfileImage(MultipartFile file, Integer id) throws IOException {

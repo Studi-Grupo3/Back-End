@@ -20,4 +20,6 @@ public record TeacherRequestUpdateDTO(
         , String cellphoneNumber
         , @Past LocalDate dateBirth
         , String resume
+        , String yearsExperience
+        , String academicFormation
 ) {}
