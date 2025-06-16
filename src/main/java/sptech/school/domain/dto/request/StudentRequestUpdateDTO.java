@@ -12,12 +12,9 @@ public record StudentRequestUpdateDTO(
           String name
         , @Email String email
         , @CPF String cpf
-        ,  String cellphoneNumber
+        , String cellphoneNumber
         , @Past LocalDate dateBirth
-        ,  String responsibleCellphone
         , String schoolGrade
         , String schoolName
         , Responsible responsible
-        , String yearsExperience
-        , String academicFormation
 ) {}
