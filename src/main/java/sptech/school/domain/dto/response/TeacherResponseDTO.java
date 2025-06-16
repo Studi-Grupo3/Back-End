@@ -1,8 +1,5 @@
 package sptech.school.domain.dto.response;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,11 +14,12 @@ public record TeacherResponseDTO(
         , @NotBlank String name
         , @Email @NotBlank String email
         , @CPF String cpf
-        , @ElementCollection @Enumerated(EnumType.STRING) List<Subject> subject
+        , List<Subject> subjects
         , String cellphoneNumber
         , LocalDate dateBirth
-        , String resume
+        , String resumeTeacher
         , String yearsExperience
         , String academicFormation
+        , String hourlyRate
 )
 {}

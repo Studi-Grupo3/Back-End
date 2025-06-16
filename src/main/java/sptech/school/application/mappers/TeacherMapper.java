@@ -46,9 +46,29 @@ public interface TeacherMapper {
             teacher.setDateBirth(dto.dateBirth());
         }
 
-        if (dto.resume() != null && teacher.getResumeTeacher() == null) {
+        if (dto.resumeTeacher() != null && teacher.getResumeTeacher() == null) {
             System.out.println("Atualizou o resume");
-            teacher.setResumeTeacher(dto.resume());
+            teacher.setResumeTeacher(dto.resumeTeacher());
+        }
+
+        if (dto.yearsExperience() != null && teacher.getYearsExperience() == null) {
+            System.out.println("Atualizou o yearsExperience");
+            teacher.setYearsExperience(dto.yearsExperience());
+        }
+
+        if (dto.academicFormation() != null && teacher.getAcademicFormation() == null) {
+            System.out.println("Atualizou o academicFormation");
+            teacher.setAcademicFormation(dto.academicFormation());
+        }
+
+        if (dto.subject() != null) {
+            System.out.println("Atualizou o subjects");
+            teacher.setSubjects(dto.subject());
+        }
+
+        if (dto.hourlyRate() != null && teacher.getHourlyRate() == null) {
+            System.out.println("Atualizou o hourlyRate");
+            teacher.setHourlyRate(dto.hourlyRate());
         }
         System.out.println("Teacher: " + teacher);
         System.out.println("Dto: " + dto);
