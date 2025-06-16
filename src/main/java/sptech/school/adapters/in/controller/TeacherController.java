@@ -51,7 +51,7 @@ public class TeacherController {
         return ResponseEntity.status(200).body(teacherMapper.toDtoResponse(teacherUpdated));
     }
 
-    @DeleteMapping("/{cpf}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteTeacher(@PathVariable Integer id) {
         teacherService.delete(id);
         return ResponseEntity.status(204).build();
@@ -63,6 +63,8 @@ public class TeacherController {
                 .map(teacherMapper::toDtoResponse).collect(Collectors.toList());
         return ResponseEntity.status(200).body(dtos);
     }
+
+    @GetMapping()
 
     @PostMapping(value = "/upload-profile-photo",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,

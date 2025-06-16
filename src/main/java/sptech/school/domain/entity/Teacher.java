@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import sptech.school.domain.enumerated.Subject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,6 +22,7 @@ public class Teacher extends User {
     private String academicFormation;
 
     public Teacher() {
+        subjects = new ArrayList<>();
     }
 
     public Teacher(String name, String email, String cpf, String password, List<Subject> subjects) {
