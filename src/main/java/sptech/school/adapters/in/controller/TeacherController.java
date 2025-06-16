@@ -2,6 +2,8 @@ package sptech.school.adapters.in.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 import sptech.school.domain.dto.request.TeacherRequestDTO;
 import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
 import sptech.school.domain.dto.response.TeacherResponseDTO;
+import sptech.school.domain.entity.ResourceFile;
 import sptech.school.domain.entity.Teacher;
 
 
@@ -62,6 +65,19 @@ public class TeacherController {
         List<TeacherResponseDTO> dtos = teacherService.listAll().stream()
                 .map(teacherMapper::toDtoResponse).collect(Collectors.toList());
         return ResponseEntity.status(200).body(dtos);
+    }
+
+    @GetMapping("/profile-photo/{id}")
+    public ResponseEntity<InputStreamResource> getProfilePhoto(@PathVariable Integer id) throws IOException {
+        ResourceFile profileImage = teacherService.getProfileImage(id);
+
+        InputStreamResource resource = new InputStreamResource(profileImage.getInputStream());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(profileImage.getFileType()))
+                .contentLength(profileImage.getFileSize())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + profileImage.getFileName() + "\"")
+                .body(resource);
     }
 
     @PostMapping(value = "/upload-profile-photo",
