@@ -41,14 +41,16 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(Student student, Teacher teacher, LocalDateTime dateTime, Double lessonDuration, String location) {
+    public Appointment(Integer id, Student student, Teacher teacher, LocalDateTime dateTime, Double lessonDuration, AppointmentStatus status, String location, Double totalValue, PaymentStatus paymentStatus) {
+        this.id = id;
         this.student = student;
         this.teacher = teacher;
         this.dateTime = dateTime;
         this.lessonDuration = lessonDuration;
+        this.status = status;
         this.location = location;
-        this.status = AppointmentStatus.SCHEDULED;
-        this.paymentStatus = PaymentStatus.PENDING;
+        this.totalValue = totalValue;
+        this.paymentStatus = paymentStatus;
     }
 
     public Integer getId() {

@@ -9,5 +9,6 @@ public record AppointmentDTO(
         Double lessonDuration,
         String location,
         Double totalValue,
-        String status
+        String status,
+        String paymentStatus
 ) {}

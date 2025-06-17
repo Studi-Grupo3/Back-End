@@ -30,16 +30,25 @@ public class AppointmentService {
     @Autowired
     private StudentService studentService;
 
-    public Appointment create(AppointmentDTO dto) {
+    public AppointmentResponseDTO create(AppointmentDTO dto) {
+        Appointment appointment = appointmentMapper.toEntity(dto);
+
         Student student = studentService.findById(dto.idStudent());
         Teacher teacher = teacherService.findById(dto.idTeacher());
+        appointment.setStudent(student);
+        appointment.setTeacher(teacher);
 
-        if (appointmentRepository.existsByStudentIdAndTeacherIdAndDateTime(dto.idStudent(), dto.idTeacher(), dto.dateTime())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Users already have an appointment at this time.");
+        if (appointmentRepository.existsByStudentIdAndTeacherIdAndDateTime(
+                dto.idStudent(), dto.idTeacher(), dto.dateTime())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Users already have an appointment at this time."
+            );
         }
 
-        Appointment appointment = new Appointment(student, teacher, dto.dateTime(), dto.lessonDuration(), dto.location());
-        return appointmentRepository.save(appointment);
+        Appointment saved = appointmentRepository.save(appointment);
+
+        return appointmentMapper.toResponseDto(saved);
     }
 
     public Appointment findById(Integer id) {

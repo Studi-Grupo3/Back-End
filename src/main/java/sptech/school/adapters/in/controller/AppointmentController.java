@@ -23,7 +23,7 @@ public class AppointmentController {
     private AppointmentMapper appointmentMapper;
 
     @PostMapping
-    public ResponseEntity<Appointment> createAppointment(@RequestBody @Valid AppointmentDTO dto) {
+    public ResponseEntity<AppointmentResponseDTO> createAppointment(@RequestBody @Valid AppointmentDTO dto) {
         return ResponseEntity.ok(appointmentService.create(dto));
     }
 

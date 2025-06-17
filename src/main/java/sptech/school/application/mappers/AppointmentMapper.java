@@ -24,7 +24,7 @@ public interface AppointmentMapper {
     @Mapping(target = "professorTitle", expression = "java(\"Professor(a) de \" + appointment.getTeacher().getSubject())")
     @Mapping(target = "professorImageUrl", constant = "/lovable-uploads/09a24ead-9c40-487a-a233-8c1f43dcc6df.png")
     @Mapping(target = "dateTime", source = "dateTime")
-    @Mapping(target = "duration", source = "lessonDuration")  // Diretamente mapeando o campo lessonDuration
+    @Mapping(target = "duration", source = "lessonDuration")
     @Mapping(target = "status", source = "status")
     @Mapping(target = "totalValue", source = "totalValue")
     @Mapping(target = "location", source = "location")
