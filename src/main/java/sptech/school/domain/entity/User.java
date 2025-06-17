@@ -113,14 +113,6 @@ public abstract class User {
         this.password = password;
     }
 
-    public String getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }

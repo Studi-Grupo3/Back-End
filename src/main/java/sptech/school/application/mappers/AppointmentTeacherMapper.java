@@ -18,8 +18,8 @@ public interface AppointmentTeacherMapper {
         UpcomingLessonDTO dto = new UpcomingLessonDTO();
         dto.setId(appointment.getId());
         // subject via Teacher.subject
-        if (appointment.getTeacher() != null && appointment.getTeacher().getSubject() != null) {
-            dto.setDisciplina(appointment.getTeacher().getSubject().name());
+        if (appointment.getTeacher() != null && appointment.getTeacher().getSubjects() != null) {
+            dto.setDisciplina(appointment.getTeacher().getSubjects().toString());
         }
         // aluno
         if (appointment.getStudent() != null) {
@@ -45,8 +45,8 @@ public interface AppointmentTeacherMapper {
         }
         LessonHistoryDTO dto = new LessonHistoryDTO();
         dto.setId(appointment.getId());
-        if (appointment.getTeacher() != null && appointment.getTeacher().getSubject() != null) {
-            dto.setSubject(appointment.getTeacher().getSubject().name());
+        if (appointment.getTeacher() != null && appointment.getTeacher().getSubjects() != null) {
+            dto.setSubject(appointment.getTeacher().getSubjects().toString());
         }
         if (appointment.getStudent() != null) {
             dto.setStudentId(appointment.getStudent().getId());
