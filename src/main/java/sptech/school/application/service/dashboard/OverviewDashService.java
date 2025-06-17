@@ -9,14 +9,10 @@ import sptech.school.domain.dto.response.dashboard.overview.OverviewDashDTO;
 import sptech.school.domain.dto.response.dashboard.overview.OverviewStatsDTO;
 import sptech.school.domain.dto.response.dashboard.overview.OverviewTableDTO;
 import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.enumerated.AppointmentStatus;
 import sptech.school.domain.enumerated.PaymentStatus;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
-import static org.apache.coyote.http11.Constants.a;
 
 @Service
 public class OverviewDashService {
@@ -91,7 +87,7 @@ public class OverviewDashService {
                 .limit(recentPaymentsLimit)
                 .map(a -> new OverviewTableDTO(
                         a.getTeacher().getName(),
-                        a.getTeacher().getSubjects().toString(),
+                        a.getTeacher().getSubject().name(),
                         a.getTeacher().getHourlyRate(),
                         a.getLessonDuration(),
                         a.getPaymentStatus().toString()

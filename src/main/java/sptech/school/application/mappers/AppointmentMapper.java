@@ -19,9 +19,9 @@ public interface AppointmentMapper {
 
     Appointment toEntity(@Valid AppointmentDTO dto);
 
-    @Mapping(target = "subjects", source = "teacher.subjects")
+    @Mapping(target = "subject", source = "teacher.subject")
     @Mapping(target = "professorName", source = "teacher.name")
-    @Mapping(target = "professorTitle", expression = "java(\"Professor(a) de \" + appointment.getTeacher().getSubjects())")
+    @Mapping(target = "professorTitle", expression = "java(\"Professor(a) de \" + appointment.getTeacher().getSubject())")
     @Mapping(target = "professorImageUrl", constant = "/lovable-uploads/09a24ead-9c40-487a-a233-8c1f43dcc6df.png")
     @Mapping(target = "dateTime", source = "dateTime")
     @Mapping(target = "duration", source = "lessonDuration")

@@ -9,9 +9,8 @@ import sptech.school.domain.dto.response.dashboard.ChartPieDTO;
 import sptech.school.domain.dto.response.dashboard.teacher.TeacherDashboardDTO;
 import sptech.school.domain.dto.response.dashboard.teacher.TeacherStatsDTO;
 import sptech.school.domain.dto.response.dashboard.teacher.TeacherTableDTO;
-import sptech.school.domain.entity.Teacher;
 import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.enumerated.Subject;
+import sptech.school.domain.entity.Teacher;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -77,12 +76,12 @@ public class TeacherDashService {
                 .toList();
 
         // Distribuição de disciplinas
+        // distribuição de disciplinas
         Map<String, Long> countBySubject = teachers.stream()
-                .filter(t -> t.getSubjects() != null && !t.getSubjects().isEmpty())
-                .flatMap(t -> t.getSubjects().stream()) // Transforma cada lista de subjects em um stream de subjects
+                .filter(t -> t.getSubject() != null)
                 .collect(Collectors.groupingBy(
-                        Subject::getDescription, // Agrupa pelo atributo description de Subject
-                        Collectors.counting()    // Conta a ocorrência de cada disciplina
+                        t -> t.getSubject().name(),
+                        Collectors.counting()
                 ));
 
         List<ChartPieDTO> disciplineDistribution = countBySubject.entrySet().stream()
@@ -97,7 +96,7 @@ public class TeacherDashService {
                 .map(t -> {
                     TeacherTableDTO dto = new TeacherTableDTO();
                     dto.setName(t.getName());
-                    dto.setSubject(t.getSubjects() != null ? t.getSubjects().toString() : "—");
+                    dto.setSubject(t.getSubject() != null ? t.getSubject().name() : "—");
                     dto.setHoursWorked(hoursPerTeacher.getOrDefault(t.getId(), 0.0));
                     dto.setHourlyRate(
                             t.getHourlyRate() != null

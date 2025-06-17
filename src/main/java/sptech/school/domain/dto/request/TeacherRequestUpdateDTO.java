@@ -12,7 +12,7 @@ public record TeacherRequestUpdateDTO(
         String name
         , @Email String email
         , @CPF String cpf
-        , List<Subject> subject
+        , Subject subject
         , String cellphoneNumber
         , @Past LocalDate dateBirth
         , String resumeTeacher

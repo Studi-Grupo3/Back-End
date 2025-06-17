@@ -1,11 +1,10 @@
 package sptech.school.domain.dto.response;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record AppointmentResponseDTO(
         Integer id,
-        List<String> subjects,
+        String subject,
         String professorName,
         String professorTitle,
         String professorImageUrl,
