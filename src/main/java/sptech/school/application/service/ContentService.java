@@ -1,11 +1,13 @@
 package sptech.school.application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.domain.entity.Content;
 import sptech.school.application.usecase.ContentRepositoryUseCase;
 import sptech.school.application.usecase.StorageServiceUseCase;
+import sptech.school.domain.entity.Student;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,9 +19,10 @@ public class ContentService {
     @Autowired
     private ContentRepositoryUseCase repository;
     @Autowired
+    @Qualifier("azureStorageService")
     private StorageServiceUseCase storageService;
 
-    public Content saveFile(MultipartFile file) throws IOException {
+    public Content saveFile(MultipartFile file, Student student) throws IOException {
         String location = storageService.saveFile(file);
         Content content = new Content(
                 file.getOriginalFilename()

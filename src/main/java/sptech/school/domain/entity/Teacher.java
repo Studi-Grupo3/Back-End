@@ -1,8 +1,7 @@
 package sptech.school.domain.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import sptech.school.domain.enumerated.Discipline;
+import sptech.school.domain.enumerated.Subject;
 
 @Entity
 @Table(name = "tb_teacher")
@@ -11,24 +10,50 @@ public class Teacher extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private Discipline discipline;
+    private Subject subject;
+    private Double hourlyRate;
+    private String resumeTeacher;
+    private String yearsExperience;
+    private String academicFormation;
 
     public Teacher() {
     }
 
-    public Teacher(String name, String email, String cpf, String password, Discipline discipline) {
+    public Teacher(String name, String email, String cpf, String password, Subject subject) {
         super(name, email, cpf, password);
-        this.discipline = discipline;
+        this.subject = subject;
+    }
+
+    public String getYearsExperience() {
+        return yearsExperience;
+    }
+
+    public void setYearsExperience(String yearsExperience) {
+        this.yearsExperience = yearsExperience;
+    }
+
+    public String getAcademicFormation() {
+        return academicFormation;
+    }
+
+    public void setAcademicFormation(String academicFormation) {
+        this.academicFormation = academicFormation;
     }
 
     @Override
     public String toString() {
         return "Teacher{" +
                 "id=" + id +
-                ", discipline='" + discipline + '\'' +
+                ", subject='" + subject + '\'' +
                 '}';
+    }
+
+    public String getResumeTeacher() {
+        return resumeTeacher;
+    }
+
+    public void setResumeTeacher(String resumeTeacher) {
+        this.resumeTeacher = resumeTeacher;
     }
 
     public Integer getId() {
@@ -39,11 +64,19 @@ public class Teacher extends User {
         this.id = id;
     }
 
-    public Discipline getDiscipline() {
-        return discipline;
+    public Double getHourlyRate() {
+        return hourlyRate;
     }
 
-    public void setDiscipline(Discipline discipline) {
-        this.discipline = discipline;
+    public void setHourlyRate(Double hourlyRate) {
+        this.hourlyRate = hourlyRate;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subjects) {
+        this.subject = subjects;
     }
 }

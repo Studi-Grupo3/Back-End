@@ -10,15 +10,18 @@ public class Student extends User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "The responsible cellphone is mandatory!")
-    private String responsibleCellphone;
+    private String schoolGrade;
+
+    private String schoolName;
+
+    @Embedded
+    private Responsible responsible;
 
     public Student() {
     }
 
-    public Student(String name, String email, String cpf, String password, String responsibleCellphone) {
+    public Student(String name, String email, String cpf, String password) {
         super(name, email, cpf, password);
-        this.responsibleCellphone = responsibleCellphone;
     }
 
     public Integer getId() {
@@ -29,11 +32,27 @@ public class Student extends User{
         this.id = id;
     }
 
-    public String getResponsibleCellphone() {
-        return responsibleCellphone;
+    public String getSchoolGrade() {
+        return schoolGrade;
     }
 
-    public void setResponsibleCellphone(String responsibleCellphone) {
-        this.responsibleCellphone = responsibleCellphone;
+    public void setSchoolGrade(String schoolGrade) {
+        this.schoolGrade = schoolGrade;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    public Responsible getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(Responsible responsible) {
+        this.responsible = responsible;
     }
 }

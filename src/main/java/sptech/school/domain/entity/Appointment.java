@@ -32,20 +32,25 @@ public class Appointment {
 
     private String location;
 
+    @Column(nullable = false)
+    private Double totalValue;
+
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
     public Appointment() {
     }
 
-    public Appointment(Student student, Teacher teacher, LocalDateTime dateTime, Double lessonDuration, String location) {
+    public Appointment(Integer id, Student student, Teacher teacher, LocalDateTime dateTime, Double lessonDuration, AppointmentStatus status, String location, Double totalValue, PaymentStatus paymentStatus) {
+        this.id = id;
         this.student = student;
         this.teacher = teacher;
         this.dateTime = dateTime;
         this.lessonDuration = lessonDuration;
+        this.status = status;
         this.location = location;
-        this.status = AppointmentStatus.SCHEDULED;
-        this.paymentStatus = PaymentStatus.PENDING;
+        this.totalValue = totalValue;
+        this.paymentStatus = paymentStatus;
     }
 
     public Integer getId() {
@@ -90,6 +95,22 @@ public class Appointment {
 
     public AppointmentStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(AppointmentStatus status) {
+        this.status = status;
+    }
+
+    public Double getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(Double totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public String getLocation() {

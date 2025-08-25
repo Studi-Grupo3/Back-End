@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
+@Service("localStorageService")
 public class LocalStorageService implements StorageServiceUseCase {
     // Esse diretório é setado no application.properties
     @Value("${file.upload-dir}")
@@ -42,5 +42,15 @@ public class LocalStorageService implements StorageServiceUseCase {
         return Files.exists(filePath)
                 ? Optional.of(Files.newInputStream(filePath))
                 : Optional.empty();
+    }
+
+    @Override
+    public void deleteFile(String fileLocation) throws IOException {
+        Path filePath = Paths.get(fileLocation);
+        if (Files.exists(filePath)) {
+            Files.delete(filePath);
+        } else {
+            throw new IOException("Arquivo não encontrado: " + fileLocation);
+        }
     }
 }

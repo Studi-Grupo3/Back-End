@@ -3,30 +3,29 @@ package sptech.school.application.service;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sptech.school.domain.dto.StudentDTO;
-import sptech.school.domain.entity.Student;
-import sptech.school.application.mappers.StudentMapper;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
+import sptech.school.application.mappers.StudentMapper;
+import sptech.school.application.usecase.AbstractUserUseCase;
+import sptech.school.domain.dto.request.StudentRequestUpdateDTO;
+import sptech.school.domain.dto.response.StudentResponseDTO;
+import sptech.school.domain.entity.Student;
 
 import java.util.List;
 
 @Service
-public class StudentService extends AbstractUserUseCase<Student, StudentDTO> {
+public class StudentService extends AbstractUserUseCase<Student, StudentRequestUpdateDTO> {
     @Autowired
     private StudentMapper studentMapper;
 
-    public StudentService(JpaUserRepository<Student> repository) {
-        super(repository);
-    }
-
-    public Student create(@Valid Student student) {
-        return repository.save(student);
+    public StudentService(JpaUserRepository<Student> repository, PasswordEncoder passwordEncoder) {
+        super(repository, passwordEncoder);
     }
 
     @Override
-    public Student validateSpecify(StudentDTO dto, Student targetUser) {
+    public Student validateSpecify(@Valid StudentRequestUpdateDTO dto, Student targetUser) {
         studentMapper.updateStudentFromDto(dto, targetUser);
         return targetUser;
     }
@@ -36,9 +35,9 @@ public class StudentService extends AbstractUserUseCase<Student, StudentDTO> {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found."));
     }
 
-    public List<StudentDTO> listAll() {
+    public List<StudentResponseDTO> listAll() {
         return repository.findAll()
-                .stream().map(studentMapper::toDto).toList();
+                .stream().map(studentMapper::toDtoResponse).toList();
     }
 
     public void delete(Integer id) {

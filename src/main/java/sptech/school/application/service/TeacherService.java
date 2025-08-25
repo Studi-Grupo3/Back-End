@@ -1,50 +1,55 @@
 package sptech.school.application.service;
 
-import jakarta.validation.Valid;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sptech.school.domain.dto.TeacherDTO;
-import sptech.school.domain.entity.Teacher;
-import sptech.school.application.mappers.TeacherMapper;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
+import sptech.school.application.mappers.TeacherMapper;
+import sptech.school.application.usecase.AbstractUserUseCase;
+import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
+import sptech.school.domain.entity.Teacher;
 
 import java.util.List;
 
 @Service
-public class TeacherService extends AbstractUserUseCase<Teacher, TeacherDTO> {
+public class TeacherService extends AbstractUserUseCase<Teacher, TeacherRequestUpdateDTO> {
     @Autowired
     private TeacherMapper teacherMapper;
 
-    public TeacherService(JpaUserRepository<Teacher> repository) {
-        super(repository);
-    }
-
-    public Teacher create(@Valid Teacher teacher) {
-        return repository.save(teacher);
+    public TeacherService(JpaUserRepository<Teacher> repository, PasswordEncoder passwordEncoder) {
+        super(repository, passwordEncoder);
     }
 
     @Override
-    public Teacher validateSpecify(TeacherDTO dto, Teacher targetUser) {
+    public Teacher validateSpecify(TeacherRequestUpdateDTO dto,
+                                   Teacher targetUser) {
         teacherMapper.updateTeacherFromDto(dto, targetUser);
         return targetUser;
     }
 
+    public List<Teacher> listAll() {
+        return repository.findAllByDeletedFalse();
+    }
+
     public Teacher findById(Integer id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Teacher not found."));
+        return repository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Professor não encontrado.")
+                );
     }
 
-    public List<TeacherDTO> listAll() {
-        return repository.findAll()
-                .stream().map(teacherMapper::toDto).toList();
-    }
-
+    @Transactional
     public void delete(Integer id) {
-        if (!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment not found.");
-        }
-        repository.deleteById(id);
+        Teacher teacher = repository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Professor não encontrado.")
+                );
+        teacher.setDeleted(true);
+        repository.save(teacher);
     }
 }

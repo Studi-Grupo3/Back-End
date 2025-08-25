@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.application.mappers.ContentMapper;
 import sptech.school.application.service.ContentService;
-import sptech.school.domain.dto.ContentDTO;
+import sptech.school.application.service.StudentService;
+import sptech.school.domain.dto.response.ContentResponseDTO;
 import sptech.school.domain.entity.Content;
+import sptech.school.domain.entity.Student;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,22 +23,26 @@ import java.util.Optional;
 @RequestMapping("/files")
 public class ContentController {
     @Autowired
-    private ContentService service;
+    private ContentService contentService;
     @Autowired
     private ContentMapper mapper;
+    @Autowired
+    private StudentService studentService;
 
-//    value = "/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    @PostMapping()
-    public ResponseEntity<@Valid ContentDTO> uploadArquivo(
-            @RequestParam("file")
-            MultipartFile file) throws IOException {
-        Content content = service.saveFile(file);
+    @PostMapping(
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE 
+    )
+    public ResponseEntity<@Valid ContentResponseDTO> uploadArquivo(
+            @RequestPart("file") MultipartFile file, @RequestParam(value = "id") Integer idStudent) throws IOException {
+        Student student = studentService.findById(idStudent);
+        Content content = contentService.saveFile(file, student);
         return ResponseEntity.ok(mapper.toResponse(content));
     }
 
     @GetMapping("/{id}/info")
-    public ResponseEntity<@Valid ContentDTO> getMetadata(@PathVariable Long id) {
-        return service.getMetadataById(id)
+    public ResponseEntity<@Valid ContentResponseDTO> getMetadata(@PathVariable Long id) {
+        return contentService.getMetadataById(id)
                 .map(mapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -44,11 +50,11 @@ public class ContentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<InputStreamResource> downloadArquivo(@PathVariable Long id) throws IOException {
-        Optional<Content> contentOpt = service.getMetadataById(id);
+        Optional<Content> contentOpt = contentService.getMetadataById(id);
         if (contentOpt.isEmpty()) return ResponseEntity.notFound().build();
         Content content = contentOpt.get();
 
-        Optional<InputStream> streamOpt = service.findFileById(id);
+        Optional<InputStream> streamOpt = contentService.findFileById(id);
         if (streamOpt.isEmpty()) return ResponseEntity.notFound().build();
 
         InputStreamResource resource = new InputStreamResource(streamOpt.get());
