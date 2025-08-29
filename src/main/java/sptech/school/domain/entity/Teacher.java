@@ -76,7 +76,7 @@ public class Teacher extends User {
         return subject;
     }
 
-    public void setSubject(Subject subjects) {
-        this.subject = subjects;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

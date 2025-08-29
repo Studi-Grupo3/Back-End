@@ -1,11 +1,11 @@
-package sptech.school.application.mappers;
+package v2.cleanarch.core.teacher.application;
 
 import jakarta.validation.Valid;
 import org.mapstruct.*;
 import sptech.school.application.mappers.utils.StringMapperUtil;
 import sptech.school.domain.dto.request.TeacherRequestDTO;
 import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
-import sptech.school.domain.dto.response.TeacherResponseDTO;
+import v2.cleanarch.core.teacher.dtos.out.TeacherResponseDTO;
 import sptech.school.domain.entity.Teacher;
 
 @Mapper(componentModel = "spring", uses = StringMapperUtil.class)

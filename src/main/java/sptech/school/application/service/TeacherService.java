@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
-import sptech.school.application.mappers.TeacherMapper;
+import v2.cleanarch.core.teacher.application.TeacherMapper;
 import sptech.school.application.usecase.AbstractUserUseCase;
 import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
 import sptech.school.domain.entity.Teacher;

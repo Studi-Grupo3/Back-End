@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 
 import org.springframework.web.multipart.MultipartFile;
-import sptech.school.application.mappers.TeacherMapper;
+import v2.cleanarch.core.teacher.application.TeacherMapper;
 import sptech.school.application.service.JwtService;
 import sptech.school.application.service.TeacherService;
 import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 import sptech.school.domain.dto.request.TeacherRequestDTO;
 import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
-import sptech.school.domain.dto.response.TeacherResponseDTO;
+import v2.cleanarch.core.teacher.dtos.out.TeacherResponseDTO;
 import sptech.school.domain.entity.ResourceFile;
 import sptech.school.domain.entity.Teacher;
 

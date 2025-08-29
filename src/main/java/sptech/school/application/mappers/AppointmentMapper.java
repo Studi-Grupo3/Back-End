@@ -28,7 +28,7 @@ public interface AppointmentMapper {
     @Mapping(target = "status", source = "status")
     @Mapping(target = "totalValue", source = "totalValue")
     @Mapping(target = "location", source = "location")
-    @Mapping(target = "online", expression = "java(appointment.getLocation().equalsIgnoreCase(\"Online\"))")
+    @Mapping(target = "online", expression = "java(appointment.getLocation() != null && appointment.getLocation().equalsIgnoreCase(\"Online\"))")
     AppointmentResponseDTO toResponseDto(Appointment appointment);
 }
 

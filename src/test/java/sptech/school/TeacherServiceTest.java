@@ -11,7 +11,7 @@
 //import org.springframework.test.util.ReflectionTestUtils;
 //import org.springframework.web.server.ResponseStatusException;
 //import sptech.school.adapters.out.persistence.JpaUserRepository;
-//import sptech.school.application.mappers.TeacherMapper;
+//import v2.cleanarch.core.teacher.application.TeacherMapper;
 //import sptech.school.application.service.TeacherService;
 //import sptech.school.domain.dto.request.TeacherRequestUpdateDTO;
 //import sptech.school.domain.entity.Teacher;
