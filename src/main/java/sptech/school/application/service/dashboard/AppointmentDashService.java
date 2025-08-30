@@ -15,7 +15,6 @@ import sptech.school.domain.entity.Student;
 import sptech.school.domain.entity.Teacher;
 import sptech.school.domain.enumerated.AppointmentStatus;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.temporal.WeekFields;

@@ -1,4 +1,4 @@
-package v2.cleanarch.infra.teacher.web;
+package sptech.school.v2.cleanarch.infra.teacher.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import v2.cleanarch.core.teacher.dtos.out.TeacherResponseDTO;
-import v2.cleanarch.core.teacher.application.TeacherRegisterUseCase;
-import v2.cleanarch.core.teacher.dtos.in.TeacherRegisterDTO;
+import sptech.school.v2.cleanarch.core.teacher.dtos.out.TeacherResponseDTO;
+import sptech.school.v2.cleanarch.core.teacher.application.TeacherRegisterUseCase;
+import sptech.school.v2.cleanarch.core.teacher.dtos.in.TeacherRegisterDTO;
 
 @RestController
 @RequestMapping("/teachers")

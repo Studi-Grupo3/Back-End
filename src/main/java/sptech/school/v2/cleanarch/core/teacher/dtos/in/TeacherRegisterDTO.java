@@ -1,4 +1,4 @@
-package v2.cleanarch.core.teacher.dtos.in;
+package sptech.school.v2.cleanarch.core.teacher.dtos.in;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
