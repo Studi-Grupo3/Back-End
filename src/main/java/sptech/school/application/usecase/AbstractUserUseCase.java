@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.adapters.out.persistence.*;
 import sptech.school.application.mappers.ResourceFileMapper;
+import sptech.school.application.mappers.utils.PasswordUtil;
 import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 import sptech.school.domain.entity.PasswordResetToken;
 import sptech.school.domain.entity.ResourceFile;
@@ -33,7 +34,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     private EmailSender emailSender;
 
     @Autowired
-    @Qualifier("azureStorageService")
+    @Qualifier("localStorageService")
     private StorageServiceUseCase storageService;
 
     @Autowired
@@ -56,6 +57,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
 
     public T create(@Valid T entity) {
         if (entity == null) throw new UserNullException("The user cannot be null.");
+//        PasswordUtil.validatePasswordStrength(entity.getPassword());
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         if (studentRepository.existsByEmail(entity.getEmail()) || teacherRepository.existsByEmail(entity.getEmail())) {
             throw new EmailAlreadyExistsException("Email already registered for another user.");

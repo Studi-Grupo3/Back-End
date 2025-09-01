@@ -19,7 +19,7 @@ public class ContentService {
     @Autowired
     private ContentRepositoryUseCase repository;
     @Autowired
-    @Qualifier("azureStorageService")
+    @Qualifier("localStorageService")
     private StorageServiceUseCase storageService;
 
     public Content saveFile(MultipartFile file, Student student) throws IOException {
