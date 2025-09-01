@@ -7,16 +7,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
-import sptech.school.application.mappers.StudentMapper;
+import sptech.school.v2.cleanarch.core.application.mappers.StudentMapper;
 import sptech.school.application.usecase.AbstractUserUseCase;
-import sptech.school.domain.dto.request.StudentRequestUpdateDTO;
-import sptech.school.domain.dto.response.StudentResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.in.StudentUpdateDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.StudentResponseDTO;
 import sptech.school.domain.entity.Student;
 
 import java.util.List;
 
 @Service
-public class StudentService extends AbstractUserUseCase<Student, StudentRequestUpdateDTO> {
+public class StudentService extends AbstractUserUseCase<Student, StudentUpdateDTO> {
     @Autowired
     private StudentMapper studentMapper;
 
@@ -25,7 +25,7 @@ public class StudentService extends AbstractUserUseCase<Student, StudentRequestU
     }
 
     @Override
-    public Student validateSpecify(@Valid StudentRequestUpdateDTO dto, Student targetUser) {
+    public Student validateSpecify(@Valid StudentUpdateDTO dto, Student targetUser) {
         studentMapper.updateStudentFromDto(dto, targetUser);
         return targetUser;
     }

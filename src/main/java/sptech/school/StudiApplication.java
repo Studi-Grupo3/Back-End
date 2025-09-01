@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import sptech.school.v2.cleanarch.infra.persistence.TeacherJpaRepository;
 
 @SpringBootApplication
 @ComponentScan(
@@ -12,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 )
 @EnableJpaRepositories(basePackageClasses = {
     sptech.school.adapters.out.persistence.AppointmentRepository.class,
-    sptech.school.v2.cleanarch.infra.teacher.persistence.TeacherJpaRepositoy.class
+    TeacherJpaRepository.class
 })
 @EntityScan(basePackages = {"sptech.school.domain.entity"})
 public class StudiApplication {

@@ -70,7 +70,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     // Estatística por disciplina
     @Query("SELECT new sptech.school.domain.dto.response.teacher.DisciplineStatsDTO(" +
             "  s, COUNT(a)) " +
-            "FROM Appointment a JOIN a.teacher.subject s " +
+            "FROM Appointment a JOIN a.teacher.subjects s " +
             "WHERE a.teacher.id = :teacherId " +
             "GROUP BY s")
     List<DisciplineStatsDTO> countByTeacherGroupBySubject(Integer teacherId);
