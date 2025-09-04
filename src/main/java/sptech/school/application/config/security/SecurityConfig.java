@@ -52,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/students", "/students").permitAll()
                         .requestMatchers(HttpMethod.PATCH,"/students/reset-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/teachers", "/teachers").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/teachers", "/teachers").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auths/login", "/auths/verify-code", "/auths/forgot-password", "/contact").permitAll()
                         .requestMatchers(HttpMethod.POST, "/payments", "/payments/preference").permitAll()
                         .anyRequest().authenticated()

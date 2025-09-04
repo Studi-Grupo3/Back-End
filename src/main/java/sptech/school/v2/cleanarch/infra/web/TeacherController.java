@@ -13,6 +13,8 @@ import sptech.school.v2.cleanarch.core.dtos.in.TeacherRegisterDTO;
 import sptech.school.v2.cleanarch.core.dtos.in.TeacherUpdateDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.TeacherResponseDTO;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/teachers")
 public class TeacherController {
@@ -82,8 +84,8 @@ public class TeacherController {
             @ApiResponse(responseCode = "200", description = "Lista de professores retornada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Nenhum professor encontrado")
     })
-    public ResponseEntity<java.util.List<TeacherResponseDTO>> findAllTeachers() {
-        java.util.List<TeacherResponseDTO> dtos = teacherFacade.listAll().stream()
+    public ResponseEntity<List<TeacherResponseDTO>> findAllTeachers() {
+        List<TeacherResponseDTO> dtos = teacherFacade.listAll().stream()
                 .map(teacherMapper::toDtoResponse).toList();
         return ResponseEntity.status(200).body(dtos);
     }
