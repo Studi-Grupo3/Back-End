@@ -2,12 +2,10 @@ package sptech.school.v2.cleanarch.core.application.facades;
 
 import org.springframework.stereotype.Service;
 import sptech.school.domain.entity.Teacher;
-import sptech.school.domain.exception.EmailAlreadyExistsException;
 import sptech.school.domain.exception.UserNullException;
 import sptech.school.v2.cleanarch.core.application.usecases.TeacherCommandUseCase;
 import sptech.school.v2.cleanarch.core.application.usecases.TeacherQueryUseCase;
 import sptech.school.v2.cleanarch.core.application.utils.VerifyEmailAndCpfUtil;
-import sptech.school.v2.cleanarch.domain.exception.CpfAlreadyExistsException;
 
 import java.util.List;
 

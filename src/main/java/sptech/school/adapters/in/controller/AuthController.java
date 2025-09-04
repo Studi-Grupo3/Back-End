@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sptech.school.v2.cleanarch.core.application.facades.StudentFacadeContract;
+import sptech.school.v2.cleanarch.core.application.facades.TeacherFacade;
+import sptech.school.v2.cleanarch.core.application.facades.TeacherFacadeContract;
 import sptech.school.v2.cleanarch.core.application.mappers.StudentMapper;
 import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
 import sptech.school.application.service.JwtService;
@@ -27,10 +30,8 @@ import sptech.school.domain.exception.UserNullException;
 @RestController
 @RequestMapping("/auths")
 public class AuthController {
-    @Autowired
-    private TeacherService teacherService;
-    @Autowired
-    private StudentService studentService;
+    private final TeacherFacadeContract teacherService;
+    private final StudentFacadeContract studentService;
     @Autowired
     private StudentMapper studentMapper;
     @Autowired
