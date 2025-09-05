@@ -1,8 +1,9 @@
-package sptech.school.v2.cleanarch.infra.persistence;
+package sptech.school.v2.cleanarch.infra.persistence.adapter;
 
 import org.springframework.stereotype.Component;
 import sptech.school.domain.entity.Student;
 import sptech.school.v2.cleanarch.core.application.gateways.StudentQueryGateway;
+import sptech.school.v2.cleanarch.infra.persistence.repository.StudentJpaRepository;
 
 import java.util.List;
 

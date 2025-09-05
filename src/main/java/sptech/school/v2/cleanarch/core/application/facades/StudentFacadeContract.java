@@ -12,4 +12,5 @@ public interface StudentFacadeContract {
     Student findById(Integer id);
     Boolean studentExistsByEmail(String email);
     Boolean studentExistsByCpf(String cpf);
+    Student login(String email, String password);
 }

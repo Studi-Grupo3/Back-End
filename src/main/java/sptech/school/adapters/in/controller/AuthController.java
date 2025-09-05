@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sptech.school.v2.cleanarch.core.application.facades.StudentFacadeContract;
+import sptech.school.v2.cleanarch.core.application.facades.TeacherFacade;
+import sptech.school.v2.cleanarch.core.application.facades.TeacherFacadeContract;
 import sptech.school.v2.cleanarch.core.application.mappers.StudentMapper;
 import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
 import sptech.school.application.service.JwtService;
@@ -27,30 +30,29 @@ import sptech.school.domain.exception.UserNullException;
 @RestController
 @RequestMapping("/auths")
 public class AuthController {
-    @Autowired
-    private TeacherService teacherService;
-    @Autowired
-    private StudentService studentService;
-    @Autowired
-    private StudentMapper studentMapper;
-    @Autowired
-    private TeacherMapper teacherMapper;
-    @Autowired
-    private PasswordResetService service;
-    @Autowired
-    private JwtService jwtService;
+    private final TeacherFacadeContract teacherFacade;
+    private final StudentFacadeContract studentFacade;
+    private final PasswordResetService service;
+    private final JwtService jwtService;
+
+    public AuthController(TeacherFacadeContract teacherFacade, StudentFacadeContract studentFacade, PasswordResetService service, JwtService jwtService) {
+        this.teacherFacade = teacherFacade;
+        this.studentFacade = studentFacade;
+        this.service = service;
+        this.jwtService = jwtService;
+    }
 
     @PostMapping("/login")
     ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginRequestDTO dto) {
         Student student = null;
         Teacher teacher = null;
         try {
-            student = studentService.login(dto.email(), dto.password());
+            student = studentFacade.login(dto.email(), dto.password());
             System.out.println(student.getEmail() + student.getName());
         } catch (AuthenticationException ignored) {}
 
         try {
-            teacher = teacherService.login(dto.email(), dto.password());
+            teacher = teacherFacade.login(dto.email(), dto.password());
         } catch (AuthenticationException ignored) {}
         String token;
         System.out.println("Student: " + student);
@@ -67,26 +69,26 @@ public class AuthController {
         throw new AuthenticationException("Invalid credentials");
     }
 
-    @PostMapping("/forgot-password")
-    public ResponseEntity<Void> forgotPassword(@RequestBody ForgotPasswordRequest request) {
-        boolean sent = false;
-
-        try {
-            studentService.sendResetCode(request.getEmail());
-            sent = true;
-        } catch (UserNullException ignored) {}
-
-        try {
-            teacherService.sendResetCode(request.getEmail());
-            sent = true;
-        } catch (UserNullException ignored) {}
-
-        if (!sent) {
-            throw new UserNullException("E-mail inválido");
-        }
-
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/forgot-password")
+//    public ResponseEntity<Void> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+//        boolean sent = false;
+//
+//        try {
+//            studentService.sendResetCode(request.getEmail());
+//            sent = true;
+//        } catch (UserNullException ignored) {}
+//
+//        try {
+//            teacherService.sendResetCode(request.getEmail());
+//            sent = true;
+//        } catch (UserNullException ignored) {}
+//
+//        if (!sent) {
+//            throw new UserNullException("E-mail inválido");
+//        }
+//
+//        return ResponseEntity.ok().build();
+//    }
 
 
     @PostMapping("/verify-code")

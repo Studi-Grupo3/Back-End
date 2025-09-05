@@ -61,4 +61,9 @@ public class TeacherFacade implements TeacherFacadeContract {
     public List<Teacher> listAll() {
         return teacherQueryUseCase.listAll();
     }
+
+    @Override
+    public Teacher login(String email, String password) {
+        return teacherCommandUseCase.login(email, password);
+    }
 }

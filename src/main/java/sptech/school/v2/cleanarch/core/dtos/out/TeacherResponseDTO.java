@@ -14,7 +14,7 @@ public record TeacherResponseDTO(
         , @NotBlank String name
         , @Email @NotBlank String email
         , @CPF String cpf
-        , List<Subject> subject
+        , List<Subject> subjects
         , String cellphoneNumber
         , LocalDate dateBirth
         , String resumeTeacher

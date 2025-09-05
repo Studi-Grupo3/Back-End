@@ -1,5 +1,7 @@
 package sptech.school.v2.cleanarch.core.application.facades;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import sptech.school.domain.entity.Teacher;
 
 import java.util.List;
@@ -24,4 +26,6 @@ public interface TeacherFacadeContract {
     Boolean teacherExistsByEmail(String email);
     Boolean teacherExistsByCpf(String cpf);
     Teacher findById(Integer id);
+
+    Teacher login(String email, String password);
 }

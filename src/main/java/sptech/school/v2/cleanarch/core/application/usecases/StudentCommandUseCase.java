@@ -3,7 +3,10 @@ package sptech.school.v2.cleanarch.core.application.usecases;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sptech.school.domain.entity.Student;
+import sptech.school.domain.exception.AuthenticationException;
 import sptech.school.v2.cleanarch.core.application.gateways.StudentCommandGateway;
+
+import java.util.Optional;
 
 @Service
 public class StudentCommandUseCase {
@@ -33,4 +36,11 @@ public class StudentCommandUseCase {
         studentCommandGateway.delete(id);
     }
 
+    public Student login(String email, String password) {
+        Optional<Student> foundStudent = studentCommandGateway.findByEmail(email);
+        if (foundStudent.isPresent() && passwordEncoder.matches(password, foundStudent.get().getPassword())) {
+            return foundStudent.get();
+        }
+        throw new AuthenticationException("Invalid credentials");
+    }
 }

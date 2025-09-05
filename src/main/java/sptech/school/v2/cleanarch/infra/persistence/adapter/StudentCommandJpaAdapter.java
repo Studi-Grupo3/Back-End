@@ -1,9 +1,12 @@
-package sptech.school.v2.cleanarch.infra.persistence;
+package sptech.school.v2.cleanarch.infra.persistence.adapter;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import sptech.school.domain.entity.Student;
 import sptech.school.v2.cleanarch.core.application.gateways.StudentCommandGateway;
+import sptech.school.v2.cleanarch.infra.persistence.repository.StudentJpaRepository;
+
+import java.util.Optional;
 
 @Component
 public class StudentCommandJpaAdapter implements StudentCommandGateway {
@@ -27,5 +30,10 @@ public class StudentCommandJpaAdapter implements StudentCommandGateway {
     @Override
     public void delete(Integer id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Student> findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 }
