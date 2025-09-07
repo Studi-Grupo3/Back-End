@@ -10,7 +10,7 @@ import sptech.school.domain.dto.response.AppointmentResponseDTO;
 import sptech.school.domain.entity.Appointment;
 import sptech.school.application.mappers.AppointmentMapper;
 import sptech.school.application.service.AppointmentService;
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
 import java.util.List;
 

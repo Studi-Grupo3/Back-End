@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import sptech.school.domain.dto.response.teacher.UpcomingLessonDTO;
 import sptech.school.domain.dto.response.teacher.LessonHistoryDTO;
 import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
 import java.time.LocalDateTime;
 

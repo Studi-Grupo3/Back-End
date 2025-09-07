@@ -17,7 +17,7 @@ import sptech.school.domain.dto.request.VerifyCodeRequest;
 import sptech.school.v2.cleanarch.core.dtos.out.AuthResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
-import sptech.school.domain.enumerated.Role;
+import sptech.school.v2.cleanarch.domain.enumerated.Role;
 import sptech.school.v2.cleanarch.domain.exception.AuthenticationException;
 import sptech.school.v2.cleanarch.domain.exception.UserNullException;
 import io.swagger.v3.oas.annotations.Operation;

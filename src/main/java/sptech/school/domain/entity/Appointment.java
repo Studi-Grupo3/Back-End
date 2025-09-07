@@ -1,8 +1,8 @@
 package sptech.school.domain.entity;
 
 import jakarta.persistence.*;
-import sptech.school.domain.enumerated.AppointmentStatus;
-import sptech.school.domain.enumerated.PaymentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 

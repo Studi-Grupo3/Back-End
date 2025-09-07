@@ -3,7 +3,7 @@ package sptech.school.v2.cleanarch.core.dtos.out;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
-import sptech.school.domain.enumerated.Role;
+import sptech.school.v2.cleanarch.domain.enumerated.Role;
 
 import java.io.Serial;
 import java.io.Serializable;

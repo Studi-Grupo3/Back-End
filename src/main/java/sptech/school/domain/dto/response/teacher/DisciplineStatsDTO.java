@@ -1,6 +1,6 @@
 package sptech.school.domain.dto.response.teacher;
 
-import sptech.school.domain.enumerated.Subject;
+import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 
 
 public class DisciplineStatsDTO {

@@ -1,7 +1,7 @@
 package sptech.school.domain.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
 public class AppointmentStatusDTO {
 

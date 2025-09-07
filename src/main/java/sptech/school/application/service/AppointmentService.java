@@ -10,7 +10,7 @@ import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 import sptech.school.application.mappers.AppointmentMapper;
 import sptech.school.adapters.out.persistence.AppointmentRepository;
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
 import java.util.List;
 

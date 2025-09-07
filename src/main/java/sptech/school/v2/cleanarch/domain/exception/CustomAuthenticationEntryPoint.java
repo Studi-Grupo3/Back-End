@@ -1,4 +1,4 @@
-package sptech.school.domain.exception;
+package sptech.school.v2.cleanarch.domain.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

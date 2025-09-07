@@ -14,7 +14,7 @@ import sptech.school.application.config.CorsConfig;
 import sptech.school.application.config.security.user.details.service.StudentUserDetailsService;
 import sptech.school.application.config.security.user.details.service.TeacherUserDetailsService;
 import sptech.school.v2.cleanarch.core.application.usecases.security.JwtUseCase;
-import sptech.school.domain.exception.CustomAuthenticationEntryPoint;
+import sptech.school.v2.cleanarch.domain.exception.CustomAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity

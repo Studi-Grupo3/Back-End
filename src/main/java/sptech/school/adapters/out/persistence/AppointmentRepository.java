@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import sptech.school.domain.dto.response.teacher.DisciplineStatsDTO;
 import sptech.school.domain.dto.response.teacher.WeekdayStatsDTO;
 import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.enumerated.AppointmentStatus;
-import sptech.school.domain.enumerated.PaymentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

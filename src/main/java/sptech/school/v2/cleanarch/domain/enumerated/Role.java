@@ -1,4 +1,4 @@
-package sptech.school.domain.enumerated;
+package sptech.school.v2.cleanarch.domain.enumerated;
 
 public enum Role {
     TEACHER("Teacher"),

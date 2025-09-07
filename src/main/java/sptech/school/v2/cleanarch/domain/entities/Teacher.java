@@ -1,7 +1,7 @@
 package sptech.school.v2.cleanarch.domain.entities;
 
 import jakarta.persistence.*;
-import sptech.school.domain.enumerated.Subject;
+import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 
 import java.util.ArrayList;
 import java.util.List;

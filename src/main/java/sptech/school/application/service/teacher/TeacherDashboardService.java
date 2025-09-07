@@ -5,7 +5,7 @@ import sptech.school.adapters.out.persistence.AppointmentRepository;
 import sptech.school.domain.dto.response.teacher.DisciplineStatsDTO;
 import sptech.school.domain.dto.response.teacher.TeacherDashboardDTO;
 import sptech.school.domain.dto.response.teacher.WeekdayStatsDTO;
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
 import java.util.List;
 

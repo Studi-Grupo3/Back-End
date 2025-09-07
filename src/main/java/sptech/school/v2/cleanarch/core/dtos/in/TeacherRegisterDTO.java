@@ -3,7 +3,7 @@ package sptech.school.v2.cleanarch.core.dtos.in;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
-import sptech.school.domain.enumerated.Subject;
+import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 
 import java.util.List;
 

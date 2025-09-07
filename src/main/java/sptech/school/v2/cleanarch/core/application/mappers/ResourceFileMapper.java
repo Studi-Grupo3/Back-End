@@ -1,4 +1,4 @@
-package sptech.school.application.mappers;
+package sptech.school.v2.cleanarch.core.application.mappers;
 
 import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
