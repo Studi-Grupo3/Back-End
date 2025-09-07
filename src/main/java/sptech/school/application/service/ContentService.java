@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import sptech.school.domain.entity.Content;
 import sptech.school.application.usecase.ContentRepositoryUseCase;
 import sptech.school.application.usecase.StorageServiceUseCase;
+import sptech.school.v2.cleanarch.domain.entities.Content;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 
 import java.io.IOException;

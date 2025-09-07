@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import sptech.school.domain.dto.response.ResourceFileResponseDTO;
-import sptech.school.domain.entity.ResourceFile;
+import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
 
 @Mapper(componentModel = "spring")
 public interface ResourceFileMapper {

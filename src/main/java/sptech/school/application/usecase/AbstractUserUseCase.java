@@ -10,7 +10,7 @@ import sptech.school.adapters.out.persistence.*;
 import sptech.school.application.mappers.ResourceFileMapper;
 import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.PasswordResetToken;
-import sptech.school.domain.entity.ResourceFile;
+import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
 import sptech.school.v2.cleanarch.domain.entities.User;
 import sptech.school.v2.cleanarch.domain.exception.AuthenticationException;
 import sptech.school.domain.exception.EmailAlreadyExistsException;

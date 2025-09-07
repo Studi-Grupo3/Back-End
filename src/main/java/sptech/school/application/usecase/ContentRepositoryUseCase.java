@@ -1,6 +1,6 @@
 package sptech.school.application.usecase;
 
-import sptech.school.domain.entity.Content;
+import sptech.school.v2.cleanarch.domain.entities.Content;
 
 import java.util.Optional;
 

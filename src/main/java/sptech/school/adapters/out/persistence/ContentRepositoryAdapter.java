@@ -2,8 +2,8 @@ package sptech.school.adapters.out.persistence;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import sptech.school.domain.entity.Content;
 import sptech.school.application.usecase.ContentRepositoryUseCase;
+import sptech.school.v2.cleanarch.domain.entities.Content;
 
 import java.util.Optional;
 

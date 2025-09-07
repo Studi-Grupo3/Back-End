@@ -9,9 +9,6 @@ import sptech.school.v2.cleanarch.infra.persistence.repository.ContentJpaReposit
 import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
 
 @SpringBootApplication
-@ComponentScan(
-    basePackages = {"sptech.school", "v2.cleanarch.core", "sptech.school.v2.cleanarch.infra.teacher.persistence"}
-)
 @EnableJpaRepositories(basePackageClasses = {
     sptech.school.adapters.out.persistence.AppointmentRepository.class,
     TeacherJpaRepository.class,
