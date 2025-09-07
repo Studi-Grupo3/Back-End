@@ -8,18 +8,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
 
 @SpringBootApplication
-@ComponentScan(
-    basePackages = {"sptech.school", "v2.cleanarch.core", "sptech.school.v2.cleanarch.infra.teacher.persistence"}
-)
-@EnableJpaRepositories(basePackageClasses = {
-    sptech.school.adapters.out.persistence.AppointmentRepository.class,
-    TeacherJpaRepository.class
-})
-@EntityScan(basePackages = {"sptech.school.domain.entity"})
+@EntityScan(basePackages = {"sptech.school.domain.entity", "sptech.school.v2.cleanarch.domain.entities"})
 public class StudiApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(StudiApplication.class, args);
 	}
-
 }

@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
 import sptech.school.domain.dto.response.ErrorResponseDTO;
-import sptech.school.domain.exception.EmailAlreadyExistsException;
 import sptech.school.domain.exception.StorageUnavailableException;
-import sptech.school.v2.cleanarch.domain.exception.AuthenticationException;
 import sptech.school.domain.exception.UserDontHaveProfilePhoto;
+import sptech.school.v2.cleanarch.domain.exception.AuthenticationException;
+import sptech.school.v2.cleanarch.domain.exception.EmailAlreadyExistsException;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
