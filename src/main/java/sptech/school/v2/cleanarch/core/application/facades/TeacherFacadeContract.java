@@ -26,6 +26,6 @@ public interface TeacherFacadeContract {
     Boolean teacherExistsByEmail(String email);
     Boolean teacherExistsByCpf(String cpf);
     Teacher findById(Integer id);
-
     Teacher login(String email, String password);
+    void sendResetCode(String email);
 }

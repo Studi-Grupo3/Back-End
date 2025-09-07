@@ -69,26 +69,26 @@ public class AuthController {
         throw new AuthenticationException("Invalid credentials");
     }
 
-//    @PostMapping("/forgot-password")
-//    public ResponseEntity<Void> forgotPassword(@RequestBody ForgotPasswordRequest request) {
-//        boolean sent = false;
-//
-//        try {
-//            studentService.sendResetCode(request.getEmail());
-//            sent = true;
-//        } catch (UserNullException ignored) {}
-//
-//        try {
-//            teacherService.sendResetCode(request.getEmail());
-//            sent = true;
-//        } catch (UserNullException ignored) {}
-//
-//        if (!sent) {
-//            throw new UserNullException("E-mail inválido");
-//        }
-//
-//        return ResponseEntity.ok().build();
-//    }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Void> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        boolean sent = false;
+
+        try {
+            studentFacade.sendResetCode(request.getEmail());
+            sent = true;
+        } catch (UserNullException ignored) {}
+
+        try {
+            teacherFacade.sendResetCode(request.getEmail());
+            sent = true;
+        } catch (UserNullException ignored) {}
+
+        if (!sent) {
+            throw new UserNullException("E-mail inválido");
+        }
+
+        return ResponseEntity.ok().build();
+    }
 
 
     @PostMapping("/verify-code")

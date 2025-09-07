@@ -12,6 +12,4 @@ public interface TeacherCommandGateway {
     Teacher save(Teacher teacher);
     Teacher update(Teacher teacher);
     void delete(Integer id);
-
-    Optional<Teacher> findByEmail(String email);
 }

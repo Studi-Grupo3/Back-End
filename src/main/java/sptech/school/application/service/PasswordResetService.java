@@ -1,9 +1,8 @@
 package sptech.school.application.service;
 
 import org.springframework.stereotype.Service;
-import sptech.school.adapters.out.persistence.PasswordResetTokenRepository;
-import sptech.school.application.usecase.EmailSender;
-import sptech.school.domain.entity.PasswordResetToken;
+import sptech.school.v2.cleanarch.infra.persistence.repository.PasswordResetTokenRepository;
+import sptech.school.v2.cleanarch.core.application.gateways.EmailSenderGateway;
 
 import java.time.LocalDateTime;
 
@@ -11,11 +10,11 @@ import java.time.LocalDateTime;
 public class PasswordResetService {
 
     private final PasswordResetTokenRepository tokenRepository;
-    private final EmailSender emailSender;
+    private final EmailSenderGateway emailSenderGateway;
 
-    public PasswordResetService(PasswordResetTokenRepository tokenRepository, EmailSender emailSender) {
+    public PasswordResetService(PasswordResetTokenRepository tokenRepository, EmailSenderGateway emailSenderGateway) {
         this.tokenRepository = tokenRepository;
-        this.emailSender = emailSender;
+        this.emailSenderGateway = emailSenderGateway;
     }
 
     public boolean verifyCode(String email, String code) {

@@ -6,6 +6,7 @@ import sptech.school.v2.cleanarch.core.application.gateways.StudentQueryGateway;
 import sptech.school.v2.cleanarch.infra.persistence.repository.StudentJpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class StudentQueryJpaAdapter implements StudentQueryGateway {
@@ -33,5 +34,10 @@ public class StudentQueryJpaAdapter implements StudentQueryGateway {
     @Override
     public List<Student> listAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Optional<Student> findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 }

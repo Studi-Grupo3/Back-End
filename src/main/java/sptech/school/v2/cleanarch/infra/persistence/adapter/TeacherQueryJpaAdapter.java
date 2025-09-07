@@ -6,6 +6,7 @@ import sptech.school.v2.cleanarch.core.application.gateways.TeacherQueryGateway;
 import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TeacherQueryJpaAdapter implements TeacherQueryGateway {
@@ -31,9 +32,13 @@ public class TeacherQueryJpaAdapter implements TeacherQueryGateway {
         return teacherJpaRepository.existsByCpf(cpf);
     }
 
-
     @Override
     public List<Teacher> listAll() {
         return teacherJpaRepository.findAll();
+    }
+
+    @Override
+    public Optional<Teacher> findByEmail(String email) {
+        return teacherJpaRepository.findByEmail(email);
     }
 }

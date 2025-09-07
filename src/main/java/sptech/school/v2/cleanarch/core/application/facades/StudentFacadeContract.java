@@ -13,4 +13,5 @@ public interface StudentFacadeContract {
     Boolean studentExistsByEmail(String email);
     Boolean studentExistsByCpf(String cpf);
     Student login(String email, String password);
+    void sendResetCode(String email);
 }

@@ -5,6 +5,7 @@ import sptech.school.domain.entity.Teacher;
 import sptech.school.v2.cleanarch.core.application.gateways.TeacherQueryGateway;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TeacherQueryUseCase {
@@ -28,5 +29,9 @@ public class TeacherQueryUseCase {
 
     public List<Teacher> listAll() {
         return teacherQueryGateway.listAll();
+    }
+
+    public Optional<Teacher> findByEmail(String email) {
+        return teacherQueryGateway.findByEmail(email);
     }
 }

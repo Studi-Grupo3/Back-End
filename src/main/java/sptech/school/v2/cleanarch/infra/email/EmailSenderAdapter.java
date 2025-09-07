@@ -1,19 +1,20 @@
-package sptech.school.application.usecase;
+package sptech.school.v2.cleanarch.infra.email;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import sptech.school.v2.cleanarch.core.application.gateways.EmailSenderGateway;
 
 import java.io.UnsupportedEncodingException;
 
 @Component
-public class EmailSenderImpl implements EmailSender {
+public class EmailSenderAdapter implements EmailSenderGateway {
 
     private final JavaMailSender mailSender;
 
-    public EmailSenderImpl(JavaMailSender mailSender) {
+    public EmailSenderAdapter(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 

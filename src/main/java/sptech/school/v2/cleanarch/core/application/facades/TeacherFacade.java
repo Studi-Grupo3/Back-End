@@ -66,4 +66,9 @@ public class TeacherFacade implements TeacherFacadeContract {
     public Teacher login(String email, String password) {
         return teacherCommandUseCase.login(email, password);
     }
+
+    @Override
+    public void sendResetCode(String email) {
+        teacherCommandUseCase.sendResetCode(email);
+    }
 }

@@ -16,6 +16,8 @@ import sptech.school.domain.exception.AuthenticationException;
 import sptech.school.domain.exception.EmailAlreadyExistsException;
 import sptech.school.domain.exception.UserDontHaveProfilePhoto;
 import sptech.school.domain.exception.UserNullException;
+import sptech.school.v2.cleanarch.core.application.gateways.EmailSenderGateway;
+import sptech.school.v2.cleanarch.infra.persistence.repository.PasswordResetTokenRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +31,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     @Autowired
     private PasswordResetTokenRepository tokenRepository;
     @Autowired
-    private EmailSender emailSender;
+    private EmailSenderGateway emailSenderGateway;
 
     @Autowired
     @Qualifier("azureStorageService")
@@ -151,7 +153,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
         PasswordResetToken token = new PasswordResetToken(email, code, LocalDateTime.now().plusMinutes(10));
         tokenRepository.save(token);
 
-        emailSender.send(email, "Código de Redefinição de Senha", "Seu código é: " + code);
+        emailSenderGateway.send(email, "Código de Redefinição de Senha", "Seu código é: " + code);
     }
 
     private String generateCode() {

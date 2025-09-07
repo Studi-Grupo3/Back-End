@@ -31,9 +31,4 @@ public class StudentCommandJpaAdapter implements StudentCommandGateway {
     public void delete(Integer id) {
         repository.deleteById(id);
     }
-
-    @Override
-    public Optional<Student> findByEmail(String email) {
-        return repository.findByEmail(email);
-    }
 }

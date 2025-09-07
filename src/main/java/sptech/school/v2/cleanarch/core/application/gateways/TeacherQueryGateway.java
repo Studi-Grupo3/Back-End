@@ -3,6 +3,7 @@ package sptech.school.v2.cleanarch.core.application.gateways;
 import sptech.school.domain.entity.Teacher;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Gateway de consulta (query) para operações relacionadas a professores.
@@ -17,4 +18,6 @@ public interface TeacherQueryGateway {
     Teacher findById(Integer id);
 
     List<Teacher> listAll();
+
+    Optional<Teacher> findByEmail(String email);
 }

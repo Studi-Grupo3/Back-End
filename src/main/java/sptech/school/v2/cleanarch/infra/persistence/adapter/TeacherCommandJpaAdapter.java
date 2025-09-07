@@ -32,9 +32,4 @@ public class TeacherCommandJpaAdapter implements TeacherCommandGateway {
     public void delete(Integer id) {
         repository.deleteById(id);
     }
-
-    @Override
-    public Optional<Teacher> findByEmail(String email) {
-        return repository.findByEmail(email);
-    }
 }
