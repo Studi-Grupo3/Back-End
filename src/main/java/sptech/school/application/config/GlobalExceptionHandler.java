@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartException;
 import sptech.school.domain.dto.response.ErrorResponseDTO;
 import sptech.school.domain.exception.EmailAlreadyExistsException;
 import sptech.school.domain.exception.StorageUnavailableException;
-import sptech.school.domain.exception.AuthenticationException;
+import sptech.school.v2.cleanarch.domain.exception.AuthenticationException;
 import sptech.school.domain.exception.UserDontHaveProfilePhoto;
 
 import java.io.IOException;

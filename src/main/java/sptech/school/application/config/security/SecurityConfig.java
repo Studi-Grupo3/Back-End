@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,20 +13,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import sptech.school.application.config.CorsConfig;
 import sptech.school.application.config.security.user.details.service.StudentUserDetailsService;
 import sptech.school.application.config.security.user.details.service.TeacherUserDetailsService;
-import sptech.school.application.service.JwtService;
+import sptech.school.v2.cleanarch.core.application.usecases.security.JwtUseCase;
 import sptech.school.domain.exception.CustomAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtService jwtService;
+    private final JwtUseCase jwtUseCase;
     private final StudentUserDetailsService studentUserDetailsService;
     private final TeacherUserDetailsService teacherUserDetailsService;
     private final CorsConfig corsConfig;
 
-    public SecurityConfig(JwtService jwtService, StudentUserDetailsService studentUserDetailsService, TeacherUserDetailsService teacherUserDetailsService, CorsConfig corsConfig) {
-        this.jwtService = jwtService;
+    public SecurityConfig(JwtUseCase jwtUseCase, StudentUserDetailsService studentUserDetailsService, TeacherUserDetailsService teacherUserDetailsService, CorsConfig corsConfig) {
+        this.jwtUseCase = jwtUseCase;
         this.studentUserDetailsService = studentUserDetailsService;
         this.teacherUserDetailsService = teacherUserDetailsService;
         this.corsConfig = corsConfig;
@@ -61,7 +60,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(
-                        new JwtAuthenticationFilter(jwtService, teacherUserDetailsService, studentUserDetailsService),
+                        new JwtAuthenticationFilter(jwtUseCase, teacherUserDetailsService, studentUserDetailsService),
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .build();

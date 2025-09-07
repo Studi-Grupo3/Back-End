@@ -2,7 +2,7 @@ package sptech.school.adapters.out.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
-import sptech.school.domain.entity.User;
+import sptech.school.v2.cleanarch.domain.entities.User;
 
 import java.util.List;
 import java.util.Optional;

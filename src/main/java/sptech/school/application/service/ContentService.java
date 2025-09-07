@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import sptech.school.domain.entity.Content;
 import sptech.school.application.usecase.ContentRepositoryUseCase;
 import sptech.school.application.usecase.StorageServiceUseCase;
-import sptech.school.domain.entity.Student;
+import sptech.school.v2.cleanarch.domain.entities.Student;
 
 import java.io.IOException;
 import java.io.InputStream;

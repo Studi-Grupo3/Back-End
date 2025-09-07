@@ -9,7 +9,7 @@
 //import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.multipart.MultipartFile;
 //import sptech.school.v2.cleanarch.core.application.mappers.StudentMapper;
-//import sptech.school.application.service.JwtService;
+//import sptech.school.v2.cleanarch.core.application.usecases.security.JwtUseCase;
 //import sptech.school.application.service.StudentService;
 //import sptech.school.domain.dto.request.ResetPasswordRequestDTO;
 //import sptech.school.v2.cleanarch.core.dtos.in.StudentRegisterDTO;
@@ -17,7 +17,7 @@
 //import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 //import sptech.school.v2.cleanarch.core.dtos.out.StudentResponseDTO;
 //import sptech.school.domain.entity.ResourceFile;
-//import sptech.school.domain.entity.Student;
+//import sptech.school.v2.cleanarch.domain.entities.Student;
 //
 //import java.io.IOException;
 //import java.util.List;
@@ -30,7 +30,7 @@
 //    @Autowired
 //    private StudentMapper studentMapper;
 //    @Autowired
-//    private JwtService jwtService;
+//    private JwtUseCase jwtService;
 //
 //    @PostMapping
 //    public ResponseEntity<StudentResponseDTO> create(@RequestBody @Valid StudentRegisterDTO dto) {

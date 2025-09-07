@@ -10,7 +10,7 @@ import sptech.school.adapters.out.persistence.JpaUserRepository;
 import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
 import sptech.school.application.usecase.AbstractUserUseCase;
 import sptech.school.v2.cleanarch.core.dtos.in.TeacherUpdateDTO;
-import sptech.school.domain.entity.Teacher;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
 
 import java.util.List;
 

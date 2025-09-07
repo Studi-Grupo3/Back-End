@@ -11,8 +11,8 @@
 //import sptech.school.domain.dto.response.dashboard.ChartBarDTO;
 //import sptech.school.domain.dto.response.dashboard.teacher.TeacherDashboardDTO;
 //import sptech.school.domain.entity.Appointment;
-//import sptech.school.domain.entity.Student;
-//import sptech.school.domain.entity.Teacher;
+//import sptech.school.v2.cleanarch.domain.entities.Student;
+//import sptech.school.v2.cleanarch.domain.entities.Teacher;
 //import sptech.school.domain.enumerated.Subject;
 //
 //import java.time.LocalDateTime;

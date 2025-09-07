@@ -14,8 +14,8 @@
 //import sptech.school.domain.dto.AppointmentDTO;
 //import sptech.school.domain.dto.response.AppointmentResponseDTO;
 //import sptech.school.domain.entity.Appointment;
-//import sptech.school.domain.entity.Student;
-//import sptech.school.domain.entity.Teacher;
+//import sptech.school.v2.cleanarch.domain.entities.Student;
+//import sptech.school.v2.cleanarch.domain.entities.Teacher;
 //import sptech.school.domain.enumerated.AppointmentStatus;
 //import sptech.school.domain.enumerated.PaymentStatus;
 //

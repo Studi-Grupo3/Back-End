@@ -11,7 +11,7 @@ import sptech.school.v2.cleanarch.core.application.mappers.StudentMapper;
 import sptech.school.application.usecase.AbstractUserUseCase;
 import sptech.school.v2.cleanarch.core.dtos.in.StudentUpdateDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.StudentResponseDTO;
-import sptech.school.domain.entity.Student;
+import sptech.school.v2.cleanarch.domain.entities.Student;
 
 import java.util.List;
 

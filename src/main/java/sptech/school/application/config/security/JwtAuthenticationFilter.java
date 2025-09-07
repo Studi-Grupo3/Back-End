@@ -4,7 +4,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,18 +13,18 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 import sptech.school.application.config.security.user.details.service.StudentUserDetailsService;
 import sptech.school.application.config.security.user.details.service.TeacherUserDetailsService;
-import sptech.school.application.service.JwtService;
+import sptech.school.v2.cleanarch.core.application.usecases.security.JwtUseCase;
 
 import java.io.IOException;
 import java.util.List;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtService jwtService;
+    private final JwtUseCase jwtUseCase;
     private final TeacherUserDetailsService teacherUserDetailsService;
     private final StudentUserDetailsService studentUserDetailsService;
 
-    public JwtAuthenticationFilter(JwtService jwtService, TeacherUserDetailsService teacherUserDetailsService, StudentUserDetailsService studentUserDetailsService) {
-        this.jwtService = jwtService;
+    public JwtAuthenticationFilter(JwtUseCase jwtUseCase, TeacherUserDetailsService teacherUserDetailsService, StudentUserDetailsService studentUserDetailsService) {
+        this.jwtUseCase = jwtUseCase;
         this.studentUserDetailsService = studentUserDetailsService;
         this.teacherUserDetailsService = teacherUserDetailsService;
     }
@@ -41,8 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        String email = jwtService.extractEmail(token);
-        String role = jwtService.extractRole(token);
+        String email = jwtUseCase.extractEmail(token);
+        String role = jwtUseCase.extractRole(token);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
@@ -51,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             : "STUDENT".equalsIgnoreCase(role) ? studentUserDetailsService.loadUserByUsername(email)
                             : null;
 
-            if (jwtService.validateToken(token)) {
+            if (jwtUseCase.validateToken(token)) {
                 GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
 
                 UsernamePasswordAuthenticationToken authToken =

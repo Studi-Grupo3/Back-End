@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import sptech.school.adapters.out.persistence.TeacherRepositoryJpa;
 import sptech.school.application.config.security.user.details.service.TeacherUserDetailsService;
-import sptech.school.domain.entity.Teacher;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
 
 import java.util.Optional;
 

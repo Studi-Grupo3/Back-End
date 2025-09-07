@@ -7,7 +7,7 @@ import sptech.school.v2.cleanarch.core.dtos.in.StudentRegisterDTO;
 import sptech.school.v2.cleanarch.core.dtos.in.StudentUpdateDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.StudentResponseDTO;
 import sptech.school.domain.entity.Responsible;
-import sptech.school.domain.entity.Student;
+import sptech.school.v2.cleanarch.domain.entities.Student;
 
 @Mapper(componentModel = "spring", uses = StringMapperUtil.class)
 public interface StudentMapper {

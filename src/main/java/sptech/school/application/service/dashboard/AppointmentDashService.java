@@ -11,8 +11,8 @@ import sptech.school.domain.dto.response.dashboard.appointment.AppointmentDashDT
 import sptech.school.domain.dto.response.dashboard.appointment.AppointmentStatsDTO;
 import sptech.school.domain.dto.response.dashboard.appointment.AppointmentTableDTO;
 import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.entity.Student;
-import sptech.school.domain.entity.Teacher;
+import sptech.school.v2.cleanarch.domain.entities.Student;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
 import sptech.school.domain.enumerated.AppointmentStatus;
 
 import java.time.LocalDateTime;

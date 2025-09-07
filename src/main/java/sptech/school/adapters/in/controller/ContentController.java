@@ -13,7 +13,7 @@ import sptech.school.application.service.ContentService;
 import sptech.school.application.service.StudentService;
 import sptech.school.domain.dto.response.ContentResponseDTO;
 import sptech.school.domain.entity.Content;
-import sptech.school.domain.entity.Student;
+import sptech.school.v2.cleanarch.domain.entities.Student;
 
 import java.io.IOException;
 import java.io.InputStream;

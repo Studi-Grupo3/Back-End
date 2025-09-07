@@ -1,6 +1,6 @@
 package sptech.school.application.usecase;
 
-import sptech.school.domain.entity.User;
+import sptech.school.v2.cleanarch.domain.entities.User;
 
 public interface UserUseCase<T extends User, DTO> {
     T update(DTO user, Integer id);

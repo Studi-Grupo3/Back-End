@@ -10,7 +10,7 @@
 //import sptech.school.domain.dto.response.dashboard.teacher.TeacherStatsDTO;
 //import sptech.school.domain.dto.response.dashboard.teacher.TeacherTableDTO;
 //import sptech.school.domain.entity.Appointment;
-//import sptech.school.domain.entity.Teacher;
+//import sptech.school.v2.cleanarch.domain.entities.Teacher;
 //
 //import java.time.LocalDateTime;
 //import java.time.YearMonth;

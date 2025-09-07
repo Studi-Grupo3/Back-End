@@ -1,14 +1,13 @@
 package sptech.school.application.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sptech.school.domain.dto.AppointmentDTO;
 import sptech.school.domain.dto.response.AppointmentResponseDTO;
 import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.entity.Student;
-import sptech.school.domain.entity.Teacher;
+import sptech.school.v2.cleanarch.domain.entities.Student;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
 import sptech.school.application.mappers.AppointmentMapper;
 import sptech.school.adapters.out.persistence.AppointmentRepository;
 import sptech.school.domain.enumerated.AppointmentStatus;

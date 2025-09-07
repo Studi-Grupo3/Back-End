@@ -11,7 +11,7 @@
 //import sptech.school.domain.dto.response.dashboard.payment.PaymentStatsDTO;
 //import sptech.school.domain.dto.response.dashboard.payment.PaymentTableDTO;
 //import sptech.school.domain.entity.Appointment;
-//import sptech.school.domain.entity.Teacher;
+//import sptech.school.v2.cleanarch.domain.entities.Teacher;
 //import sptech.school.domain.enumerated.PaymentStatus;
 //import sptech.school.domain.enumerated.Subject;
 //

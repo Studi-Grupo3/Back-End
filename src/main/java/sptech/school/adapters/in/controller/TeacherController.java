@@ -11,14 +11,14 @@
 //
 //import org.springframework.web.multipart.MultipartFile;
 //import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
-//import sptech.school.application.service.JwtService;
+//import sptech.school.v2.cleanarch.core.application.usecases.security.JwtUseCase;
 //import sptech.school.application.service.TeacherService;
 //import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 //import sptech.school.domain.dto.request.TeacherRequestDTO;
 //import sptech.school.v2.cleanarch.core.dtos.in.TeacherRequestUpdateDTO;
 //import sptech.school.v2.cleanarch.core.dtos.out.TeacherResponseDTO;
 //import sptech.school.domain.entity.ResourceFile;
-//import sptech.school.domain.entity.Teacher;
+//import sptech.school.v2.cleanarch.domain.entities.Teacher;
 //
 //
 //import java.io.IOException;
@@ -33,7 +33,7 @@
 //    @Autowired
 //    private TeacherMapper teacherMapper;
 //    @Autowired
-//    private JwtService jwtService;
+//    private JwtUseCase jwtService;
 //
 //    // DONE
 //    @PostMapping

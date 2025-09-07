@@ -5,6 +5,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import sptech.school.v2.cleanarch.domain.entities.Student;
 
 @Entity
 @Table(name = "tb_content")

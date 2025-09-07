@@ -8,7 +8,7 @@
 //import sptech.school.application.service.dashboard.OverviewDashService;
 //import sptech.school.domain.dto.response.dashboard.overview.OverviewDashDTO;
 //import sptech.school.domain.entity.Appointment;
-//import sptech.school.domain.entity.Teacher;
+//import sptech.school.v2.cleanarch.domain.entities.Teacher;
 //import sptech.school.domain.enumerated.AppointmentStatus;
 //import sptech.school.domain.enumerated.PaymentStatus;
 //

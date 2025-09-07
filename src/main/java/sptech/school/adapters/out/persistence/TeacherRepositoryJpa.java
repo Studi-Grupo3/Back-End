@@ -1,7 +1,7 @@
 package sptech.school.adapters.out.persistence;
 
 import jakarta.validation.constraints.Email;
-import sptech.school.domain.entity.Teacher;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
 
 import java.util.Optional;
 

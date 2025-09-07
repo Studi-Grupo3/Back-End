@@ -14,7 +14,7 @@
 //import v2.cleanarch.core.teacher.application.TeacherMapper;
 //import sptech.school.application.service.TeacherService;
 //import sptech.school.v2.cleanarch.core.dtos.in.TeacherRequestUpdateDTO;
-//import sptech.school.domain.entity.Teacher;
+//import sptech.school.v2.cleanarch.domain.entities.Teacher;
 //import sptech.school.domain.enumerated.Subject;
 //
 //import java.util.Arrays;
