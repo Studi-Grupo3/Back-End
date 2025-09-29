@@ -12,10 +12,10 @@
 //import sptech.school.application.service.JwtService;
 //import sptech.school.application.service.StudentService;
 //import sptech.school.domain.dto.request.ResetPasswordRequestDTO;
-//import sptech.school.v2.cleanarch.core.dtos.in.StudentRegisterDTO;
-//import sptech.school.v2.cleanarch.core.dtos.in.StudentUpdateDTO;
+//import sptech.school.v2.cleanarch.core.dtos.in.student.StudentRegisterDTO;
+//import sptech.school.v2.cleanarch.core.dtos.in.student.StudentUpdateDTO;
 //import sptech.school.domain.dto.response.ResourceFileResponseDTO;
-//import sptech.school.v2.cleanarch.core.dtos.out.StudentResponseDTO;
+//import sptech.school.v2.cleanarch.core.dtos.out.student.StudentResponseDTO;
 //import sptech.school.domain.entity.ResourceFile;
 //import sptech.school.domain.entity.Student;
 //

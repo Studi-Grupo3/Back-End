@@ -3,8 +3,8 @@ package sptech.school.v2.cleanarch.core.application.utils;
 import org.springframework.stereotype.Component;
 import sptech.school.domain.entity.User;
 import sptech.school.domain.exception.EmailAlreadyExistsException;
-import sptech.school.v2.cleanarch.core.application.gateways.StudentQueryGateway;
-import sptech.school.v2.cleanarch.core.application.gateways.TeacherQueryGateway;
+import sptech.school.v2.cleanarch.core.application.gateways.student.StudentQueryGateway;
+import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherQueryGateway;
 import sptech.school.v2.cleanarch.domain.exception.CpfAlreadyExistsException;
 
 @Component

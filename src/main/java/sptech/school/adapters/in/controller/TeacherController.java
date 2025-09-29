@@ -16,7 +16,7 @@
 //import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 //import sptech.school.domain.dto.request.TeacherRequestDTO;
 //import sptech.school.v2.cleanarch.core.dtos.in.TeacherRequestUpdateDTO;
-//import sptech.school.v2.cleanarch.core.dtos.out.TeacherResponseDTO;
+//import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
 //import sptech.school.domain.entity.ResourceFile;
 //import sptech.school.domain.entity.Teacher;
 //

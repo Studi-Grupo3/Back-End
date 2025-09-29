@@ -7,11 +7,11 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.domain.entity.Student;
-import sptech.school.v2.cleanarch.core.application.facades.StudentFacadeContract;
+import sptech.school.v2.cleanarch.core.application.facades.student.StudentFacadeContract;
 import sptech.school.v2.cleanarch.core.application.mappers.StudentMapper;
-import sptech.school.v2.cleanarch.core.dtos.in.StudentRegisterDTO;
-import sptech.school.v2.cleanarch.core.dtos.in.StudentUpdateDTO;
-import sptech.school.v2.cleanarch.core.dtos.out.StudentResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.in.student.StudentRegisterDTO;
+import sptech.school.v2.cleanarch.core.dtos.in.student.StudentUpdateDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.student.StudentResponseDTO;
 
 @RestController
 @RequestMapping("/students")

@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import sptech.school.adapters.out.persistence.JpaUserRepository;
 import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
 import sptech.school.application.usecase.AbstractUserUseCase;
-import sptech.school.v2.cleanarch.core.dtos.in.TeacherUpdateDTO;
+import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherUpdateDTO;
 import sptech.school.domain.entity.Teacher;
 
 import java.util.List;

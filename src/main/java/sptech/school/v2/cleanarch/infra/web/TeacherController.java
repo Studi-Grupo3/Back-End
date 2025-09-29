@@ -7,11 +7,11 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.domain.entity.Teacher;
-import sptech.school.v2.cleanarch.core.application.facades.TeacherFacadeContract;
+import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
 import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
-import sptech.school.v2.cleanarch.core.dtos.in.TeacherRegisterDTO;
-import sptech.school.v2.cleanarch.core.dtos.in.TeacherUpdateDTO;
-import sptech.school.v2.cleanarch.core.dtos.out.TeacherResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherRegisterDTO;
+import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherUpdateDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
 
 import java.util.List;
 
