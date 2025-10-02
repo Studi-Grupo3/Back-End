@@ -78,9 +78,9 @@ public class TeacherDashService {
         // Distribuição de disciplinas
         // distribuição de disciplinas
         Map<String, Long> countBySubject = teachers.stream()
-                .filter(t -> t.getSubject() != null)
+                .filter(t -> t.getSubjects() != null)
                 .collect(Collectors.groupingBy(
-                        t -> t.getSubject().name(),
+                        t -> t.getSubjects().name(),
                         Collectors.counting()
                 ));
 
@@ -96,7 +96,7 @@ public class TeacherDashService {
                 .map(t -> {
                     TeacherTableDTO dto = new TeacherTableDTO();
                     dto.setName(t.getName());
-                    dto.setSubject(t.getSubject() != null ? t.getSubject().name() : "—");
+                    dto.setSubject(t.getSubjects() != null ? t.getSubjects().name() : "—");
                     dto.setHoursWorked(hoursPerTeacher.getOrDefault(t.getId(), 0.0));
                     dto.setHourlyRate(
                             t.getHourlyRate() != null

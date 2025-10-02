@@ -87,7 +87,7 @@ public class OverviewDashService {
                 .limit(recentPaymentsLimit)
                 .map(a -> new OverviewTableDTO(
                         a.getTeacher().getName(),
-                        a.getTeacher().getSubject().name(),
+                        a.getTeacher().getSubjects().name(),
                         a.getTeacher().getHourlyRate(),
                         a.getLessonDuration(),
                         a.getPaymentStatus().toString()

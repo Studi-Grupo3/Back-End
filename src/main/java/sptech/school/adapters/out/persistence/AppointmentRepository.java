@@ -3,6 +3,7 @@ package sptech.school.adapters.out.persistence;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import sptech.school.domain.dto.response.teacher.DisciplineStatsDTO;
 import sptech.school.domain.dto.response.teacher.WeekdayStatsDTO;
 import sptech.school.domain.entity.Appointment;
@@ -12,6 +13,7 @@ import sptech.school.domain.enumerated.PaymentStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
 
     // Verifica existência de conflito de horário
@@ -68,7 +70,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     // Estatística por disciplina
     @Query("SELECT new sptech.school.domain.dto.response.teacher.DisciplineStatsDTO(" +
             "  s, COUNT(a)) " +
-            "FROM Appointment a JOIN a.teacher.subject s " +
+            "FROM Appointment a JOIN a.teacher.subjects s " +
             "WHERE a.teacher.id = :teacherId " +
             "GROUP BY s")
     List<DisciplineStatsDTO> countByTeacherGroupBySubject(Integer teacherId);

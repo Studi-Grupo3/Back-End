@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sptech.school.application.mappers.StudentMapper;
-import sptech.school.application.mappers.TeacherMapper;
+import sptech.school.v2.cleanarch.core.application.mappers.StudentMapper;
+import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
 import sptech.school.application.service.JwtService;
 import sptech.school.application.service.PasswordResetService;
 import sptech.school.application.service.StudentService;
@@ -23,8 +23,6 @@ import sptech.school.domain.entity.Teacher;
 import sptech.school.domain.enumerated.Role;
 import sptech.school.domain.exception.AuthenticationException;
 import sptech.school.domain.exception.UserNullException;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auths")

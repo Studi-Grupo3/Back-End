@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sptech.school.domain.dto.AppointmentDTO;
-import sptech.school.domain.dto.request.AppointmentStatusDTO;
 import sptech.school.domain.dto.response.AppointmentResponseDTO;
 import sptech.school.domain.entity.Appointment;
 import sptech.school.domain.entity.Student;
@@ -18,17 +17,20 @@ import java.util.List;
 
 @Service
 public class AppointmentService {
-    @Autowired
     private AppointmentRepository appointmentRepository;
 
-    @Autowired
     private AppointmentMapper appointmentMapper;
 
-    @Autowired
     private TeacherService teacherService;
 
-    @Autowired
     private StudentService studentService;
+
+    public AppointmentService(AppointmentRepository appointmentRepository, AppointmentMapper appointmentMapper, TeacherService teacherService, StudentService studentService) {
+        this.appointmentRepository = appointmentRepository;
+        this.appointmentMapper = appointmentMapper;
+        this.teacherService = teacherService;
+        this.studentService = studentService;
+    }
 
     public AppointmentResponseDTO create(AppointmentDTO dto) {
         Appointment appointment = appointmentMapper.toEntity(dto);

@@ -1,15 +1,16 @@
 package sptech.school.application.service;
 
 import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
 import sptech.school.domain.dto.response.ContactRequestDTO;
 
 public class ContactService {
 
-    private final org.springframework.mail.javamail.JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
     private final String fromAddress;
     private final String contatoDestino;
 
-    public ContactService(org.springframework.mail.javamail.JavaMailSender mailSender,
+    public ContactService(JavaMailSender mailSender,
                           String fromAddress,
                           String contatoDestino) {
         this.mailSender = mailSender;

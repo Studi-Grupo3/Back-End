@@ -12,10 +12,10 @@
 //import org.springframework.test.util.ReflectionTestUtils;
 //import org.springframework.web.server.ResponseStatusException;
 //import sptech.school.adapters.out.persistence.JpaUserRepository;
-//import sptech.school.application.mappers.StudentMapper;
+//import sptech.school.v2.cleanarch.core.application.mappers.StudentMapper;
 //import sptech.school.application.service.StudentService;
-//import sptech.school.domain.dto.request.StudentRequestUpdateDTO;
-//import sptech.school.domain.dto.response.StudentResponseDTO;
+//import sptech.school.v2.cleanarch.core.dtos.in.student.StudentUpdateDTO;
+//import sptech.school.v2.cleanarch.core.dtos.out.student.StudentResponseDTO;
 //import sptech.school.domain.entity.Student;
 //
 //import java.util.List;
@@ -39,7 +39,7 @@
 //
 //    private AutoCloseable mocks;
 //
-//    private StudentRequestUpdateDTO dtoExemplo;
+//    private StudentUpdateDTO dtoExemplo;
 //
 //    @Mock
 //    private PasswordEncoder passwordEncoder;
@@ -49,7 +49,7 @@
 //        mocks = MockitoAnnotations.openMocks(this);
 //        ReflectionTestUtils.setField(studentService, "studentMapper", studentMapper);
 //        ReflectionTestUtils.setField(studentService, "passwordEncoder", passwordEncoder);
-//        dtoExemplo = new StudentRequestUpdateDTO(
+//        dtoExemplo = new StudentUpdateDTO(
 //            "Nome Teste",
 //            "email@exemplo.com",
 //            "123.456.789-09",

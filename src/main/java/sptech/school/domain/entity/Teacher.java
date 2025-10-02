@@ -3,6 +3,9 @@ package sptech.school.domain.entity;
 import jakarta.persistence.*;
 import sptech.school.domain.enumerated.Subject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "tb_teacher")
 public class Teacher extends User {
@@ -10,7 +13,9 @@ public class Teacher extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Subject subject;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private List<Subject> subjects;
     private Double hourlyRate;
     private String resumeTeacher;
     private String yearsExperience;
@@ -19,9 +24,9 @@ public class Teacher extends User {
     public Teacher() {
     }
 
-    public Teacher(String name, String email, String cpf, String password, Subject subject) {
+    public Teacher(String name, String email, String cpf, String password, List<Subject> subjects) {
         super(name, email, cpf, password);
-        this.subject = subject;
+        this.subjects = new ArrayList<>();
     }
 
     public String getYearsExperience() {
@@ -44,7 +49,7 @@ public class Teacher extends User {
     public String toString() {
         return "Teacher{" +
                 "id=" + id +
-                ", subject='" + subject + '\'' +
+                ", subjects='" + subjects + '\'' +
                 '}';
     }
 
@@ -72,11 +77,11 @@ public class Teacher extends User {
         this.hourlyRate = hourlyRate;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public List<Subject> getSubjects() {
+        return subjects;
     }
 
-    public void setSubject(Subject subjects) {
-        this.subject = subjects;
+    public void setSubjects(List<Subject> subject) {
+        this.subjects = subject;
     }
 }
