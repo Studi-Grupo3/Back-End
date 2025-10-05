@@ -82,17 +82,16 @@ public class OverviewDashService {
                 .toList();
 
         int recentPaymentsLimit = 5;
-        List<OverviewTableDTO> recentPayments = allAppointments.stream()
+      List<OverviewTableDTO> recentPayments = allAppointments.stream()
                 .filter(a -> a.getPaymentStatus() == PaymentStatus.PAID)
-                .limit(recentPaymentsLimit)
-                .map(a -> new OverviewTableDTO(
-                        a.getTeacher().getName(),
-                        a.getTeacher().getSubjects().name(),
+            .map(a -> new OverviewTableDTO(
+                      a.getTeacher().getName(),
+                       a.getTeacher().getSubjects().toString(),
                         a.getTeacher().getHourlyRate(),
-                        a.getLessonDuration(),
-                        a.getPaymentStatus().toString()
-                ))
-                .toList();
+                      a.getLessonDuration(),
+                       a.getPaymentStatus().toString()
+               ))
+              .toList();
 
         return new OverviewDashDTO(statsDTO, monthlyRevenue, lessonsPerDay, recentPayments);
     }

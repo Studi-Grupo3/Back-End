@@ -80,7 +80,7 @@ public class TeacherDashService {
         Map<String, Long> countBySubject = teachers.stream()
                 .filter(t -> t.getSubjects() != null)
                 .collect(Collectors.groupingBy(
-                        t -> t.getSubjects().name(),
+                        t -> t.getSubjects().toString(),
                         Collectors.counting()
                 ));
 
@@ -96,7 +96,7 @@ public class TeacherDashService {
                 .map(t -> {
                     TeacherTableDTO dto = new TeacherTableDTO();
                     dto.setName(t.getName());
-                    dto.setSubject(t.getSubjects() != null ? t.getSubjects().name() : "—");
+                    dto.setSubject(t.getSubjects() != null ? t.getSubjects().toString() : "—");
                     dto.setHoursWorked(hoursPerTeacher.getOrDefault(t.getId(), 0.0));
                     dto.setHourlyRate(
                             t.getHourlyRate() != null

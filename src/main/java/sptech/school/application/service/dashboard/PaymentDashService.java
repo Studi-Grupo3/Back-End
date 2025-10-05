@@ -85,7 +85,7 @@ public class PaymentDashService {
 
                     dto.setId(a.getId());
                     dto.setName(a.getTeacher().getName());
-                    dto.setSubject(a.getTeacher().getSubjects().name());
+//                    dto.setSubject(a.getTeacher().getSubjects().name());
                     dto.setValuePerHour(rate);
                     dto.setHours((int) hours);
                     dto.setTotal(rate * hours);
