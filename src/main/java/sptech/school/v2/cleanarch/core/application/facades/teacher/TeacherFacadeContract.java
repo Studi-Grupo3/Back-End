@@ -1,8 +1,8 @@
 package sptech.school.v2.cleanarch.core.application.facades.teacher;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
-
-import java.util.List;
 
 /**
  Para adicionar novos métodos, siga os passos:
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface TeacherFacadeContract {
     Teacher create(Teacher teacher);
-    List<Teacher> listAll();
+    Page<Teacher> listAll(Pageable pageable);
     Teacher update(Teacher teacher, Integer id);
     void delete(Integer id);
     Boolean teacherExistsByEmail(String email);

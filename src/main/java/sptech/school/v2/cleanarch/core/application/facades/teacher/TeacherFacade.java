@@ -1,6 +1,8 @@
 package sptech.school.v2.cleanarch.core.application.facades.teacher;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sptech.school.application.usecase.StorageServiceUseCase;
 import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
@@ -13,7 +15,6 @@ import sptech.school.v2.cleanarch.core.application.utils.VerifyEmailAndCpfUtil;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -73,8 +74,8 @@ public class TeacherFacade implements TeacherFacadeContract {
     }
 
     @Override
-    public List<Teacher> listAll() {
-        List<Teacher> teachers = teacherQueryUseCase.listAll();
+    public Page<Teacher> listAll(Pageable pageable) {
+        Page<Teacher> teachers = teacherQueryUseCase.listAll(pageable);
         teachers.forEach(this::loadProfileImage);
         return teachers;
     }
