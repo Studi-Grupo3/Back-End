@@ -1,10 +1,11 @@
 package sptech.school.v2.cleanarch.core.application.usecases.teacher;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherQueryGateway;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,8 +28,8 @@ public class TeacherQueryUseCase {
         return teacherQueryGateway.teacherExistsByEmail(email);
     }
 
-    public List<Teacher> listAll() {
-        return teacherQueryGateway.listAll();
+    public Page<Teacher> listAll(Pageable pageable) {
+        return teacherQueryGateway.listAll(pageable);
     }
 
     public Optional<Teacher> findByEmail(String email) {

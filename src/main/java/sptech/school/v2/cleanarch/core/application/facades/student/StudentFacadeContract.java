@@ -1,12 +1,12 @@
 package sptech.school.v2.cleanarch.core.application.facades.student;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import sptech.school.v2.cleanarch.domain.entities.Student;
-
-import java.util.List;
 
 public interface StudentFacadeContract {
     Student create(Student student);
-    List<Student> listAll();
+    Page<Student> listAll(Pageable pageable);
     Student update(Student student, Integer id);
     void delete(Integer id);
     Student findById(Integer id);

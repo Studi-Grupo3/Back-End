@@ -1,5 +1,7 @@
 package sptech.school.v2.cleanarch.core.application.facades.student;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.domain.exception.UserNullException;
@@ -7,10 +9,8 @@ import sptech.school.v2.cleanarch.core.application.usecases.student.StudentComma
 import sptech.school.v2.cleanarch.core.application.usecases.student.StudentQueryUseCase;
 import sptech.school.v2.cleanarch.core.application.utils.VerifyEmailAndCpfUtil;
 
-import java.util.List;
-
 @Service
-public class StudentFacade implements StudentFacadeContract{
+public class StudentFacade implements StudentFacadeContract {
     private final StudentCommandUseCase studentCommandUseCase;
     private final StudentQueryUseCase studentQueryUseCase;
     private final VerifyEmailAndCpfUtil verifyEmailAndCpfUtil;
@@ -28,8 +28,8 @@ public class StudentFacade implements StudentFacadeContract{
     }
 
     @Override
-    public List<Student> listAll() {
-        return studentQueryUseCase.listAll();
+    public Page<Student> listAll(Pageable pageable) {
+        return studentQueryUseCase.listAll(pageable);
     }
 
     @Override
