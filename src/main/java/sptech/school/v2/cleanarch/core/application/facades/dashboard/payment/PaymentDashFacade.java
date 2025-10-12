@@ -18,3 +18,4 @@ public class PaymentDashFacade implements PaymentDashFacadeContract {
         return paymentDashQueryUseCase.getAllDashboardData();
     }
 }
+
