@@ -6,7 +6,7 @@ import sptech.school.v2.cleanarch.core.application.gateways.dashboard.payment.Pa
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.payment.PaymentStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.payment.PaymentTableDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.payment.PaymentDashResponseDTO;
-import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.PaymentDashRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.PaymentDashJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.payment.projections.PaymentAppointmentProjection;
 
 import java.time.LocalDateTime;
@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @Component
 public class PaymentDashQueryJpaAdapter implements PaymentDashQueryGateway {
 
-    private final PaymentDashRepository repository;
+    private final PaymentDashJpaRepository repository;
 
-    public PaymentDashQueryJpaAdapter(PaymentDashRepository repository) {
+    public PaymentDashQueryJpaAdapter(PaymentDashJpaRepository repository) {
         this.repository = repository;
     }
 

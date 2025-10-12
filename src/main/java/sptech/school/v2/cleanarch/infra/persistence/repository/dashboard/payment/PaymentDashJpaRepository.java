@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface PaymentDashRepository extends JpaRepository<Appointment, Integer> {
+public interface PaymentDashJpaRepository extends JpaRepository<Appointment, Integer> {
 
     @Query("SELECT COALESCE(SUM(COALESCE(a.lessonDuration,0) * COALESCE(a.teacher.hourlyRate,0)), 0) FROM Appointment a WHERE a.dateTime BETWEEN :start AND :end")
     Double sumTotalBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);

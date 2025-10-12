@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sptech.school.v2.cleanarch.core.application.facades.dashboard.teacher.TeacherDashFacadeContract;
+import sptech.school.v2.cleanarch.core.dtos.out.dashboard.teacher.TeacherDashResponseDTO;
 
 @RestController
 @RequestMapping("/dashboards")
@@ -25,8 +26,8 @@ public class TeacherDashController {
             @ApiResponse(responseCode = "200", description = "Dados do dashboard retornados com sucesso"),
             @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
-    public ResponseEntity<TeacherDashboardDTO> getTeacherDashboard() {
-        TeacherDashboardDTO dashboard = facade.getTeacherDashData();
+    public ResponseEntity<TeacherDashResponseDTO> getTeacherDashboard() {
+        TeacherDashResponseDTO dashboard = facade.getTeacherDashData();
         return ResponseEntity.ok(dashboard);
     }
 }
