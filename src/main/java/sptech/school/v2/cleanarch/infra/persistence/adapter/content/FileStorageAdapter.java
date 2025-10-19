@@ -14,7 +14,7 @@ import java.util.Optional;
 public class FileStorageAdapter implements FileStorageGateway {
     private final StorageServiceUseCase storageService;
 
-    public FileStorageAdapter(@Qualifier("azureStorageService") StorageServiceUseCase storageService) {
+    public FileStorageAdapter(@Qualifier("s3StorageService") StorageServiceUseCase storageService) {
         this.storageService = storageService;
     }
 
