@@ -37,7 +37,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
     private EmailSenderGateway emailSenderGateway;
 
     @Autowired
-    @Qualifier("azureStorageService")
+    @Qualifier("s3StorageService")
     private StorageServiceUseCase storageService;
 
     @Autowired
@@ -99,7 +99,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
 
         Optional<InputStream> streamOpt = storageService.findFile(profileImage.getFileLocation());
         if (streamOpt.isEmpty()) {
-            throw new IOException("File not found in Azure Storage.");
+            throw new IOException("File not found in S3 storage.");
         }
 
         profileImage.setInputStream(streamOpt.get());
@@ -112,7 +112,7 @@ public abstract class AbstractUserUseCase<T extends User, DTO> implements UserUs
 
         ResourceFile oldProfileImage = userTarget.getProfileImage();
         if (oldProfileImage != null) {
-            // remove o arquivo antigo do Azure Blob Storage, caso ele já exista
+            // remove o arquivo antigo do Amazon S3, caso ele já exista
             storageService.deleteFile(oldProfileImage.getFileLocation());
             jpaResourceFileRepository.deleteById(oldProfileImage.getId());
         }
