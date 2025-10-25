@@ -23,6 +23,7 @@ import sptech.school.domain.dto.response.ResourceFileResponseDTO;
 import sptech.school.v2.cleanarch.core.application.facades.student.StudentFacadeContract;
 import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
 import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
+import sptech.school.v2.cleanarch.domain.enumerated.Role;
 
 import java.io.IOException;
 
@@ -55,7 +56,7 @@ public class ProfilePhotoController {
             @Parameter(description = "Role do usuário (student ou teacher)", required = true)
             @RequestParam("role") String role
     ) throws IOException {
-        UserRole userRole = resolveRole(role);
+        Role userRole = resolveRole(role);
         ResourceFileResponseDTO dto = switch (userRole) {
             case STUDENT -> studentFacade.uploadProfileImage(file, userId);
             case TEACHER -> teacherFacade.uploadProfileImage(file, userId);
@@ -76,7 +77,7 @@ public class ProfilePhotoController {
             @Parameter(description = "Role do usuário (student ou teacher)", required = true)
             @RequestParam("role") String role
     ) throws IOException {
-        UserRole userRole = resolveRole(role);
+        Role userRole = resolveRole(role);
         ResourceFile profileImage = switch (userRole) {
             case STUDENT -> studentFacade.getProfileImage(userId);
             case TEACHER -> teacherFacade.getProfileImage(userId);
@@ -90,19 +91,15 @@ public class ProfilePhotoController {
                 .body(resource);
     }
 
-    private UserRole resolveRole(String role) {
+    private Role resolveRole(String role) {
         if (role == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role must be provided");
         }
         return switch (role.trim().toLowerCase()) {
-            case "student" -> UserRole.STUDENT;
-            case "teacher" -> UserRole.TEACHER;
+            case "student" -> Role.STUDENT;
+            case "teacher" -> Role.TEACHER;
             default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unknown role: " + role);
         };
     }
 
-    private enum UserRole {
-        STUDENT,
-        TEACHER
-    }
 }
