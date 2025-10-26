@@ -12,7 +12,6 @@ import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaReposit
     basePackages = {"sptech.school", "v2.cleanarch.core", "sptech.school.v2.cleanarch.infra.teacher.persistence"}
 )
 @EnableJpaRepositories(basePackageClasses = {
-    sptech.school.adapters.out.persistence.AppointmentRepository.class,
     TeacherJpaRepository.class
 })
 @EntityScan(basePackages = {"sptech.school.domain.entity"})

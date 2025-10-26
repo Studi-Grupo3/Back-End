@@ -5,13 +5,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import sptech.school.adapters.out.persistence.StudentRepositoryJpa;
+import sptech.school.v2.cleanarch.infra.persistence.repository.StudentJpaRepository;
+
 
 @Service
 public class StudentUserDetailsService implements UserDetailsService {
-    private final StudentRepositoryJpa studentRepository;
+    private final StudentJpaRepository studentRepository;
 
-    public StudentUserDetailsService(StudentRepositoryJpa studentRepository) {
+    public StudentUserDetailsService(StudentJpaRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 

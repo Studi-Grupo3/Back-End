@@ -9,7 +9,7 @@ import sptech.school.domain.enumerated.AppointmentStatus;
 import sptech.school.v2.cleanarch.core.application.gateways.dashboard.appointment.AppointmentDashQueryGateway;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.appoinment.AppointmentStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.appointment.AppointmentDashResponseDTO;
-import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.AppointmentDashRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.AppointmentDashJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.AppointmentNext5;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.StatusCount;
 
@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 @Component
 public class AppointmentDashQueryJpaAdapter implements AppointmentDashQueryGateway {
 
-    private final AppointmentDashRepository repository;
+    private final AppointmentDashJpaRepository repository;
 
-    public AppointmentDashQueryJpaAdapter(AppointmentDashRepository repository) {
+    public AppointmentDashQueryJpaAdapter(AppointmentDashJpaRepository repository) {
         this.repository = repository;
     }
 

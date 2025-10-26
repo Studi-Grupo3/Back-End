@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface OverviewDashRepository extends JpaRepository<Appointment, Integer> {
+public interface OverviewDashJpaRepository extends JpaRepository<Appointment, Integer> {
 
     @Query("SELECT COALESCE(SUM(a.totalValue), 0) FROM Appointment a WHERE a.paymentStatus = :status AND a.dateTime BETWEEN :start AND :end")
     Double sumTotalByPaymentStatusBetween(@Param("status") PaymentStatus status,

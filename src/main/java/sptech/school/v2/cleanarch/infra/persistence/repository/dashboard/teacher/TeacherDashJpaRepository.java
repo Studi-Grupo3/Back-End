@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface TeacherDashRepository extends JpaRepository<Teacher, Integer> {
+public interface TeacherDashJpaRepository extends JpaRepository<Teacher, Integer> {
 
     @Query("SELECT t.id AS id, t.name AS name, t.subjects AS subjects, t.hourlyRate AS hourlyRate FROM Teacher t")
     List<TeacherBasicProjection> findAllBasic();

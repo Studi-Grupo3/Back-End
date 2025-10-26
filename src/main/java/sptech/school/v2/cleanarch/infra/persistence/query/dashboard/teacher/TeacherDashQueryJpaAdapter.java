@@ -7,7 +7,7 @@ import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.ChartPieDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.teacher.TeacherStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.teacher.TeacherTableDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.teacher.TeacherDashResponseDTO;
-import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.teacher.TeacherDashRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.teacher.TeacherDashJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.teacher.projections.HoursByTeacher;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.teacher.projections.TeacherBasicProjection;
 
@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 @Component
 public class TeacherDashQueryJpaAdapter implements TeacherDashQueryGateway {
 
-    private final TeacherDashRepository repository;
+    private final TeacherDashJpaRepository repository;
 
-    public TeacherDashQueryJpaAdapter(TeacherDashRepository repository) {
+    public TeacherDashQueryJpaAdapter(TeacherDashJpaRepository repository) {
         this.repository = repository;
     }
 

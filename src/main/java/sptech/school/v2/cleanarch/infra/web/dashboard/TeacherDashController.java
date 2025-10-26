@@ -7,17 +7,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sptech.school.application.service.dashboard.TeacherDashService;
-import sptech.school.domain.dto.response.dashboard.teacher.TeacherDashboardDTO;
+import sptech.school.v2.cleanarch.core.application.facades.dashboard.teacher.TeacherDashFacadeContract;
+import sptech.school.v2.cleanarch.core.dtos.out.dashboard.teacher.TeacherDashResponseDTO;
 
 @RestController
 @RequestMapping("/dashboards")
 public class TeacherDashController {
 
-    private final TeacherDashService teacherDashService;
+    private final TeacherDashFacadeContract facade;
 
-    public TeacherDashController(TeacherDashService teacherDashService) {
-        this.teacherDashService = teacherDashService;
+    public TeacherDashController(TeacherDashFacadeContract facade) {
+        this.facade = facade;
     }
 
     @GetMapping
@@ -26,8 +26,8 @@ public class TeacherDashController {
             @ApiResponse(responseCode = "200", description = "Dados do dashboard retornados com sucesso"),
             @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
-    public ResponseEntity<TeacherDashboardDTO> getTeacherDashboard() {
-        TeacherDashboardDTO dashboard = teacherDashService.getDashboardData();
+    public ResponseEntity<TeacherDashResponseDTO> getTeacherDashboard() {
+        TeacherDashResponseDTO dashboard = facade.getTeacherDashData();
         return ResponseEntity.ok(dashboard);
     }
 }

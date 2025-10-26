@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface AppointmentDashRepository extends JpaRepository<Appointment, Integer> {
+public interface AppointmentDashJpaRepository extends JpaRepository<Appointment, Integer> {
 
     @Query("SELECT COUNT(a) FROM Appointment a WHERE a.dateTime BETWEEN :start AND :end")
     long countTotalBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);

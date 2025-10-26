@@ -9,7 +9,8 @@ import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.ChartLineDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.overview.OverviewStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.overview.OverviewTableDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.overview.OverviewDashResponseDTO;
-import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.overview.OverviewDashRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.overview.OverviewDashJpaRepository;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -19,13 +20,12 @@ import java.util.stream.Collectors;
 @Component
 public class OverviewDashQueryJpaAdapter implements OverviewDashQueryGateway {
 
-    private final OverviewDashRepository repository;
-    private final org.springframework.data.repository.CrudRepository<?, ?> teacherRepository;
+    private final OverviewDashJpaRepository repository;
+    private final TeacherJpaRepository teacherRepository;
 
-    public OverviewDashQueryJpaAdapter(OverviewDashRepository repository,
-                                       sptech.school.adapters.out.persistence.TeacherRepositoryJpa teacherRepositoryJpa) {
+    public OverviewDashQueryJpaAdapter(OverviewDashJpaRepository repository, TeacherJpaRepository teacherRepository) {
         this.repository = repository;
-        this.teacherRepository = teacherRepositoryJpa;
+        this.teacherRepository = teacherRepository;
     }
 
     @Override

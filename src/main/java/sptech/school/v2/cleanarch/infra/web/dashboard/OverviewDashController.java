@@ -7,17 +7,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sptech.school.application.service.dashboard.OverviewDashService;
-import sptech.school.domain.dto.response.dashboard.overview.OverviewDashDTO;
+import sptech.school.v2.cleanarch.core.application.facades.dashboard.overview.OverviewDashFacadeContract;
+import sptech.school.v2.cleanarch.core.dtos.out.dashboard.overview.OverviewDashResponseDTO;
 
 @RequestMapping("dashboards/overview")
 @RestController
 public class OverviewDashController {
 
-    private final OverviewDashService dashboardService;
+    private final OverviewDashFacadeContract facade;
 
-    public OverviewDashController(OverviewDashService dashboardService) {
-        this.dashboardService = dashboardService;
+    public OverviewDashController(OverviewDashFacadeContract facade) {
+        this.facade = facade;
     }
 
     @GetMapping
@@ -26,8 +26,8 @@ public class OverviewDashController {
             @ApiResponse(responseCode = "200", description = "Dados do dashboard retornados com sucesso"),
             @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
-    public ResponseEntity<OverviewDashDTO> getAllDashboardData() {
-        OverviewDashDTO dto = dashboardService.getDashboardData();
+    public ResponseEntity<OverviewDashResponseDTO> getAllDashboardData() {
+        OverviewDashResponseDTO dto = facade.getOverviewDashData();
         return ResponseEntity.ok(dto);
     }
 }
