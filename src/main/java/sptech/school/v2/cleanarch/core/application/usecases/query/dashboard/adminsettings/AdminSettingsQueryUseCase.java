@@ -1,7 +1,7 @@
 package sptech.school.v2.cleanarch.core.application.usecases.query.dashboard.adminsettings;
 
 import org.springframework.stereotype.Service;
-import sptech.school.domain.entity.Admin;
+import sptech.school.v2.cleanarch.domain.entities.Admin;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import sptech.school.v2.cleanarch.core.application.gateways.dashboard.adminsettings.AdminQueryGateway;

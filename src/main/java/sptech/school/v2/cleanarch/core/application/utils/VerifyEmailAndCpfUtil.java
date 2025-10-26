@@ -1,11 +1,11 @@
 package sptech.school.v2.cleanarch.core.application.utils;
 
 import org.springframework.stereotype.Component;
-import sptech.school.domain.entity.User;
-import sptech.school.domain.exception.EmailAlreadyExistsException;
 import sptech.school.v2.cleanarch.core.application.gateways.student.StudentQueryGateway;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherQueryGateway;
+import sptech.school.v2.cleanarch.domain.entities.User;
 import sptech.school.v2.cleanarch.domain.exception.CpfAlreadyExistsException;
+import sptech.school.v2.cleanarch.domain.exception.EmailAlreadyExistsException;
 
 @Component
 public class VerifyEmailAndCpfUtil {

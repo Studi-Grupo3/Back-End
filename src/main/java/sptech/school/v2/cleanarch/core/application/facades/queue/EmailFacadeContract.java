@@ -1,6 +1,6 @@
 package sptech.school.v2.cleanarch.core.application.facades.queue;
 
-import sptech.school.domain.dto.response.ContactRequestDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.ContactRequestDTO;
 
 public interface EmailFacadeContract {
     void requestContactEmail(ContactRequestDTO dto);

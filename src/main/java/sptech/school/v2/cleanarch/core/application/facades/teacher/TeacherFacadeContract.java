@@ -1,8 +1,13 @@
 package sptech.school.v2.cleanarch.core.application.facades.teacher;
 
-import sptech.school.domain.entity.Teacher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+import sptech.school.v2.cleanarch.core.dtos.out.ResourceFileResponseDTO;
+import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
 
-import java.util.List;
+import java.io.IOException;
 
 /**
  Para adicionar novos métodos, siga os passos:
@@ -18,10 +23,14 @@ import java.util.List;
  */
 public interface TeacherFacadeContract {
     Teacher create(Teacher teacher);
-    List<Teacher> listAll();
+    Page<Teacher> listAll(Pageable pageable);
     Teacher update(Teacher teacher, Integer id);
     void delete(Integer id);
     Boolean teacherExistsByEmail(String email);
     Boolean teacherExistsByCpf(String cpf);
     Teacher findById(Integer id);
+    Teacher login(String email, String password);
+    void sendResetCode(String email);
+    ResourceFileResponseDTO uploadProfileImage(MultipartFile file, Integer id) throws IOException;
+    ResourceFile getProfileImage(Integer id) throws IOException;
 }

@@ -1,8 +1,10 @@
 package sptech.school.v2.cleanarch.core.application.gateways.teacher;
 
-import sptech.school.domain.entity.Teacher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Gateway de consulta (query) para operações relacionadas a professores.
@@ -16,5 +18,7 @@ public interface TeacherQueryGateway {
 
     Teacher findById(Integer id);
 
-    List<Teacher> listAll();
+    Page<Teacher> listAll(Pageable pageable);
+
+    Optional<Teacher> findByEmail(String email);
 }

@@ -2,13 +2,13 @@ package sptech.school.v2.cleanarch.infra.persistence.query.dashboard.appointment
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import sptech.school.domain.dto.response.dashboard.ChartBarDTO;
-import sptech.school.domain.dto.response.dashboard.ChartPieDTO;
-import sptech.school.domain.dto.response.dashboard.appointment.AppointmentTableDTO;
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.core.dtos.out.dashboard.ChartBarDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.dashboard.ChartPieDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.dashboard.appointment.AppointmentTableDTO;
 import sptech.school.v2.cleanarch.core.application.gateways.dashboard.appointment.AppointmentDashQueryGateway;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.appoinment.AppointmentStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.appointment.AppointmentDashResponseDTO;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.AppointmentDashJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.AppointmentNext5;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.StatusCount;
@@ -34,7 +34,7 @@ public class AppointmentDashQueryJpaAdapter implements AppointmentDashQueryGatew
 
         List<StatusCount> statusCounts = repository.countByStatusBetween(start, end);
         Map<String, Long> statusMap = statusCounts.stream()
-                .collect(Collectors.toMap(sc -> sc.getStatus().name(), StatusCount::getTotal));
+                .collect(Collectors.toMap(sc -> String.valueOf(sc.getStatus()), StatusCount::getTotal));
 
         long confirmed = statusMap.getOrDefault("COMPLETED", 0L);
         long pending   = statusMap.getOrDefault("SCHEDULED", 0L);
@@ -74,7 +74,7 @@ public class AppointmentDashQueryJpaAdapter implements AppointmentDashQueryGatew
             }
             dto.setDuration(p.getDuration());
             dto.setLocation(p.getLocation());
-            dto.setStatus(p.getStatus() != null ? p.getStatus().toString() : null);
+            dto.setStatus(p.getStatus() != null ? String.valueOf(p.getStatus()) : null);
             return dto;
         }).collect(Collectors.toList());
 

@@ -3,7 +3,7 @@ package sptech.school.v2.cleanarch.infra.web.queue;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sptech.school.domain.dto.response.ContactRequestDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.ContactRequestDTO;
 import sptech.school.v2.cleanarch.core.application.facades.queue.EmailFacadeContract;
 
 import java.util.Map;

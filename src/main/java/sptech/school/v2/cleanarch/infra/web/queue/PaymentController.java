@@ -2,7 +2,7 @@ package sptech.school.v2.cleanarch.infra.web.queue;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sptech.school.domain.dto.payments.PaymentRequestDTO;
+import sptech.school.v2.cleanarch.core.dtos.payments.PaymentRequestDTO;
 import sptech.school.v2.cleanarch.core.application.facades.queue.PaymentFacadeContract;
 
 import java.util.Map;

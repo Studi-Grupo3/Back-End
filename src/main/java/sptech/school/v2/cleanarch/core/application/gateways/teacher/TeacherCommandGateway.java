@@ -1,6 +1,6 @@
 package sptech.school.v2.cleanarch.core.application.gateways.teacher;
 
-import sptech.school.domain.entity.Teacher;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
 
 /**
  * Interface de gateway para operações de comando relacionadas a entidades Teacher.

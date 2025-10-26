@@ -1,6 +1,6 @@
 package sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections;
 
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
 import java.time.LocalDateTime;
 

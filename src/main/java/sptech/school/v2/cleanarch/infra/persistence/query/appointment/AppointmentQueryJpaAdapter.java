@@ -2,8 +2,8 @@ package sptech.school.v2.cleanarch.infra.persistence.query.appointment;
 
 import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.core.application.gateways.appointment.AppointmentQueryGateway;
-import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.entities.Appointment;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 import sptech.school.v2.cleanarch.infra.persistence.repository.appointment.AppointmentJpaRepository;
 
 import java.time.LocalDateTime;

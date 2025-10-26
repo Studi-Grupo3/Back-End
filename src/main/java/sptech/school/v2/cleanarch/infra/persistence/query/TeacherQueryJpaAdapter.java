@@ -1,11 +1,12 @@
-package sptech.school.v2.cleanarch.infra.persistence.query;
-
+package sptech.school.v2.cleanarch.infra.persistence.adapter.teacher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import sptech.school.domain.entity.Teacher;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherQueryGateway;
 import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TeacherQueryJpaAdapter implements TeacherQueryGateway {
@@ -31,9 +32,13 @@ public class TeacherQueryJpaAdapter implements TeacherQueryGateway {
         return teacherJpaRepository.existsByCpf(cpf);
     }
 
+    @Override
+    public Page<Teacher> listAll(Pageable pageable) {
+        return teacherJpaRepository.findAll(pageable);
+    }
 
     @Override
-    public List<Teacher> listAll() {
-        return teacherJpaRepository.findAll();
+    public Optional<Teacher> findByEmail(String email) {
+        return teacherJpaRepository.findByEmail(email);
     }
 }

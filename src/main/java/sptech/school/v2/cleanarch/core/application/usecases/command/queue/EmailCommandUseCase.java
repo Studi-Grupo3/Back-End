@@ -2,7 +2,7 @@ package sptech.school.v2.cleanarch.core.application.usecases.command.queue;
 
 import org.springframework.stereotype.Service;
 import sptech.school.v2.cleanarch.core.application.gateways.queue.EmailCommandGateway;
-import sptech.school.domain.dto.response.ContactRequestDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.ContactRequestDTO;
 import sptech.school.v2.cleanarch.core.dtos.in.queue.ContactRequestedEvent;
 import sptech.school.v2.cleanarch.core.dtos.in.queue.PasswordResetRequestedEvent;
 

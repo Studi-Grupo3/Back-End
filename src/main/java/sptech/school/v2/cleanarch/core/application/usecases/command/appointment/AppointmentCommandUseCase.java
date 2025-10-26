@@ -1,20 +1,20 @@
 package sptech.school.v2.cleanarch.core.application.usecases.command.appointment;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
 import sptech.school.v2.cleanarch.core.application.gateways.appointment.AppointmentCommandGateway;
 import sptech.school.v2.cleanarch.core.application.gateways.appointment.AppointmentQueryGateway;
 import sptech.school.v2.cleanarch.core.application.gateways.student.StudentQueryGateway;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherQueryGateway;
-import sptech.school.domain.dto.AppointmentDTO;
-import sptech.school.domain.dto.response.AppointmentResponseDTO;
-import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.entity.Student;
-import sptech.school.domain.entity.Teacher;
-import sptech.school.domain.enumerated.AppointmentStatus;
 import sptech.school.v2.cleanarch.core.application.mappers.appointment.AppointmentMapper;
+import sptech.school.v2.cleanarch.core.dtos.internal.AppointmentDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.AppointmentResponseDTO;
+import sptech.school.v2.cleanarch.domain.entities.Appointment;
+import sptech.school.v2.cleanarch.domain.entities.Student;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
 @Service
 public class AppointmentCommandUseCase {

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
-import sptech.school.domain.entity.Responsible;
+import sptech.school.v2.cleanarch.domain.Responsible;
 
 import java.time.LocalDate;
 

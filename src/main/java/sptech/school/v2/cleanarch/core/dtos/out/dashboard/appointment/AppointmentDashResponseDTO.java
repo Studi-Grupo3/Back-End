@@ -1,8 +1,7 @@
 package sptech.school.v2.cleanarch.core.dtos.out.dashboard.appointment;
 
-import sptech.school.domain.dto.response.dashboard.ChartBarDTO;
-import sptech.school.domain.dto.response.dashboard.ChartPieDTO;
-import sptech.school.domain.dto.response.dashboard.appointment.AppointmentTableDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.dashboard.ChartBarDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.dashboard.ChartPieDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.appoinment.AppointmentStatsDTO;
 
 

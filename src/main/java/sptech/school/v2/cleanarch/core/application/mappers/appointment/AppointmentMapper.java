@@ -2,9 +2,9 @@ package sptech.school.v2.cleanarch.core.application.mappers.appointment;
 
 import jakarta.validation.Valid;
 import org.mapstruct.*;
-import sptech.school.domain.dto.AppointmentDTO;
-import sptech.school.domain.dto.response.AppointmentResponseDTO;
-import sptech.school.domain.entity.Appointment;
+import sptech.school.v2.cleanarch.core.dtos.internal.AppointmentDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.AppointmentResponseDTO;
+import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")

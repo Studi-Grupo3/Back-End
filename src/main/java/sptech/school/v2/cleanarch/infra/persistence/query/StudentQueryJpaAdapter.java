@@ -1,11 +1,12 @@
-package sptech.school.v2.cleanarch.infra.persistence.query;
-
+package sptech.school.v2.cleanarch.infra.persistence.adapter.student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import sptech.school.domain.entity.Student;
+import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.core.application.gateways.student.StudentQueryGateway;
 import sptech.school.v2.cleanarch.infra.persistence.repository.StudentJpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Component
 public class StudentQueryJpaAdapter implements StudentQueryGateway {
@@ -31,7 +32,12 @@ public class StudentQueryJpaAdapter implements StudentQueryGateway {
     }
 
     @Override
-    public List<Student> listAll() {
-        return repository.findAll();
+    public Page<Student> listAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Optional<Student> findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 }

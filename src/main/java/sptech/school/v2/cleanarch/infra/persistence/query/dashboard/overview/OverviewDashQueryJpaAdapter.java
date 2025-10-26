@@ -2,13 +2,13 @@ package sptech.school.v2.cleanarch.infra.persistence.query.dashboard.overview;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import sptech.school.domain.enumerated.PaymentStatus;
 import sptech.school.v2.cleanarch.core.application.gateways.dashboard.overview.OverviewDashQueryGateway;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.ChartBarDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.ChartLineDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.overview.OverviewStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.overview.OverviewTableDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.overview.OverviewDashResponseDTO;
+import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
 import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.overview.OverviewDashJpaRepository;
 

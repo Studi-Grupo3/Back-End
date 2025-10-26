@@ -1,8 +1,10 @@
-package sptech.school.v2.cleanarch.infra.persistence.command;
+package sptech.school.v2.cleanarch.infra.persistence.adapter.teacher;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
-import sptech.school.domain.entity.Teacher;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherCommandGateway;
 import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
 

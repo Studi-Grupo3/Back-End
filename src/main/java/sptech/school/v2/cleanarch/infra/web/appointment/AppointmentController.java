@@ -1,18 +1,18 @@
 package sptech.school.v2.cleanarch.infra.web.appointment;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.v2.cleanarch.core.application.facades.appointment.AppointmentFacadeContract;
-import sptech.school.domain.dto.AppointmentDTO;
-import sptech.school.domain.dto.request.AppointmentStatusDTO;
-import sptech.school.domain.dto.response.AppointmentResponseDTO;
-import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.core.dtos.in.AppointmentStatusDTO;
+import sptech.school.v2.cleanarch.core.dtos.internal.AppointmentDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.AppointmentResponseDTO;
+import sptech.school.v2.cleanarch.domain.entities.Appointment;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
 import java.util.List;
 

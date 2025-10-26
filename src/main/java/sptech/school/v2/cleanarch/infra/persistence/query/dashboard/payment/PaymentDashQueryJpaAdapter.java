@@ -1,11 +1,11 @@
 package sptech.school.v2.cleanarch.infra.persistence.query.dashboard.payment;
 
 import org.springframework.stereotype.Component;
-import sptech.school.domain.enumerated.PaymentStatus;
 import sptech.school.v2.cleanarch.core.application.gateways.dashboard.payment.PaymentDashQueryGateway;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.payment.PaymentStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.payment.PaymentTableDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.payment.PaymentDashResponseDTO;
+import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.PaymentDashJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.payment.projections.PaymentAppointmentProjection;
 

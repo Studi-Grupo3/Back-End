@@ -3,8 +3,8 @@ package sptech.school.v2.cleanarch.infra.persistence.repository.appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.entities.Appointment;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

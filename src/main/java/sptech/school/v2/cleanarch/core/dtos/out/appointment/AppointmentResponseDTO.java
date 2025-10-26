@@ -1,6 +1,6 @@
 package sptech.school.v2.cleanarch.core.dtos.out.appointment;
 
-import sptech.school.domain.enumerated.Subject;
+import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 
 import java.time.LocalDateTime;
 import java.util.List;

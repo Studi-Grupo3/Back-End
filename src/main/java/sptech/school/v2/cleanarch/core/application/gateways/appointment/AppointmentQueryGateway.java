@@ -1,7 +1,7 @@
 package sptech.school.v2.cleanarch.core.application.gateways.appointment;
 
-import sptech.school.domain.entity.Appointment;
-import sptech.school.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.entities.Appointment;
+import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

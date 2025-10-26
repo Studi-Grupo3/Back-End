@@ -1,7 +1,7 @@
 package sptech.school.v2.cleanarch.core.application.usecases.command.queue;
 
 import org.springframework.stereotype.Service;
-import sptech.school.domain.dto.payments.PaymentRequestDTO;
+import sptech.school.v2.cleanarch.core.dtos.payments.PaymentRequestDTO;
 import sptech.school.v2.cleanarch.core.application.gateways.queue.PaymentRequestCommandGateway;
 import sptech.school.v2.cleanarch.core.dtos.in.queue.PaymentRequestedEvent;
 

@@ -2,7 +2,7 @@ package sptech.school.v2.cleanarch.infra.persistence.command.dashboard.adminsett
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import sptech.school.domain.entity.Admin;
+import sptech.school.v2.cleanarch.domain.entities.Admin;
 import sptech.school.v2.cleanarch.core.application.gateways.dashboard.adminsettings.AdminCommandGateway;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.adminsettings.AdminJpaRepository;
 

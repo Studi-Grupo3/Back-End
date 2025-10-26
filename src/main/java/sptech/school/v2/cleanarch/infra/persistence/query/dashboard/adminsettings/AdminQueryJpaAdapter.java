@@ -1,7 +1,7 @@
 package sptech.school.v2.cleanarch.infra.persistence.query.dashboard.adminsettings;
 
 import org.springframework.stereotype.Component;
-import sptech.school.domain.entity.Admin;
+import sptech.school.v2.cleanarch.domain.entities.Admin;
 import sptech.school.v2.cleanarch.core.application.gateways.dashboard.adminsettings.AdminQueryGateway;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.adminsettings.AdminJpaRepository;
 

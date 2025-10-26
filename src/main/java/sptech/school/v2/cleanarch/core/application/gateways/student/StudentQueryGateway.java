@@ -1,6 +1,10 @@
 package sptech.school.v2.cleanarch.core.application.gateways.student;
 
-import sptech.school.domain.entity.Student;
+import sptech.school.v2.cleanarch.domain.entities.Student;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import java.util.Optional;
 
 public interface StudentQueryGateway {
     boolean studentExistsByEmail(String email);
@@ -9,5 +13,7 @@ public interface StudentQueryGateway {
 
     Student findById(Integer id);
 
-    java.util.List<Student> listAll();
+    Page<Student> listAll(Pageable pageable);
+
+    Optional<Student> findByEmail(String email);
 }

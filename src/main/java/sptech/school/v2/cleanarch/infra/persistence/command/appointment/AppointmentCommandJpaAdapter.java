@@ -3,7 +3,7 @@ package sptech.school.v2.cleanarch.infra.persistence.command.appointment;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.core.application.gateways.appointment.AppointmentCommandGateway;
-import sptech.school.domain.entity.Appointment;
+import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.infra.persistence.repository.appointment.AppointmentJpaRepository;
 
 @Component

@@ -1,6 +1,6 @@
 package sptech.school.v2.cleanarch.core.application.gateways.student;
 
-import sptech.school.domain.entity.Student;
+import sptech.school.v2.cleanarch.domain.entities.Student;
 
 public interface StudentCommandGateway {
     Student save(Student student);

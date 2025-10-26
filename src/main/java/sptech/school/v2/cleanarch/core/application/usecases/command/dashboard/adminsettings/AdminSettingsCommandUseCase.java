@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import sptech.school.domain.entity.Admin;
+import sptech.school.v2.cleanarch.domain.entities.Admin;
 import sptech.school.v2.cleanarch.core.application.gateways.dashboard.adminsettings.AdminCommandGateway;
 import sptech.school.v2.cleanarch.core.application.gateways.dashboard.adminsettings.AdminQueryGateway;
 import sptech.school.v2.cleanarch.core.application.mappers.dashboard.adminsettings.AdminSettingsMapper;
