@@ -2,11 +2,11 @@ package sptech.school.v2.cleanarch.core.application.mappers;
 
 import jakarta.validation.Valid;
 import org.mapstruct.*;
-import sptech.school.domain.dto.request.TeacherRequestDTO;
+import sptech.school.v2.cleanarch.core.dtos.in.TeacherRequestDTO;
 import sptech.school.v2.cleanarch.core.application.utils.StringMapperUtil;
-import sptech.school.v2.cleanarch.core.dtos.in.TeacherUpdateDTO;
-import sptech.school.v2.cleanarch.core.dtos.in.TeacherRegisterDTO;
-import sptech.school.v2.cleanarch.core.dtos.out.TeacherResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherRegisterDTO;
+import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherUpdateDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 

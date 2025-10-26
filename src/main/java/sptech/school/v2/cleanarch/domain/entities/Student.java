@@ -1,7 +1,7 @@
 package sptech.school.v2.cleanarch.domain.entities;
 
 import jakarta.persistence.*;
-import sptech.school.domain.entity.Responsible;
+import sptech.school.v2.cleanarch.domain.Responsible;
 
 @Entity
 @Table(name = "tb_student")

@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import sptech.school.domain.dto.response.ResourceFileResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.ResourceFileResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
 
 @Mapper(componentModel = "spring")

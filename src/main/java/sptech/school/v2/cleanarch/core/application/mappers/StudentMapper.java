@@ -3,10 +3,10 @@ package sptech.school.v2.cleanarch.core.application.mappers;
 import jakarta.validation.Valid;
 import org.mapstruct.*;
 import sptech.school.v2.cleanarch.core.application.utils.StringMapperUtil;
-import sptech.school.v2.cleanarch.core.dtos.in.StudentRegisterDTO;
-import sptech.school.v2.cleanarch.core.dtos.in.StudentUpdateDTO;
-import sptech.school.v2.cleanarch.core.dtos.out.StudentResponseDTO;
-import sptech.school.domain.entity.Responsible;
+import sptech.school.v2.cleanarch.core.dtos.in.student.StudentRegisterDTO;
+import sptech.school.v2.cleanarch.core.dtos.in.student.StudentUpdateDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.student.StudentResponseDTO;
+import sptech.school.v2.cleanarch.domain.Responsible;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 
 @Mapper(componentModel = "spring", uses = StringMapperUtil.class)

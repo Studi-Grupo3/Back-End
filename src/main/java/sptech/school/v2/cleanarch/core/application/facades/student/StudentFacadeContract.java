@@ -3,7 +3,7 @@ package sptech.school.v2.cleanarch.core.application.facades.student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
-import sptech.school.domain.dto.response.ResourceFileResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.ResourceFileResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 

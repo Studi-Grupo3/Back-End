@@ -8,12 +8,6 @@ import sptech.school.v2.cleanarch.infra.persistence.repository.ContentJpaReposit
 import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
 
 @SpringBootApplication
-@EntityScan(basePackages = {"sptech.school.domain.entity", "sptech.school.v2.cleanarch.domain.entities"})
-@EnableJpaRepositories(basePackageClasses = {
-        sptech.school.adapters.out.persistence.AppointmentRepository.class,
-        TeacherJpaRepository.class,
-        ContentJpaRepository.class
-})
 public class StudiApplication {
 
     public static void main(String[] args) {

@@ -3,7 +3,7 @@ package sptech.school.v2.cleanarch.infra.persistence.adapter.content;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import sptech.school.application.usecase.StorageServiceUseCase;
+import sptech.school.v2.cleanarch.core.application.usecases.content.StorageServiceUseCase;
 import sptech.school.v2.cleanarch.core.application.gateways.storage.FileStorageGateway;
 
 import java.io.IOException;

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import sptech.school.domain.dto.response.ResourceFileResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.ResourceFileResponseDTO;
 import sptech.school.v2.cleanarch.core.application.facades.student.StudentFacadeContract;
 import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
 import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
