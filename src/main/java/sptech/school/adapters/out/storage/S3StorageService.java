@@ -43,18 +43,13 @@ public class S3StorageService implements StorageServiceUseCase {
             @Value("${aws.s3.access-key-id}") String accessKeyId,
             @Value("${aws.s3.secret-access-key}") String secretAccessKey,
             @Value("${aws.s3.region}") String region,
-            @Value("${aws.s3.bucket-name}") String bucketName,
-            @Value("${aws.s3.endpoint-override:}") String endpointOverride
+            @Value("${aws.s3.bucket-name}") String bucketName
     ) {
         AwsCredentials credentials = AwsBasicCredentials.create(accessKeyId, secretAccessKey);
         this.region = Region.of(region);
         S3ClientBuilder builder = S3Client.builder()
                 .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .region(this.region);
-
-        if (endpointOverride != null && !endpointOverride.isBlank()) {
-            builder.endpointOverride(URI.create(endpointOverride));
-        }
 
         this.s3Client = builder.build();
         this.bucketName = bucketName;
