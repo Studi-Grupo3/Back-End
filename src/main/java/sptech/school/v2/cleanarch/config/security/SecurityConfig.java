@@ -24,7 +24,12 @@ public class SecurityConfig {
     private final TeacherUserDetailsService teacherUserDetailsService;
     private final CorsConfig corsConfig;
 
-    public SecurityConfig(JwtUseCase jwtUseCase, StudentUserDetailsService studentUserDetailsService, TeacherUserDetailsService teacherUserDetailsService, CorsConfig corsConfig) {
+    public SecurityConfig(
+            JwtUseCase jwtUseCase,
+            StudentUserDetailsService studentUserDetailsService,
+            TeacherUserDetailsService teacherUserDetailsService,
+            CorsConfig corsConfig
+    ) {
         this.jwtUseCase = jwtUseCase;
         this.studentUserDetailsService = studentUserDetailsService;
         this.teacherUserDetailsService = teacherUserDetailsService;
@@ -48,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/students", HttpMethod.POST.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/students/reset-password", HttpMethod.PATCH.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/teachers", HttpMethod.POST.name())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/teachers", HttpMethod.GET.name())).permitAll() // ✅ público para listar professores
                         .requestMatchers(new AntPathRequestMatcher("/api/auths/login", HttpMethod.POST.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/auths/verify-code", HttpMethod.POST.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/auths/forgot-password", HttpMethod.POST.name())).permitAll()
@@ -64,9 +70,4 @@ public class SecurityConfig {
                 )
                 .build();
     }
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 }

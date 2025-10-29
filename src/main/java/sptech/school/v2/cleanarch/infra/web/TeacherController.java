@@ -109,7 +109,7 @@ public class TeacherController {
 
     @GetMapping
     @Operation(
-            summary = "Lista professores",
+            summary = "Lista professores (autenticado)",
             description = "Retorna professores paginados. Pode retornar lista vazia."
     )
     @ApiResponses({
@@ -134,4 +134,34 @@ public class TeacherController {
         return ResponseEntity.ok(dtoPage);
     }
 
+    // ✅ Novo endpoint público com paginação
+    @GetMapping("/public")
+    @Operation(
+            summary = "Lista pública de professores (sem autenticação)",
+            description = "Retorna uma lista paginada de professores acessível publicamente."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    })
+    public ResponseEntity<Page<TeacherResponseDTO>> findAllPublicTeachers(
+            @Parameter(description = "Página a ser recuperada", example = "0")
+            @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Quantidade de itens por página", example = "3")
+            @RequestParam(defaultValue = "3") int size
+    ) {
+        int pageNumber = Math.max(page, 0);
+        int pageSize = Math.max(size, 1);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Page<Teacher> teachers = teacherFacade.listAll(pageable);
+        List<TeacherResponseDTO> dtos = teachers.getContent()
+                .stream()
+                .map(teacherMapper::toDtoResponse)
+                .toList();
+
+        Page<TeacherResponseDTO> dtoPage =
+                new PageImpl<>(dtos, teachers.getPageable(), teachers.getTotalElements());
+
+        return ResponseEntity.ok(dtoPage);
+    }
 }
