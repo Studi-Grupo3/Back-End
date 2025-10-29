@@ -1,4 +1,4 @@
-name: Build and Analysis
+name: Build Maven Java
 
 on:
   workflow_dispatch:
