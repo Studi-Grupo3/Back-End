@@ -47,7 +47,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/students", HttpMethod.POST.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/students/reset-password", HttpMethod.PATCH.name())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/teachers", HttpMethod.POST.name())).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/teachers", HttpMethod.GET.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/auths/login", HttpMethod.POST.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/auths/verify-code", HttpMethod.POST.name())).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/auths/forgot-password", HttpMethod.POST.name())).permitAll()

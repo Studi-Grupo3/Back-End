@@ -40,6 +40,7 @@ public class DataLoader implements CommandLineRunner {
             t2.setYearsExperience("3");
             t2.setAcademicFormation("BA in English");
             teacherRepository.save(t2);
+
         }
 
         if (studentRepository.count() == 0) {
