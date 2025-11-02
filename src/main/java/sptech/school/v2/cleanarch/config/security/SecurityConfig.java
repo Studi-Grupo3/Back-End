@@ -41,28 +41,28 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .headers(headers -> headers.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(new AntPathRequestMatcher("/api/swagger-ui/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/v3/api-docs/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/swagger-ui.html")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/students", HttpMethod.POST.name())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/students/reset-password", HttpMethod.PATCH.name())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/teachers", HttpMethod.GET.name())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/auths/login", HttpMethod.POST.name())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/auths/verify-code", HttpMethod.POST.name())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/auths/forgot-password", HttpMethod.POST.name())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/contact", HttpMethod.POST.name())).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/health", HttpMethod.GET.name())).permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .addFilterBefore(
-                        new JwtAuthenticationFilter(jwtUseCase, teacherUserDetailsService, studentUserDetailsService),
-                        UsernamePasswordAuthenticationFilter.class
-                )
-                .build();
+                    .requestMatchers("/api/swagger-ui/**").permitAll()
+                    .requestMatchers("/api/v3/api-docs/**").permitAll()
+                    .requestMatchers("/api/swagger-ui.html").permitAll()
+                    .requestMatchers("/h2-console/**").permitAll()
+                    .requestMatchers("/api/health").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/students").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/api/students/reset-password").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/teachers").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auths/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auths/verify-code").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auths/forgot-password").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .sessionManagement(sessionManagement -> sessionManagement
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .addFilterBefore(
+                    new JwtAuthenticationFilter(jwtUseCase, teacherUserDetailsService, studentUserDetailsService),
+                    UsernamePasswordAuthenticationFilter.class
+            )
+            .build();
     }
 
 //    @Bean
