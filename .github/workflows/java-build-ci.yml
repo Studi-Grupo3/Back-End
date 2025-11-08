@@ -1,0 +1,22 @@
+name: Build and Publish Java 
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-build:
+    id: build
+    uses: Studi-Grupo3/reusable-workflows/.github/workflows/java-build.yml@main
+
+  call-publish-release:
+    needs: call-build
+    runs-on: ubuntu-latest
+    uses: Studi-Grupo3/reusable-workflows/.github/workflows/upload-gh-release.yml@main
+    with:
+      artifact_path: ${{ needs.build.outputs.artifact_path }}
+      target_owner_repo: "Studi-Grupo3/artifacts"
+      tag: ""   # vazio -> v{run_number} do run atual
+    secrets:
+      RELEASE_PAT: ${{ secrets.RELEASE_PAT }}
+
+    
