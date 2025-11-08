@@ -7,6 +7,8 @@ jobs:
   call-build:
     id: build
     uses: Studi-Grupo3/reusable-workflows/.github/workflows/java-build.yml@main
+    with:
+      artifact_name: 'backend-app.jar'
 
   call-publish-release:
     needs: call-build
