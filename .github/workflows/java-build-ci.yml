@@ -16,7 +16,7 @@ jobs:
     needs: call-build
     uses: Studi-Grupo3/reusable-workflows/.github/workflows/upload-gh-release.yml@main
     with:
-      artifact_path: artifacts/backend-app.jar
+      artifact_path: artifacts/app-build
       target_owner_repo: "Studi-Grupo3/artifacts"
       tag: ""
     secrets:
