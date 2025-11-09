@@ -3,6 +3,9 @@ name: Build and Publish Java
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+  
 jobs:
   call-build:
     uses: Studi-Grupo3/reusable-workflows/.github/workflows/java-build.yml@main
