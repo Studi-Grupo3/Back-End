@@ -5,19 +5,19 @@ on:
 
 jobs:
   call-build:
-    id: build
     uses: Studi-Grupo3/reusable-workflows/.github/workflows/java-build.yml@main
     with:
       artifact_name: 'backend-app.jar'
-
+      
   call-publish-release:
     needs: call-build
     runs-on: ubuntu-latest
     uses: Studi-Grupo3/reusable-workflows/.github/workflows/upload-gh-release.yml@main
     with:
-      artifact_path: ${{ needs.build.outputs.artifact_path }}
+      artifact_path: ${{ needs.call-build.outputs.artifact_path }} 
       target_owner_repo: "Studi-Grupo3/artifacts"
-      tag: ""   # vazio -> v{run_number} do run atual
+      tag: "" 
+      
     secrets:
       RELEASE_PAT: ${{ secrets.RELEASE_PAT }}
 
