@@ -11,8 +11,6 @@ jobs:
     uses: Studi-Grupo3/reusable-workflows/.github/workflows/java-build.yml@main
     with:
       artifact_name: 'backend-app.jar'
-    outputs:
-      artifact_path: artifacts/${{ inputs.artifact_name }}
 
   call-publish-release:
     needs: call-build
