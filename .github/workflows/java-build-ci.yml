@@ -18,6 +18,6 @@ jobs:
     with:
       artifact_name: app-build
       target_owner_repo: "Studi-Grupo3/aws-infrastructure-setup"
-      tag: ""
+      tag: "V1"
     secrets:
       RELEASE_PAT: ${{ secrets.RELEASE_PAT }}
