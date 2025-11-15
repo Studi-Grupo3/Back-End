@@ -21,8 +21,12 @@ public class VerifyEmailAndCpfUtil {
         if (studentQueryGateway.studentExistsByEmail(user.getEmail()) || teacherQueryGateway.teacherExistsByEmail(user.getEmail())) {
             throw new EmailAlreadyExistsException("Email already registered");
         }
-        if (studentQueryGateway.studentExistsByCpf(user.getCpf()) || teacherQueryGateway.teacherExistsByCpf(user.getCpf())) {
-            throw new CpfAlreadyExistsException("CPF already registered");
-        }
+        String cpf = user.getCpf();
+    
+        if (cpf != null && !cpf.isBlank()) { 
+            if (studentQueryGateway.studentExistsByCpf(cpf) || teacherQueryGateway.teacherExistsByCpf(cpf)) {
+                throw new CpfAlreadyExistsException("CPF already registered");
+            }
+    }
     }
 }
