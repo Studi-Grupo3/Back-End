@@ -18,16 +18,43 @@ public class VerifyEmailAndCpfUtil {
     }
 
     public void verify(User user) {
-        String email = user.getEmail();
-        if (email != null && !email.isBlank()) {
-        if (studentQueryGateway.studentExistsByEmail(email) || teacherQueryGateway.teacherExistsByEmail(email)) {
-            throw new EmailAlreadyExistsException("Email already registered");
-        }
-    
-        if (cpf != null && !cpf.isBlank()) { 
-            if (studentQueryGateway.studentExistsByCpf(cpf) || teacherQueryGateway.teacherExistsByCpf(cpf)) {
-                throw new CpfAlreadyExistsException("CPF already registered");
-            }
+    Long userId = user.getId();
+    String email = user.getEmail();
+    String cpf = user.getCpf();
+
+    if (email != null && !email.isBlank()) {
+        checkAlreadyExists(
+            studentQueryGateway.findIdByEmail(email),
+            teacherQueryGateway.findIdByEmail(email),
+            userId,
+            () -> new EmailAlreadyExistsException("Email already registered")
+        );
     }
+
+    if (cpf != null && !cpf.isBlank()) {
+        checkAlreadyExists(
+            studentQueryGateway.findIdByCpf(cpf),
+            teacherQueryGateway.findIdByCpf(cpf),
+            userId,
+            () -> new CpfAlreadyExistsException("CPF already registered")
+        );
+    }
+}
+
+    private void checkAlreadyExists(
+            Optional<Long> id1,
+            Optional<Long> id2,
+            Long currentUserId,
+            Supplier<RuntimeException> exceptionSupplier) {
+
+        if (existsForOtherUser(id1, currentUserId) ||
+            existsForOtherUser(id2, currentUserId)) {
+            throw exceptionSupplier.get();
+        }
+    }
+
+    private boolean existsForOtherUser(Optional<Long> foundId, Long currentUserId) {
+        return foundId.isPresent() &&
+               (currentUserId == null || !foundId.get().equals(currentUserId));
     }
 }
