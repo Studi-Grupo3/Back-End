@@ -7,6 +7,10 @@ import sptech.school.v2.cleanarch.domain.entities.User;
 import sptech.school.v2.cleanarch.domain.exception.CpfAlreadyExistsException;
 import sptech.school.v2.cleanarch.domain.exception.EmailAlreadyExistsException;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.Objects;
+
 @Component
 public class VerifyEmailAndCpfUtil {
     private final TeacherQueryGateway teacherQueryGateway;
@@ -18,28 +22,30 @@ public class VerifyEmailAndCpfUtil {
     }
 
     public void verify(User user) {
-    Long userId = user.getId();
-    String email = user.getEmail();
-    String cpf = user.getCpf();
+        Objects.requireNonNull(user, "user must not be null");
 
-    if (email != null && !email.isBlank()) {
-        checkAlreadyExists(
-            studentQueryGateway.findIdByEmail(email),
-            teacherQueryGateway.findIdByEmail(email),
-            userId,
-            () -> new EmailAlreadyExistsException("Email already registered")
-        );
-    }
+        Long userId = user.getId();
+        String email = user.getEmail();
+        String cpf = user.getCpf();
 
-    if (cpf != null && !cpf.isBlank()) {
-        checkAlreadyExists(
-            studentQueryGateway.findIdByCpf(cpf),
-            teacherQueryGateway.findIdByCpf(cpf),
-            userId,
-            () -> new CpfAlreadyExistsException("CPF already registered")
-        );
+        if (email != null && !email.isBlank()) {
+            checkAlreadyExists(
+                studentQueryGateway.findIdByEmail(email),
+                teacherQueryGateway.findIdByEmail(email),
+                userId,
+                () -> new EmailAlreadyExistsException("Email already registered")
+            );
+        }
+
+        if (cpf != null && !cpf.isBlank()) {
+            checkAlreadyExists(
+                studentQueryGateway.findIdByCpf(cpf),
+                teacherQueryGateway.findIdByCpf(cpf),
+                userId,
+                () -> new CpfAlreadyExistsException("CPF already registered")
+            );
+        }
     }
-}
 
     private void checkAlreadyExists(
             Optional<Long> id1,
