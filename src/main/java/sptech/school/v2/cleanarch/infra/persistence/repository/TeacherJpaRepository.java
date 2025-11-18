@@ -13,7 +13,7 @@ public interface TeacherJpaRepository extends JpaRepository<Teacher, Integer> {
 
     Optional<Teacher> findByEmail(String email);
 
-    Optional<Long> findIdByEmail(String email);
+    Optional<Integer> findIdByEmail(String email);
 
-    Optional<Long> findIdByCpf(String cpf);
+    Optional<Integer> findIdByCpf(String cpf);
 }

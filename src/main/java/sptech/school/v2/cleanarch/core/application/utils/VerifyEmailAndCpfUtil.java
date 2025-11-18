@@ -38,22 +38,21 @@ public class VerifyEmailAndCpfUtil {
     public void verify(User user, Integer id) {
         Objects.requireNonNull(user, "user must not be null");
 
-        Long userId = id != null ? id.longValue() : null;
         String email = user.getEmail();
         String cpf = user.getCpf();
 
         if (email != null && !email.isBlank()) {
-            checkIfExists(email, userId, "Email");
+            checkIfExists(email, id, "Email");
         }
 
         if (cpf != null && !cpf.isBlank()) {
-            checkIfExists(cpf, userId, "CPF");
+            checkIfExists(cpf, id, "CPF");
         }
     }
 
     private void verifyEmail(String email) {
-        Optional<Long> studentId = studentQueryGateway.findIdByEmail(email);
-        Optional<Long> teacherId = teacherQueryGateway.findIdByEmail(email);
+        Optional<Integer> studentId = studentQueryGateway.findIdByEmail(email);
+        Optional<Integer> teacherId = teacherQueryGateway.findIdByEmail(email);
 
         if (studentId.isPresent() || teacherId.isPresent()) {
             throw new EmailAlreadyExistsException("Email already registered");
@@ -61,17 +60,17 @@ public class VerifyEmailAndCpfUtil {
     }
 
     private void verifyCpf(String cpf) {
-        Optional<Long> studentId = studentQueryGateway.findByCpf(cpf);
-        Optional<Long> teacherId = teacherQueryGateway.findByCpf(cpf);
+        Optional<Integer> studentId = studentQueryGateway.findByCpf(cpf);
+        Optional<Integer> teacherId = teacherQueryGateway.findByCpf(cpf);
 
         if (studentId.isPresent() || teacherId.isPresent()) {
             throw new CpfAlreadyExistsException("CPF already registered");
         }
     }
 
-    private void checkIfExists(String value, Long currentUserId, String fieldType) {
-        Optional<Long> studentId;
-        Optional<Long> teacherId;
+    private void checkIfExists(String value, Integer currentUserId, String fieldType) {
+        Optional<Integer> studentId;
+        Optional<Integer> teacherId;
 
         if (fieldType.equals("Email")) {
             studentId = studentQueryGateway.findIdByEmail(value);

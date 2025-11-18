@@ -12,7 +12,7 @@ public interface StudentJpaRepository extends JpaRepository<Student, Integer> {
     boolean existsByCpf(String cpf);
     Optional<Student> findByEmail(String email);
 
-    Optional<Long> findIdByEmail(String email);
+    Optional<Integer> findIdByEmail(String email);
 
-    Optional<Long> findIdByCpf(String cpf);
+    Optional<Integer> findIdByCpf(String cpf);
 }

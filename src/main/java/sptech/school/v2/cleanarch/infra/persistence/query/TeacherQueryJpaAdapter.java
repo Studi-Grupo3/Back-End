@@ -43,12 +43,12 @@ public class TeacherQueryJpaAdapter implements TeacherQueryGateway {
     }
 
     @Override
-    public Optional<Long> findIdByEmail(String email) {
+    public Optional<Integer> findIdByEmail(String email) {
         return teacherJpaRepository.findIdByEmail(email);
     }
 
     @Override
-    public Optional<Long> findByCpf(String cpf) {
+    public Optional<Integer> findByCpf(String cpf) {
         return teacherJpaRepository.findIdByCpf(cpf);
     }
 }

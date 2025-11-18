@@ -1,4 +1,4 @@
-package sptech.school.v2.cleanarch.infra.persistence.adapter.student;
+package sptech.school.v2.cleanarch.infra.persistence.query;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -42,12 +42,12 @@ public class StudentQueryJpaAdapter implements StudentQueryGateway {
     }
 
     @Override
-    public Optional<Long> findIdByEmail(String email) {
+    public Optional<Integer> findIdByEmail(String email) {
         return repository.findIdByEmail(email);
     }
 
     @Override
-    public Optional<Long> findByCpf(String cpf) {
+    public Optional<Integer> findByCpf(String cpf) {
         return repository.findIdByCpf(cpf);
     }
 }

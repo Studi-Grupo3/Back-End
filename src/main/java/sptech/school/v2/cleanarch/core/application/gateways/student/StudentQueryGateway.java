@@ -17,7 +17,7 @@ public interface StudentQueryGateway {
 
     Optional<Student> findByEmail(String email);
 
-    Optional<Long> findIdByEmail(String email);
+    Optional<Integer> findIdByEmail(String email);
 
-    Optional<Long> findByCpf(String cpf);
+    Optional<Integer> findByCpf(String cpf);
 }
