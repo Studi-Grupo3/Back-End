@@ -43,11 +43,11 @@ public class StudentQueryJpaAdapter implements StudentQueryGateway {
 
     @Override
     public Optional<Integer> findIdByEmail(String email) {
-        return repository.findIdByEmail(email);
+        return repository.findIdByEmail(email).get().getId().describeConstable();
     }
 
     @Override
     public Optional<Integer> findByCpf(String cpf) {
-        return repository.findIdByCpf(cpf);
+        return repository.findIdByCpf(cpf).get().getId().describeConstable();
     }
 }

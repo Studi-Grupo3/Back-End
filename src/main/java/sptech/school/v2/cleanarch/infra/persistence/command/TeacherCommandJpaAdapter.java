@@ -1,4 +1,4 @@
-package sptech.school.v2.cleanarch.infra.persistence.adapter.teacher;
+package sptech.school.v2.cleanarch.infra.persistence.command;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
