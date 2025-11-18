@@ -20,6 +20,21 @@ public class VerifyEmailAndCpfUtil {
         this.studentQueryGateway = studentQueryGateway;
     }
 
+    public void verify(User user) {
+        Objects.requireNonNull(user, "user must not be null");
+
+        String email = user.getEmail();
+        String cpf = user.getCpf();
+
+        if (email != null && !email.isBlank()) {
+            verifyEmail(email);
+        }
+
+        if (cpf != null && !cpf.isBlank()) {
+            verifyCpf(cpf);
+        }
+    }
+
     public void verify(User user, Integer id) {
         Objects.requireNonNull(user, "user must not be null");
 
@@ -33,6 +48,24 @@ public class VerifyEmailAndCpfUtil {
 
         if (cpf != null && !cpf.isBlank()) {
             checkIfExists(cpf, userId, "CPF");
+        }
+    }
+
+    private void verifyEmail(String email) {
+        Optional<Long> studentId = studentQueryGateway.findIdByEmail(email);
+        Optional<Long> teacherId = teacherQueryGateway.findIdByEmail(email);
+
+        if (studentId.isPresent() || teacherId.isPresent()) {
+            throw new EmailAlreadyExistsException("Email already registered");
+        }
+    }
+
+    private void verifyCpf(String cpf) {
+        Optional<Long> studentId = studentQueryGateway.findByCpf(cpf);
+        Optional<Long> teacherId = teacherQueryGateway.findByCpf(cpf);
+
+        if (studentId.isPresent() || teacherId.isPresent()) {
+            throw new CpfAlreadyExistsException("CPF already registered");
         }
     }
 

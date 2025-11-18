@@ -48,7 +48,7 @@ public class StudentFacade implements StudentFacadeContract {
 
     @Override
     public Student create(Student student) {
-        verifyEmailAndCpfUtil.verify(student, null);
+        verifyEmailAndCpfUtil.verify(student);
         Student created = studentCommandUseCase.create(student);
         loadProfileImage(created);
         return created;

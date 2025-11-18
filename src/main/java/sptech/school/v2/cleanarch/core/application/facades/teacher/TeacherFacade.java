@@ -48,7 +48,7 @@ public class TeacherFacade implements TeacherFacadeContract {
 
     @Override
     public Teacher create(Teacher teacher) {
-        verifyEmailAndCpfUtil.verify(teacher, null);
+        verifyEmailAndCpfUtil.verify(teacher);
         Teacher created = teacherCommandUseCase.create(teacher);
         loadProfileImage(created);
         return created;
