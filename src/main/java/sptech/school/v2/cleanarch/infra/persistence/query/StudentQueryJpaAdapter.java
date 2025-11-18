@@ -40,4 +40,14 @@ public class StudentQueryJpaAdapter implements StudentQueryGateway {
     public Optional<Student> findByEmail(String email) {
         return repository.findByEmail(email);
     }
+
+    @Override
+    public Optional<Long> findIdByEmail(String email) {
+        return repository.findIdByEmail(email);
+    }
+
+    @Override
+    public Optional<Long> findByCpf(String cpf) {
+        return repository.findIdByCpf(cpf);
+    }
 }

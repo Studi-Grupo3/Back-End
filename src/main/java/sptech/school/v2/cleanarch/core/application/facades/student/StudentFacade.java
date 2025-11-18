@@ -48,7 +48,7 @@ public class StudentFacade implements StudentFacadeContract {
 
     @Override
     public Student create(Student student) {
-        verifyEmailAndCpfUtil.verify(student);
+        verifyEmailAndCpfUtil.verify(student, student.getId());
         Student created = studentCommandUseCase.create(student);
         loadProfileImage(created);
         return created;
@@ -63,7 +63,7 @@ public class StudentFacade implements StudentFacadeContract {
 
     @Override
     public Student update(Student student, Integer id) {
-        verifyEmailAndCpfUtil.verify(student);
+        verifyEmailAndCpfUtil.verify(student, id);
         student.setId(id);
         Student updated = studentCommandUseCase.update(student);
         loadProfileImage(updated);

@@ -8,7 +8,6 @@ import sptech.school.v2.cleanarch.domain.exception.CpfAlreadyExistsException;
 import sptech.school.v2.cleanarch.domain.exception.EmailAlreadyExistsException;
 
 import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.Objects;
 
 @Component
@@ -21,46 +20,43 @@ public class VerifyEmailAndCpfUtil {
         this.studentQueryGateway = studentQueryGateway;
     }
 
-    public void verify(User user) {
+    public void verify(User user, Integer id) {
         Objects.requireNonNull(user, "user must not be null");
 
-        Long userId = user.getId();
+        Long userId = id != null ? id.longValue() : null;
         String email = user.getEmail();
         String cpf = user.getCpf();
 
         if (email != null && !email.isBlank()) {
-            checkAlreadyExists(
-                studentQueryGateway.findIdByEmail(email),
-                teacherQueryGateway.findIdByEmail(email),
-                userId,
-                () -> new EmailAlreadyExistsException("Email already registered")
-            );
+            checkIfExists(email, userId, "Email");
         }
 
         if (cpf != null && !cpf.isBlank()) {
-            checkAlreadyExists(
-                studentQueryGateway.findIdByCpf(cpf),
-                teacherQueryGateway.findIdByCpf(cpf),
-                userId,
-                () -> new CpfAlreadyExistsException("CPF already registered")
-            );
+            checkIfExists(cpf, userId, "CPF");
         }
     }
 
-    private void checkAlreadyExists(
-            Optional<Long> id1,
-            Optional<Long> id2,
-            Long currentUserId,
-            Supplier<RuntimeException> exceptionSupplier) {
+    private void checkIfExists(String value, Long currentUserId, String fieldType) {
+        Optional<Long> studentId;
+        Optional<Long> teacherId;
 
-        if (existsForOtherUser(id1, currentUserId) ||
-            existsForOtherUser(id2, currentUserId)) {
-            throw exceptionSupplier.get();
+        if (fieldType.equals("Email")) {
+            studentId = studentQueryGateway.findIdByEmail(value);
+            teacherId = teacherQueryGateway.findIdByEmail(value);
+        } else {
+            studentId = studentQueryGateway.findByCpf(value);
+            teacherId = teacherQueryGateway.findByCpf(value);
         }
-    }
 
-    private boolean existsForOtherUser(Optional<Long> foundId, Long currentUserId) {
-        return foundId.isPresent() &&
-               (currentUserId == null || !foundId.get().equals(currentUserId));
+        boolean existsInStudent = studentId.isPresent() && !studentId.get().equals(currentUserId);
+        boolean existsInTeacher = teacherId.isPresent() && !teacherId.get().equals(currentUserId);
+
+        if (existsInStudent || existsInTeacher) {
+            if (fieldType.equals("Email")) {
+                throw new EmailAlreadyExistsException("Email already registered");
+            } else {
+                throw new CpfAlreadyExistsException("CPF already registered");
+            }
+        }
     }
 }
