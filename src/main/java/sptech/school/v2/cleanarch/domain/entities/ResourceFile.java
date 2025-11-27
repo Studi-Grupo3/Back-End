@@ -2,6 +2,7 @@ package sptech.school.v2.cleanarch.domain.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.InputStream;
 
@@ -18,7 +19,7 @@ public class ResourceFile {
     private String fileType;
     @NotBlank
     private String fileLocation;
-    @NotBlank
+    @NotNull
     private Long fileSize;
 
     @Transient

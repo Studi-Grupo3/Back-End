@@ -1,5 +1,6 @@
 package sptech.school.v2.cleanarch.domain.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MappedSuperclass;
@@ -35,7 +36,8 @@ public abstract class User {
 
     private LocalDateTime lastLogin;
 
-    @OneToOne
+    // Adicionado cascade PERSIST e MERGE para evitar TransientObjectException ao associar ResourceFile
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "profile_image_id", nullable = true)
     private ResourceFile profileImage;
 
