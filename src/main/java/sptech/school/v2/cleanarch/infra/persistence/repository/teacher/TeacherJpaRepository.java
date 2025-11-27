@@ -1,4 +1,4 @@
-package sptech.school.v2.cleanarch.infra.persistence.repository;
+package sptech.school.v2.cleanarch.infra.persistence.repository.teacher;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -3,10 +3,8 @@ package sptech.school.v2.cleanarch.infra.persistence.command;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
-import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherCommandGateway;
-import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
 @Component
 public class TeacherCommandJpaAdapter implements TeacherCommandGateway {
