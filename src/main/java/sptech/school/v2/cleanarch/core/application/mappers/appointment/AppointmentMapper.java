@@ -18,7 +18,6 @@ public interface AppointmentMapper {
     @Mapping(target = "teacher", ignore = true)
     Appointment toEntity(@Valid AppointmentDTO dto);
 
-    @Mapping(target = "subjects", source = "teacher.subjects")
     @Mapping(target = "professorName", source = "teacher.name")
     @Mapping(target = "professorTitle", expression = "java(\"Professor(a) de \" + (appointment.getTeacher() != null ? appointment.getTeacher().getSubjects() : \"\"))")
     @Mapping(target = "professorImageUrl", constant = "/lovable-uploads/09a24ead-9c40-487a-a233-8c1f43dcc6df.png")
@@ -27,6 +26,7 @@ public interface AppointmentMapper {
     @Mapping(target = "status", source = "status")
     @Mapping(target = "totalValue", source = "totalValue")
     @Mapping(target = "location", source = "location")
+    @Mapping(target = "subject", source = "subject")
     @Mapping(target = "online", expression = "java(appointment.getLocation() != null && appointment.getLocation().equalsIgnoreCase(\"Online\"))")
     AppointmentResponseDTO toResponseDto(Appointment appointment);
 

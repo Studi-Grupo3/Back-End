@@ -1,10 +1,11 @@
-package sptech.school.v2.cleanarch.infra.persistence.adapter.teacher;
+package sptech.school.v2.cleanarch.infra.persistence.query.teacher;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherQueryGateway;
-import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
 import java.util.Optional;
 

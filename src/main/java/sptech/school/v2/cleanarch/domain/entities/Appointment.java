@@ -27,6 +27,8 @@ public class Appointment {
 
     private Double lessonDuration;
 
+    private String subject;
+
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
@@ -41,7 +43,7 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(Integer id, Student student, Teacher teacher, LocalDateTime dateTime, Double lessonDuration, AppointmentStatus status, String location, Double totalValue, PaymentStatus paymentStatus) {
+    public Appointment(Integer id, Student student, Teacher teacher, LocalDateTime dateTime, Double lessonDuration, AppointmentStatus status, String location, Double totalValue, PaymentStatus paymentStatus, String subject) {
         this.id = id;
         this.student = student;
         this.teacher = teacher;
@@ -51,6 +53,7 @@ public class Appointment {
         this.location = location;
         this.totalValue = totalValue;
         this.paymentStatus = paymentStatus;
+        this.subject = subject;
     }
 
     public Integer getId() {
@@ -125,4 +128,11 @@ public class Appointment {
         return paymentStatus;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 }

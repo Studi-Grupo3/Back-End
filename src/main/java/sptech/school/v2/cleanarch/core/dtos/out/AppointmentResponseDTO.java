@@ -7,7 +7,7 @@ import java.util.List;
 
 public record AppointmentResponseDTO(
         Integer id,
-        List<Subject> subjects,
+        String subject,
         String professorName,
         String professorTitle,
         String professorImageUrl,
