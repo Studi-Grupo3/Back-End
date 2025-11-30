@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +39,7 @@ public class TeacherController {
     }
 
     @PostMapping
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
     @Operation(
             summary = "Cria um novo professor",
             description = "Recebe os dados de um professor, aplica validação (@Valid) e o cadastra no sistema."
@@ -53,6 +56,7 @@ public class TeacherController {
     }
 
     @GetMapping("/{id}")
+    @Cacheable(cacheNames = "teacher", key = "#id", unless = "#result == null")
     @Operation(
             summary = "Recupera um professor por ID",
             description = "Retorna os dados de um professor baseado em seu identificador numérico."
@@ -70,6 +74,7 @@ public class TeacherController {
     }
 
     @DeleteMapping("{id}")
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
     @Operation(
             summary = "Deleta um professor por ID",
             description = "Remove permanentemente o professor identificado pelo ID informado."
@@ -87,6 +92,7 @@ public class TeacherController {
     }
 
     @PutMapping("/{id}")
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
     @Operation(
             summary = "Atualiza um professor",
             description = "Atualiza os dados de um professor existente com base no ID informado. Campos nulos no DTO podem ser ignorados pelo mapper."
@@ -108,6 +114,7 @@ public class TeacherController {
     }
 
     @GetMapping
+    @Cacheable(cacheNames = "teacher", key = "#page + '_' + #size", unless = "#result == null")
     @Operation(
             summary = "Lista professores",
             description = "Retorna professores paginados. Pode retornar lista vazia."
