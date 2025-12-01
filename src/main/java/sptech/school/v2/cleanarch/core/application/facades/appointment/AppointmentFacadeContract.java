@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AppointmentFacadeContract {
     AppointmentResponseDTO createAppointment(AppointmentDTO dto);
-    Appointment getAppointmentById(Integer id);
+    List<AppointmentResponseDTO> getAppointmentById(Integer id);
     List<AppointmentResponseDTO> listAllAppointments();
     Appointment updateAppointment(AppointmentDTO dto, Integer id);
     AppointmentResponseDTO patchStatus(Integer id, AppointmentStatus status);

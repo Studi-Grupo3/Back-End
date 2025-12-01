@@ -3,6 +3,7 @@ package sptech.school.v2.cleanarch.core.application.usecases.query.teacher.appoi
 import org.springframework.stereotype.Service;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.appointment.TeacherAppointmentQueryGateway;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.LessonHistoryDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherDashboardDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.UpcomingLessonDTO;
 
@@ -23,6 +24,10 @@ public class TeacherAppointmentQueryUseCase {
     public List<UpcomingLessonDTO> getUpcomingLessons(Integer teacherId) {
         LocalDateTime now = LocalDateTime.now(ZONE_SP);
         return gateway.findUpcomingLessons(teacherId, now);
+    }
+
+    public TeacherDashboardDTO getDashboard(Integer teacherId) {
+        return gateway.getDashboardData(teacherId);
     }
 
     public List<LessonHistoryDTO> getLessonsHistory(Integer teacherId) {

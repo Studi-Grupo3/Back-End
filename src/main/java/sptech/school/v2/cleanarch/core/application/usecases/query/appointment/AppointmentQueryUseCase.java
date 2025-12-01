@@ -23,9 +23,23 @@ public class AppointmentQueryUseCase {
         this.mapper = mapper;
     }
 
-    public Appointment findById(Integer id) {
-        return queryGateway.findById(id)
+    public List<AppointmentResponseDTO> findByStudentId(Integer studentId) {
+        List<Appointment> appointments = queryGateway.findByStudentId(studentId);
+
+        if (appointments.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No appointments found for this student.");
+        }
+
+        return appointments.stream()
+                .map(mapper::toResponseDto)
+                .toList();
+    }
+
+    public AppointmentResponseDTO findById(Integer id) {
+        Appointment appointment = queryGateway.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment not found."));
+
+        return mapper.toResponseDto(appointment);
     }
 
     public List<AppointmentResponseDTO> listAll() {

@@ -60,16 +60,18 @@ public interface OverviewDashJpaRepository extends JpaRepository<Appointment, In
                                    @Param("end") LocalDateTime end);
 
     @Query("""
-        SELECT a.teacher.name AS teacherName,
-               a.teacher.subjects AS subjects,
-               a.teacher.hourlyRate AS hourlyRate,
-               a.lessonDuration AS lessonDuration,
-               a.paymentStatus AS paymentStatus
-          FROM Appointment a
-         WHERE a.paymentStatus = :status
-           AND a.dateTime BETWEEN :start AND :end
-         ORDER BY a.dateTime DESC
-    """)
+    SELECT a.teacher.name AS teacherName,
+           GROUP_CONCAT(DISTINCT a.subject) AS subjects,
+           a.teacher.hourlyRate AS hourlyRate,
+           SUM(a.lessonDuration) AS lessonDuration,
+           a.paymentStatus AS paymentStatus,
+           SUM(a.totalValue) AS totalRevenue // Novo campo de soma
+      FROM Appointment a
+     WHERE a.paymentStatus = :status
+       AND a.dateTime BETWEEN :start AND :end
+     GROUP BY a.teacher.id, a.teacher.name, a.teacher.hourlyRate, a.paymentStatus // Agrupando pelo professor (ID garante unicidade)
+     ORDER BY SUM(a.totalValue) DESC
+""")
     List<RecentPaymentProjection> findRecentPaymentsByStatusBetween(@Param("status") PaymentStatus status,
                                                                     @Param("start") LocalDateTime start,
                                                                     @Param("end") LocalDateTime end,

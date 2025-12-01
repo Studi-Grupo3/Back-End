@@ -28,8 +28,8 @@ public class AppointmentFacade implements AppointmentFacadeContract {
     }
 
     @Override
-    public Appointment getAppointmentById(Integer id) {
-        return queryUseCase.findById(id);
+    public List<AppointmentResponseDTO> getAppointmentById(Integer id) {
+        return queryUseCase.findByStudentId(id);
     }
 
     @Override

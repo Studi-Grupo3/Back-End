@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AppointmentQueryGateway {
+    List<Appointment> findByStudentId(Integer id);
     Optional<Appointment> findById(Integer id);
     List<Appointment> findAll();
     List<Appointment> findByTeacherId(Integer teacherId);
