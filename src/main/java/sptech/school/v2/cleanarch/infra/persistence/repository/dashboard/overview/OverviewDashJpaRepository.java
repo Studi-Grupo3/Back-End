@@ -65,11 +65,11 @@ public interface OverviewDashJpaRepository extends JpaRepository<Appointment, In
            a.teacher.hourlyRate AS hourlyRate,
            SUM(a.lessonDuration) AS lessonDuration,
            a.paymentStatus AS paymentStatus,
-           SUM(a.totalValue) AS totalRevenue // Novo campo de soma
+           SUM(a.totalValue) AS totalRevenue
       FROM Appointment a
      WHERE a.paymentStatus = :status
        AND a.dateTime BETWEEN :start AND :end
-     GROUP BY a.teacher.id, a.teacher.name, a.teacher.hourlyRate, a.paymentStatus // Agrupando pelo professor (ID garante unicidade)
+     GROUP BY a.teacher.id, a.teacher.name, a.teacher.hourlyRate, a.paymentStatus
      ORDER BY SUM(a.totalValue) DESC
 """)
     List<RecentPaymentProjection> findRecentPaymentsByStatusBetween(@Param("status") PaymentStatus status,

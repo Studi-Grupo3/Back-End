@@ -14,7 +14,10 @@ import java.util.List;
 @Repository
 public interface TeacherDashJpaRepository extends JpaRepository<Teacher, Integer> {
 
-    @Query("SELECT t.id AS id, t.name AS name, t.subjects AS subjects, t.hourlyRate AS hourlyRate FROM Teacher t")
+    @Query("SELECT t.id AS id, t.name AS name, t.hourlyRate AS hourlyRate, " +
+            "GROUP_CONCAT(s) AS subjects " +
+            "FROM Teacher t JOIN t.subjects s " +
+            "GROUP BY t.id, t.name, t.hourlyRate")
     List<TeacherBasicProjection> findAllBasic();
 
     @Query("SELECT a.teacher.id AS teacherId, COALESCE(SUM(a.lessonDuration), 0) AS hours FROM Appointment a WHERE a.dateTime BETWEEN :start AND :end GROUP BY a.teacher.id")

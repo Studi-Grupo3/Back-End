@@ -6,7 +6,7 @@ import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.payment.PaymentSt
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.payment.PaymentTableDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.payment.PaymentDashResponseDTO;
 import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
-import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.PaymentDashJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.payment.PaymentDashJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.payment.projections.PaymentAppointmentProjection;
 
 import java.time.LocalDateTime;
@@ -24,6 +24,7 @@ public class PaymentDashQueryJpaAdapter implements PaymentDashQueryGateway {
 
     @Override
     public PaymentDashResponseDTO getPaymentDashData(LocalDateTime start, LocalDateTime end) {
+
         Double totalAmountObj = repository.sumTotalBetween(start, end);
         double totalAmount = totalAmountObj == null ? 0.0 : totalAmountObj;
 
@@ -36,7 +37,6 @@ public class PaymentDashQueryJpaAdapter implements PaymentDashQueryGateway {
 
         double realizedAmount = totalAmount - pendingAmount;
         long realizedTeachers = totalTeachers - pendingTeachers;
-
         double averagePerTeacher = totalTeachers == 0 ? 0.0 : totalAmount / totalTeachers;
 
         PaymentStatsDTO stats = new PaymentStatsDTO(
@@ -53,18 +53,25 @@ public class PaymentDashQueryJpaAdapter implements PaymentDashQueryGateway {
 
         List<PaymentTableDTO> recent = appts.stream()
                 .map(p -> {
-                    double hoursD = p.getLessonDuration() == null ? 0 : p.getLessonDuration();
-                    int hours = (int) hoursD;
-                    double rate = p.getHourlyRate() == null ? 0 : p.getHourlyRate();
-                    double total = rate * hoursD;
-                    String status = p.getPaymentStatus() == null ? null : p.getPaymentStatus().toLowerCase();
+                    String subjectString = p.getSubjects();
+
+                    double durationD = p.getLessonDuration() == null ? 0 : p.getLessonDuration();
+                    int hours = (int) durationD;
+
+                    double totalRevenue = p.getTotalRevenue() == null ? 0 : p.getTotalRevenue();
+
+                    String status = p.getPaymentStatus() == null ? null : p.getPaymentStatus().name().toLowerCase();
+
+                    String subjectsDisplay = subjectString == null ? "" :
+                            subjectString.replace(",", ", ");
+
                     return new PaymentTableDTO(
                             p.getId(),
                             p.getTeacherName(),
-                            p.getSubject(),
+                            subjectsDisplay,
                             p.getHourlyRate(),
                             hours,
-                            total,
+                            totalRevenue,
                             status
                     );
                 })

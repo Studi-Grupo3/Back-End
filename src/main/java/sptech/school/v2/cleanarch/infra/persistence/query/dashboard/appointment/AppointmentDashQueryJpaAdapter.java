@@ -13,9 +13,11 @@ import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appoint
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.AppointmentNext5;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.StatusCount;
 
-
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -36,16 +38,37 @@ public class AppointmentDashQueryJpaAdapter implements AppointmentDashQueryGatew
         Map<String, Long> statusMap = statusCounts.stream()
                 .collect(Collectors.toMap(sc -> String.valueOf(sc.getStatus()), StatusCount::getTotal));
 
-        long confirmed = statusMap.getOrDefault("COMPLETED", 0L);
-        long pending   = statusMap.getOrDefault("SCHEDULED", 0L);
-        long cancelled = statusMap.getOrDefault("CANCELLED", 0L);
+        long confirmed = statusMap.getOrDefault(AppointmentStatus.COMPLETED.name(), 0L);
+        long pending   = statusMap.getOrDefault(AppointmentStatus.SCHEDULED.name(), 0L);
+        long cancelled = statusMap.getOrDefault(AppointmentStatus.CANCELLED.name(), 0L);
 
         long activeStudents = repository.countDistinctStudentsBetween(start, end);
         Double avg = repository.averageDurationBetween(start, end);
         double avgDuration = avg == null ? 0.0 : avg;
 
-        List<ChartBarDTO> weekly = repository.countByWeekOfMonthBetween(start, end).stream()
-                .map(w -> new ChartBarDTO("Semana " + w.getWeek(), w.getTotal().doubleValue()))
+        List<LocalDateTime> dates = repository.findCompletedLessonDatesBetween(start, end);
+
+        List<ChartBarDTO> weekly = dates.stream()
+                .map(LocalDateTime::toLocalDate)
+                .collect(Collectors.groupingBy(
+                        date -> {
+                            LocalDate firstOfMonth = date.withDayOfMonth(1);
+                            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+
+                            int weekOfYear = date.get(weekFields.weekOfYear());
+                            int firstWeekOfYear = firstOfMonth.get(weekFields.weekOfYear());
+
+                            return weekOfYear - firstWeekOfYear + 1;
+                        },
+                        Collectors.counting()
+                ))
+                .entrySet().stream()
+                .map(entry -> new ChartBarDTO("Semana " + entry.getKey(), entry.getValue().doubleValue()))
+                .sorted((a, b) -> {
+                    int weekA = Integer.parseInt(a.getLabel().replaceAll("[^0-9]", ""));
+                    int weekB = Integer.parseInt(b.getLabel().replaceAll("[^0-9]", ""));
+                    return Integer.compare(weekA, weekB);
+                })
                 .collect(Collectors.toList());
 
         Map<AppointmentStatus, String> statusLabels = Map.of(
@@ -64,6 +87,7 @@ public class AppointmentDashQueryJpaAdapter implements AppointmentDashQueryGatew
         );
 
         List<AppointmentNext5> next5 = repository.findNextAppointmentsBetween(start, end, PageRequest.of(0, 5));
+
         List<AppointmentTableDTO> table = next5.stream().map(p -> {
             AppointmentTableDTO dto = new AppointmentTableDTO();
             dto.setStudentName(p.getStudentName());

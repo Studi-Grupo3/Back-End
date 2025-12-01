@@ -1,4 +1,4 @@
-package sptech.school.v2.cleanarch.infra.persistence.repository.dashboard;
+package sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.payment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,6 +26,19 @@ public interface PaymentDashJpaRepository extends JpaRepository<Appointment, Int
     @Query("SELECT COUNT(DISTINCT a.teacher.id) FROM Appointment a WHERE a.paymentStatus = :status AND a.dateTime BETWEEN :start AND :end")
     long countDistinctTeachersByPaymentStatusBetween(@Param("status") PaymentStatus status, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
-    @Query("SELECT a.id AS id, a.teacher.name AS teacherName, a.teacher.subjects AS subject, a.teacher.hourlyRate AS hourlyRate, a.lessonDuration AS lessonDuration, a.paymentStatus AS paymentStatus, a.dateTime AS dateTime FROM Appointment a WHERE a.dateTime BETWEEN :start AND :end ORDER BY a.dateTime DESC")
+    @Query("""
+    SELECT a.teacher.id AS id,
+           a.teacher.name AS teacherName,
+           a.teacher.hourlyRate AS hourlyRate,
+           a.paymentStatus AS paymentStatus,
+           SUM(a.totalValue) AS totalRevenue,
+           SUM(a.lessonDuration) AS lessonDuration,
+           GROUP_CONCAT(DISTINCT a.subject) AS subjects,
+           MAX(a.dateTime) AS dateTime
+      FROM Appointment a
+     WHERE a.dateTime BETWEEN :start AND :end
+     GROUP BY a.teacher.id, a.teacher.name, a.teacher.hourlyRate, a.paymentStatus
+     ORDER BY SUM(a.totalValue) DESC
+""")
     List<PaymentAppointmentProjection> findAppointmentsBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }
