@@ -86,9 +86,9 @@ public class AppointmentDashQueryJpaAdapter implements AppointmentDashQueryGatew
                         total == 0 ? 0.0 : cancelled * 100.0 / total)
         );
 
-        List<AppointmentNext5> next5 = repository.findNextAppointmentsBetween(start, end, PageRequest.of(0, 5));
+        List<AppointmentNext5> allAppointments = repository.findNextAppointmentsBetween(start, end, PageRequest.of(0, Integer.MAX_VALUE));
 
-        List<AppointmentTableDTO> table = next5.stream().map(p -> {
+        List<AppointmentTableDTO> table = allAppointments.stream().map(p -> {
             AppointmentTableDTO dto = new AppointmentTableDTO();
             dto.setStudentName(p.getStudentName());
             dto.setTeacherName(p.getTeacherName());

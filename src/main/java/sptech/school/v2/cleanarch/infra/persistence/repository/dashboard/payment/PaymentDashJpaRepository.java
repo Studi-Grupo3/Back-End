@@ -14,17 +14,17 @@ import java.util.List;
 @Repository
 public interface PaymentDashJpaRepository extends JpaRepository<Appointment, Integer> {
 
-    @Query("SELECT COALESCE(SUM(COALESCE(a.lessonDuration,0) * COALESCE(a.teacher.hourlyRate,0)), 0) FROM Appointment a WHERE a.dateTime BETWEEN :start AND :end")
+    @Query("SELECT COALESCE(SUM(COALESCE(a.lessonDuration,0) / 60 * COALESCE(a.teacher.hourlyRate,0)), 0) FROM Appointment a WHERE a.dateTime BETWEEN :start AND :end")
     Double sumTotalBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query("SELECT COUNT(DISTINCT a.teacher.id) FROM Appointment a WHERE a.dateTime BETWEEN :start AND :end")
     long countDistinctTeachersBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
-    @Query("SELECT COALESCE(SUM(COALESCE(a.lessonDuration,0) * COALESCE(a.teacher.hourlyRate,0)), 0) FROM Appointment a WHERE a.paymentStatus = :status AND a.dateTime BETWEEN :start AND :end")
+    @Query("SELECT COALESCE(SUM(COALESCE(a.lessonDuration,0) / 60 * COALESCE(a.teacher.hourlyRate,0)), 0) FROM Appointment a WHERE a.paymentStatus = :status AND a.dateTime BETWEEN :start AND :end")
     Double sumByPaymentStatusBetween(@Param("status") PaymentStatus status, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
-    @Query("SELECT COUNT(DISTINCT a.teacher.id) FROM Appointment a WHERE a.paymentStatus = :status AND a.dateTime BETWEEN :start AND :end")
-    long countDistinctTeachersByPaymentStatusBetween(@Param("status") PaymentStatus status, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+    @Query("SELECT COALESCE(SUM(COALESCE(a.lessonDuration,0) / 60 * COALESCE(a.teacher.hourlyRate,0)), 0) FROM Appointment a WHERE a.paymentStatus IN :statuses AND a.dateTime BETWEEN :start AND :end")
+    Double sumByPaymentStatusesBetween(@Param("statuses") List<PaymentStatus> statuses, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query("""
     SELECT a.teacher.id AS id,
@@ -41,4 +41,7 @@ public interface PaymentDashJpaRepository extends JpaRepository<Appointment, Int
      ORDER BY SUM(a.totalValue) DESC
 """)
     List<PaymentAppointmentProjection> findAppointmentsBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query("SELECT COUNT(DISTINCT a.teacher.id) FROM Appointment a WHERE a.paymentStatus = :status AND a.dateTime BETWEEN :start AND :end")
+    long countDistinctTeachersByPaymentStatusBetween(@Param("status") PaymentStatus status, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }
