@@ -1,7 +1,7 @@
 package sptech.school.v2.cleanarch.core.application.facades.appointment;
 
 import sptech.school.v2.cleanarch.core.dtos.internal.AppointmentDTO;
-import sptech.school.v2.cleanarch.core.dtos.out.AppointmentResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.appointment.AppointmentResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 

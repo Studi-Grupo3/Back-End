@@ -10,7 +10,7 @@ import sptech.school.v2.cleanarch.core.application.gateways.student.StudentQuery
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherQueryGateway;
 import sptech.school.v2.cleanarch.core.application.mappers.appointment.AppointmentMapper;
 import sptech.school.v2.cleanarch.core.dtos.internal.AppointmentDTO;
-import sptech.school.v2.cleanarch.core.dtos.out.AppointmentResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.appointment.AppointmentResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;

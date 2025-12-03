@@ -52,6 +52,7 @@ public class DataLoader implements CommandLineRunner {
             t1.setResumeTeacher("Especialista em matemática para ensino médio e pré-vestibular, com 10 anos de experiência.");
             t1.setYearsExperience("10 anos");
             t1.setAcademicFormation("Mestrado em Matemática Aplicada - USP");
+            t1.setCellphoneNumber("11911110001");
             teachers.add(t1);
 
             Teacher t2 = new Teacher("Prof. Beatriz Costa", "beatriz.prof@gmail.com",
@@ -60,6 +61,7 @@ public class DataLoader implements CommandLineRunner {
             t2.setResumeTeacher("Doutora em Química e Física, focada em preparação para olimpíadas científicas.");
             t2.setYearsExperience("15 anos");
             t2.setAcademicFormation("Doutorado em Química - UNICAMP");
+            t2.setCellphoneNumber("11911110002");
             teachers.add(t2);
 
             Teacher t3 = new Teacher("Prof. Fernanda Alvez", "fernanda.prof@gmail.com",
@@ -68,6 +70,7 @@ public class DataLoader implements CommandLineRunner {
             t3.setResumeTeacher("Professora de português e redação, ajuda alunos em ENEM e concursos.");
             t3.setYearsExperience("8 anos");
             t3.setAcademicFormation("Licenciatura em Letras - UFRJ");
+            t3.setCellphoneNumber("11911110003");
             teachers.add(t3);
 
             Teacher t4 = new Teacher("Prof. Rodrigo Santos", "rodrigo.prof@gmail.com",
@@ -76,6 +79,7 @@ public class DataLoader implements CommandLineRunner {
             t4.setResumeTeacher("Professor de física com forte background em pesquisa experimental.");
             t4.setYearsExperience("12 anos");
             t4.setAcademicFormation("Doutorado em Física - USP");
+            t4.setCellphoneNumber("11911110004");
             teachers.add(t4);
 
             Teacher t5 = new Teacher("Prof. Marina Oliveira", "marina.prof@gmail.com",
@@ -84,6 +88,7 @@ public class DataLoader implements CommandLineRunner {
             t5.setResumeTeacher("Ensina química e ciências, foco em práticas laboratoriais seguras.");
             t5.setYearsExperience("9 anos");
             t5.setAcademicFormation("Mestrado em Química - UFMG");
+            t5.setCellphoneNumber("11911110005");
             teachers.add(t5);
 
             Teacher t6 = new Teacher("Prof. Gustavo Pereira", "gustavo.prof@gmail.com",
@@ -92,6 +97,7 @@ public class DataLoader implements CommandLineRunner {
             t6.setResumeTeacher("Professor de biologia com experiência em ensino médio e olimpíadas.");
             t6.setYearsExperience("18 anos");
             t6.setAcademicFormation("Doutorado em Biologia - UNICAMP");
+            t6.setCellphoneNumber("11911110006");
             teachers.add(t6);
 
             Teacher t7 = new Teacher("Prof. Helena Moura", "helena.prof@gmail.com",
@@ -100,6 +106,7 @@ public class DataLoader implements CommandLineRunner {
             t7.setResumeTeacher("Professora de inglês e espanhol, foco em conversação e gramática.");
             t7.setYearsExperience("11 anos");
             t7.setAcademicFormation("Licenciatura em Letras - PUC");
+            t7.setCellphoneNumber("11911110007");
             teachers.add(t7);
 
             Teacher t8 = new Teacher("Prof. João Neto", "joao.prof@gmail.com",
@@ -108,6 +115,7 @@ public class DataLoader implements CommandLineRunner {
             t8.setResumeTeacher("Professor de geografia e história, especialista em geopolítica.");
             t8.setYearsExperience("20 anos");
             t8.setAcademicFormation("Mestrado em Geografia - UFRJ");
+            t8.setCellphoneNumber("11911110008");
             teachers.add(t8);
 
             Teacher t9 = new Teacher("Prof. Carla Mendes", "carla.prof@gmail.com",
@@ -116,6 +124,7 @@ public class DataLoader implements CommandLineRunner {
             t9.setResumeTeacher("Professora de artes e alfabetização para séries iniciais.");
             t9.setYearsExperience("7 anos");
             t9.setAcademicFormation("Licenciatura em Educação Artística - UERJ");
+            t9.setCellphoneNumber("11911110009");
             teachers.add(t9);
 
             Teacher t10 = new Teacher("Prof. Marcos Vinicius", "marcos.prof@gmail.com",
@@ -124,6 +133,7 @@ public class DataLoader implements CommandLineRunner {
             t10.setResumeTeacher("Professor com formação diversificada em ciências e filosofia.");
             t10.setYearsExperience("14 anos");
             t10.setAcademicFormation("Doutorado em Filosofia da Ciência - USP");
+            t10.setCellphoneNumber("11911110010");
             teachers.add(t10);
 
             teacherRepository.saveAll(teachers);
@@ -452,6 +462,50 @@ public class DataLoader implements CommandLineRunner {
                     findStudentByEmail.apply("pedro@gmail.com"),
                     findTeacherByName.apply("Prof. Beatriz Costa"),
                     "2025-12-09T09:00:00", 90.0, AppointmentStatus.SCHEDULED, "Online", 127.50, PaymentStatus.PENDING, "CHEMISTRY"));
+
+            // Appointments extra para Prof. Carlos Lima (5+)
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2025-12-10T09:00:00", 60.0, AppointmentStatus.SCHEDULED, "Online", 75.50, PaymentStatus.PENDING, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("ana@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2025-12-11T10:30:00", 90.0, AppointmentStatus.SCHEDULED, "Presencial", 113.25, PaymentStatus.PENDING, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("lucas@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2025-12-12T14:00:00", 120.0, AppointmentStatus.SCHEDULED, "Online", 151.00, PaymentStatus.PENDING, "SCIENCE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("mariana@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2025-12-13T08:30:00", 90.0, AppointmentStatus.SCHEDULED, "Presencial", 113.25, PaymentStatus.PENDING, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("pedro@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2025-12-14T16:00:00", 60.0, AppointmentStatus.SCHEDULED, "Online", 75.50, PaymentStatus.PENDING, "PHYSICS"));
+
+            // Appointments extra para aluno Matheus (5+)
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Rodrigo Santos"),
+                    "2025-12-10T11:00:00", 60.0, AppointmentStatus.SCHEDULED, "Presencial", 95.00, PaymentStatus.PENDING, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Beatriz Costa"),
+                    "2025-12-11T13:00:00", 90.0, AppointmentStatus.SCHEDULED, "Online", 127.50, PaymentStatus.PENDING, "CHEMISTRY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Fernanda Alvez"),
+                    "2025-12-12T15:30:00", 120.0, AppointmentStatus.SCHEDULED, "Online", 120.00, PaymentStatus.PENDING, "PORTUGUESE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Helena Moura"),
+                    "2025-12-13T10:00:00", 60.0, AppointmentStatus.SCHEDULED, "Online", 65.00, PaymentStatus.PENDING, "ENGLISH"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. João Neto"),
+                    "2025-12-14T14:00:00", 90.0, AppointmentStatus.SCHEDULED, "Presencial", 135.00, PaymentStatus.PENDING, "HISTORY"));
 
             appointmentRepository.saveAll(appointments);
         }

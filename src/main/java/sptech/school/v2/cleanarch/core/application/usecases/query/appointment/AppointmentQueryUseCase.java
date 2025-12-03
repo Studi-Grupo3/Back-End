@@ -3,7 +3,7 @@ package sptech.school.v2.cleanarch.core.application.usecases.query.appointment;
 import org.springframework.stereotype.Service;
 import sptech.school.v2.cleanarch.core.application.gateways.appointment.AppointmentQueryGateway;
 
-import sptech.school.v2.cleanarch.core.dtos.out.AppointmentResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.appointment.AppointmentResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
