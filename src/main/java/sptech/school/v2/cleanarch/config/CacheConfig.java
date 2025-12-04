@@ -1,28 +1,42 @@
 package sptech.school.v2.cleanarch.config;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * Configuração de Cache com Redis para a aplicação Studi.
  *
- * Esta classe ativa o suporte a cache na aplicação.
- * O Spring Boot autoconfiguration cuida de conectar com Redis
- * baseado nas propriedades configuradas em application.properties.
- *
- * O cache é utilizado nos endpoints de Teacher para otimizar a performance.
- *
- * Configuração esperada em application.properties:
- * - spring.cache.type=redis
- * - spring.redis.host=localhost
- * - spring.redis.port=6379
- * - spring.cache.redis.time-to-live=3600000
+ * O cache usa {@link GenericJackson2JsonRedisSerializer} serializando valores
+ * como {@code Object}, garantindo que DTOs/entidades sejam armazenados em vez de
+ * {@code ResponseEntity} (que não deve ser colocado no cache).
  */
 @Configuration
 @EnableCaching
 public class CacheConfig {
-    // Spring Boot autoconfiguration cuida de tudo
-    // Nenhuma bean customizada necessária
+
+    @Bean
+    public RedisCacheConfiguration redisCacheConfiguration() {
+        GenericJackson2JsonRedisSerializer valueSerializer = new GenericJackson2JsonRedisSerializer();
+
+        return RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(valueSerializer));
+    }
+
+    @Bean
+    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+        return RedisCacheManager.builder(redisConnectionFactory)
+                .cacheDefaults(redisCacheConfiguration())
+                .build();
+    }
 }
 
 
