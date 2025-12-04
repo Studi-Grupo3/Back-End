@@ -1,0 +1,23 @@
+name: Build and Publish Java
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  call-build:
+    uses: Studi-Grupo3/reusable-workflows/.github/workflows/java-build.yml@main
+    with:
+      artifact_name: 'backend-app.jar'
+
+  call-publish-release:
+    needs: call-build
+    uses: Studi-Grupo3/reusable-workflows/.github/workflows/upload-gh-release.yml@main
+    with:
+      artifact_name: app-build
+      target_owner_repo: "Studi-Grupo3/aws-infrastructure-setup"
+      tag: "V1"
+    secrets:
+      RELEASE_PAT: ${{ secrets.RELEASE_PAT }}

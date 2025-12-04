@@ -21,4 +21,8 @@ public interface TeacherQueryGateway {
     Page<Teacher> listAll(Pageable pageable);
 
     Optional<Teacher> findByEmail(String email);
+
+    Optional<Integer> findIdByEmail(String email);
+
+    Optional<Integer> findByCpf(String cpf);
 }

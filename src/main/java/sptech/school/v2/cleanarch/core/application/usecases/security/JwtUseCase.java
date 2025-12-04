@@ -21,7 +21,7 @@ public class JwtUseCase {
                 .claim("username", username)
                 .claim("role", role.toUpperCase())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 1 hora
+                .setExpiration(new Date(System.currentTimeMillis() + 50L * 60 * 60 * 1000))
                 .signWith(key)
                 .compact();
     }

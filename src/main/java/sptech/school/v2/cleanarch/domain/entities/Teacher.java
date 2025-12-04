@@ -26,7 +26,7 @@ public class Teacher extends User {
 
     public Teacher(String name, String email, String cpf, String password, List<Subject> subjects) {
         super(name, email, cpf, password);
-        this.subjects = new ArrayList<>();
+        this.subjects = subjects;
     }
 
     public String getYearsExperience() {

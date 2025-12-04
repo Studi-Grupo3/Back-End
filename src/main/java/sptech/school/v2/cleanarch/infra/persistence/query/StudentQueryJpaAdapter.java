@@ -1,9 +1,10 @@
-package sptech.school.v2.cleanarch.infra.persistence.adapter.student;
+package sptech.school.v2.cleanarch.infra.persistence.query;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.core.application.gateways.student.StudentQueryGateway;
+import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.infra.persistence.repository.StudentJpaRepository;
 
 import java.util.Optional;
@@ -39,5 +40,25 @@ public class StudentQueryJpaAdapter implements StudentQueryGateway {
     @Override
     public Optional<Student> findByEmail(String email) {
         return repository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<Integer> findIdByEmail(String email) {
+        Optional<Student> opt = repository.findIdByEmail(email);
+        if (opt.isPresent()) {
+            System.out.println("Estudante já existe para o email: " + email);
+            return Optional.empty();
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Integer> findByCpf(String cpf) {
+        Optional<Student> opt = repository.findIdByCpf(cpf);
+        if (opt.isPresent()) {
+            System.out.println("Estudante já existe para o CPF: " + cpf);
+            return Optional.empty();
+        }
+        return Optional.empty();
     }
 }

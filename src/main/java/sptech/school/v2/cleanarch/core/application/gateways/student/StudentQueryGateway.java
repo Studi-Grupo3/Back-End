@@ -16,4 +16,8 @@ public interface StudentQueryGateway {
     Page<Student> listAll(Pageable pageable);
 
     Optional<Student> findByEmail(String email);
+
+    Optional<Integer> findIdByEmail(String email);
+
+    Optional<Integer> findByCpf(String cpf);
 }
