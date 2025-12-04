@@ -1,27 +1,60 @@
 package sptech.school.v2.cleanarch.core.application.services.cache;
 
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
+import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
+
+import java.util.List;
 
 /**
- * Serviço para gerenciamento de cache de Teacher.
- *
- * Este serviço encapsula operações de limpeza e invalidação de cache,
- * seguindo os padrões de Clean Architecture e Single Responsibility Principle.
- *
- * Casos de uso:
- * - Invalidar cache de um professor específico
- * - Limpar todo o cache de professores
- * - Consultar estado do cache
+ * Serviço para gerenciamento e leitura de cache de Teacher.
+ * <p>
+ * Os métodos anotados com cache retornam DTOs/entidades serializáveis, evitando
+ * qualquer tentativa de serializar {@code ResponseEntity} no Redis.
  */
 @Service
 public class TeacherCacheService {
 
     private static final String TEACHER_CACHE_NAME = "teacher";
     private final CacheManager cacheManager;
+    private final TeacherFacadeContract teacherFacade;
+    private final TeacherMapper teacherMapper;
 
-    public TeacherCacheService(CacheManager cacheManager) {
+    public TeacherCacheService(CacheManager cacheManager,
+                               TeacherFacadeContract teacherFacade,
+                               TeacherMapper teacherMapper) {
         this.cacheManager = cacheManager;
+        this.teacherFacade = teacherFacade;
+        this.teacherMapper = teacherMapper;
+    }
+
+    @Cacheable(cacheNames = TEACHER_CACHE_NAME, key = "#id", unless = "#result == null")
+    public TeacherResponseDTO getTeacherById(Integer id) {
+        Teacher found = teacherFacade.findById(id);
+        return found != null ? teacherMapper.toDtoResponse(found) : null;
+    }
+
+    @Cacheable(cacheNames = TEACHER_CACHE_NAME, key = "#page + '_' + #size", unless = "#result == null")
+    public Page<TeacherResponseDTO> listTeachers(int page, int size) {
+        int pageNumber = Math.max(page, 0);
+        int pageSize = Math.max(size, 1);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Page<Teacher> teachers = teacherFacade.listAll(pageable);
+        List<TeacherResponseDTO> dtos = teachers.getContent()
+                .stream()
+                .map(teacherMapper::toDtoResponse)
+                .toList();
+
+        return new PageImpl<>(dtos, teachers.getPageable(), teachers.getTotalElements());
     }
 
     /**
