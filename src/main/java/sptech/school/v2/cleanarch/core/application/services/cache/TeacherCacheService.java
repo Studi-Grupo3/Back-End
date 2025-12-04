@@ -1,27 +1,82 @@
 package sptech.school.v2.cleanarch.core.application.services.cache;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
+import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherPageResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
+
+import java.util.List;
 
 /**
- * Serviço para gerenciamento de cache de Teacher.
- *
- * Este serviço encapsula operações de limpeza e invalidação de cache,
- * seguindo os padrões de Clean Architecture e Single Responsibility Principle.
- *
- * Casos de uso:
- * - Invalidar cache de um professor específico
- * - Limpar todo o cache de professores
- * - Consultar estado do cache
+ * Serviço para gerenciamento e leitura de cache de Teacher.
+ * <p>
+ * Os métodos anotados com cache retornam DTOs/entidades serializáveis, evitando
+ * qualquer tentativa de serializar {@code ResponseEntity} no Redis.
  */
 @Service
 public class TeacherCacheService {
 
     private static final String TEACHER_CACHE_NAME = "teacher";
     private final CacheManager cacheManager;
+    private final TeacherFacadeContract teacherFacade;
+    private final TeacherMapper teacherMapper;
 
-    public TeacherCacheService(CacheManager cacheManager) {
+    public TeacherCacheService(CacheManager cacheManager,
+                               TeacherFacadeContract teacherFacade,
+                               TeacherMapper teacherMapper) {
         this.cacheManager = cacheManager;
+        this.teacherFacade = teacherFacade;
+        this.teacherMapper = teacherMapper;
+    }
+
+    @PostConstruct
+    public void clearLegacyTeacherCache() {
+        // Remove qualquer entrada antiga que possa ter sido serializada como ResponseEntity
+        clearTeacherCache();
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void clearTeacherCacheWhenAppStarts() {
+        // Garante que qualquer valor persistido antes das correções (PageImpl/ResponseEntity) seja removido.
+        clearTeacherCache();
+    }
+
+    @Cacheable(cacheNames = TEACHER_CACHE_NAME, key = "#id", unless = "#result == null")
+    public TeacherResponseDTO getTeacherById(Integer id) {
+        Teacher found = teacherFacade.findById(id);
+        return found != null ? teacherMapper.toDtoResponse(found) : null;
+    }
+
+    @Cacheable(cacheNames = TEACHER_CACHE_NAME, key = "#page + '_' + #size", unless = "#result == null")
+    public TeacherPageResponseDTO listTeachers(int page, int size) {
+        int pageNumber = Math.max(page, 0);
+        int pageSize = Math.max(size, 1);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        var teachers = teacherFacade.listAll(pageable);
+        List<TeacherResponseDTO> dtos = teachers.getContent()
+                .stream()
+                .map(teacherMapper::toDtoResponse)
+                .toList();
+
+        // Retorna um DTO serializável ao invés de PageImpl para evitar problemas de desserialização no Redis
+        return new TeacherPageResponseDTO(
+                dtos,
+                teachers.getNumber(),
+                teachers.getSize(),
+                teachers.getTotalElements(),
+                teachers.getTotalPages(),
+                teachers.isLast()
+        );
     }
 
     /**
