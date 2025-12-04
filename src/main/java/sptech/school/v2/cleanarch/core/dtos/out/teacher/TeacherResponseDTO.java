@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,5 +25,5 @@ public record TeacherResponseDTO(
         , String hourlyRate
         , String profileImageContentType
         , byte[] profileImage
-)
-{}
+) implements Serializable {
+}

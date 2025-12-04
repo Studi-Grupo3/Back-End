@@ -2,6 +2,7 @@ package sptech.school.v2.cleanarch.core.application.facades.teacher;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,7 @@ public class TeacherFacade implements TeacherFacadeContract {
     }
 
     @Override
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
     public Teacher create(Teacher teacher) {
         verifyEmailAndCpfUtil.verify(teacher);
         Teacher created = teacherCommandUseCase.create(teacher);
@@ -71,6 +73,7 @@ public class TeacherFacade implements TeacherFacadeContract {
     }
 
     @Override
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
     public Teacher update(Teacher teacher, Integer id) {
         verifyEmailAndCpfUtil.verify(teacher, id);
         teacher.setId(id);
@@ -80,6 +83,7 @@ public class TeacherFacade implements TeacherFacadeContract {
     }
 
     @Override
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
     public void delete(Integer id) {
         if (findById(id) == null) {
             throw new UserNullException("Teacher dont exist");
@@ -107,6 +111,7 @@ public class TeacherFacade implements TeacherFacadeContract {
     }
 
     @Override
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
     @Transactional
     public ResourceFileResponseDTO uploadProfileImage(MultipartFile file, Integer id) throws IOException {
         if (file == null || file.isEmpty()) {
