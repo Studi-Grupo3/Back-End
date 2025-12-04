@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import sptech.school.v2.cleanarch.infra.persistence.repository.JpaResourceFileRepository;
 import sptech.school.v2.cleanarch.core.application.usecases.content.StorageServiceUseCase;
@@ -112,6 +113,7 @@ public class StudentFacade implements StudentFacadeContract {
     }
 
     @Override
+    @Transactional
     public ResourceFileResponseDTO uploadProfileImage(MultipartFile file, Integer id) throws IOException {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("File must not be null or empty");

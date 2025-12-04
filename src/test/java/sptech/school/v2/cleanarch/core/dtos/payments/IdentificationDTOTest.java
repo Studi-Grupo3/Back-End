@@ -3,6 +3,7 @@ package sptech.school.v2.cleanarch.core.dtos.payments;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import sptech.school.v2.cleanarch.core.dtos.internal.payment.payment.IdentificationDTO;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

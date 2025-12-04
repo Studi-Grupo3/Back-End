@@ -1,4 +1,4 @@
-package sptech.school.v2.cleanarch.core.dtos.in.queue;
+package sptech.school.v2.cleanarch.core.dtos.internal.payment.payment;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
