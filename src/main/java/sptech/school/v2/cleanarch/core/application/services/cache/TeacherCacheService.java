@@ -1,5 +1,6 @@
 package sptech.school.v2.cleanarch.core.application.services.cache;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,12 @@ public class TeacherCacheService {
         this.cacheManager = cacheManager;
         this.teacherFacade = teacherFacade;
         this.teacherMapper = teacherMapper;
+    }
+
+    @PostConstruct
+    public void clearLegacyTeacherCache() {
+        // Remove qualquer entrada antiga que possa ter sido serializada como ResponseEntity
+        clearTeacherCache();
     }
 
     @Cacheable(cacheNames = TEACHER_CACHE_NAME, key = "#id", unless = "#result == null")
