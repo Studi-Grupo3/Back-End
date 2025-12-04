@@ -3,13 +3,12 @@ package sptech.school.v2.cleanarch.core.application.services.cache;
 import jakarta.annotation.PostConstruct;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
 import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherPageResponseDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 
@@ -50,18 +49,26 @@ public class TeacherCacheService {
     }
 
     @Cacheable(cacheNames = TEACHER_CACHE_NAME, key = "#page + '_' + #size", unless = "#result == null")
-    public Page<TeacherResponseDTO> listTeachers(int page, int size) {
+    public TeacherPageResponseDTO listTeachers(int page, int size) {
         int pageNumber = Math.max(page, 0);
         int pageSize = Math.max(size, 1);
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-        Page<Teacher> teachers = teacherFacade.listAll(pageable);
+        var teachers = teacherFacade.listAll(pageable);
         List<TeacherResponseDTO> dtos = teachers.getContent()
                 .stream()
                 .map(teacherMapper::toDtoResponse)
                 .toList();
 
-        return new PageImpl<>(dtos, teachers.getPageable(), teachers.getTotalElements());
+        // Retorna um DTO serializável ao invés de PageImpl para evitar problemas de desserialização no Redis
+        return new TeacherPageResponseDTO(
+                dtos,
+                teachers.getNumber(),
+                teachers.getSize(),
+                teachers.getTotalElements(),
+                teachers.getTotalPages(),
+                teachers.isLast()
+        );
     }
 
     /**

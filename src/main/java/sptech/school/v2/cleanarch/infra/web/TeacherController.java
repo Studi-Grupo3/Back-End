@@ -8,10 +8,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherRegisterDTO;
 import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherUpdateDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherPageResponseDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
 import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
 import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
@@ -119,7 +122,12 @@ public class TeacherController {
             @Parameter(description = "Quantidade de itens por página", example = "10")
             @RequestParam(defaultValue = "10") int size
     ) {
-        Page<TeacherResponseDTO> dtoPage = teacherCacheService.listTeachers(page, size);
+        TeacherPageResponseDTO cachedPage = teacherCacheService.listTeachers(page, size);
+        Page<TeacherResponseDTO> dtoPage = new PageImpl<>(
+                cachedPage.getContent(),
+                PageRequest.of(cachedPage.getPageNumber(), cachedPage.getPageSize()),
+                cachedPage.getTotalElements()
+        );
         return ResponseEntity.ok(dtoPage);
     }
 
