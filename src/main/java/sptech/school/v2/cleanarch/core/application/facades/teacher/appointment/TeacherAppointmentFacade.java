@@ -3,6 +3,7 @@ package sptech.school.v2.cleanarch.core.application.facades.teacher.appointment;
 import org.springframework.stereotype.Service;
 import sptech.school.v2.cleanarch.core.application.usecases.query.teacher.appointment.TeacherAppointmentQueryUseCase;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.LessonHistoryDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherDashboardDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.UpcomingLessonDTO;
 
@@ -25,6 +26,11 @@ public class TeacherAppointmentFacade implements TeacherAppointmentFacadeContrac
     @Override
     public List<LessonHistoryDTO> getLessonsHistory(Integer teacherId) {
         return useCase.getLessonsHistory(teacherId);
+    }
+
+    @Override
+    public TeacherDashboardDTO getDashboard(Integer teacherId) {
+        return useCase.getDashboard(teacherId);
     }
 
     @Override

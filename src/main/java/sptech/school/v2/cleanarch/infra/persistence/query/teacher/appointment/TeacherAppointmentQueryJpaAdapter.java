@@ -2,10 +2,9 @@ package sptech.school.v2.cleanarch.infra.persistence.query.teacher.appointment;
 
 import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.appointment.TeacherAppointmentQueryGateway;
-import sptech.school.v2.cleanarch.core.dtos.out.teacher.LessonHistoryDTO;
-import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherStatsDTO;
-import sptech.school.v2.cleanarch.core.dtos.out.teacher.UpcomingLessonDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.*;
 import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
+import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.appointment.TeacherAppointmentJpaRepository;
 
 import java.time.DayOfWeek;
@@ -26,16 +25,17 @@ public class TeacherAppointmentQueryJpaAdapter implements TeacherAppointmentQuer
 
     @Override
     public List<UpcomingLessonDTO> findUpcomingLessons(Integer teacherId, LocalDateTime fromDate) {
-        return repository.findUpcomingByTeacher(teacherId, fromDate).stream()
+        return repository.findUpcomingByTeacher(teacherId, AppointmentStatus.SCHEDULED).stream()
                 .map(a -> new UpcomingLessonDTO(
                         a.getId(),
                         a.getSubject(),
                         a.getStudent().getId(),
                         a.getStudent().getName(),
+                        a.getStudent().getCellphoneNumber(),
                         a.getDateTime().toLocalDate(),
                         a.getDateTime().toLocalTime(),
                         a.getLessonDuration(),
-                        "Presencial",
+                        a.getLocation(),
                         a.getStatus().toString()
                 ))
                 .collect(Collectors.toList());
@@ -52,7 +52,7 @@ public class TeacherAppointmentQueryJpaAdapter implements TeacherAppointmentQuer
                         a.getDateTime().toLocalDate(),
                         a.getDateTime().toLocalTime(),
                         a.getLessonDuration(),
-                        "Presencial",
+                        a.getLocation(),
                         false,
                         a.getStatus().toString(),
                         a.getTotalValue(),
@@ -60,6 +60,39 @@ public class TeacherAppointmentQueryJpaAdapter implements TeacherAppointmentQuer
                         null
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public TeacherDashboardDTO getDashboardData(Integer teacherId) {
+        Long total = repository.countByTeacherId(teacherId);
+        Long cancelled = repository.countByTeacherAndStatus(teacherId, AppointmentStatus.CANCELLED);
+        Double hours = repository.sumTotalDurationByTeacher(teacherId);
+
+        double pctCancel = (total == 0) ? 0.0 : (cancelled.doubleValue() / total.doubleValue()) * 100.0;
+
+        List<Object[]> rawDisciplines = repository.countByTeacherGroupBySubject(teacherId);
+        List<DisciplineStatsDTO> byDisc = rawDisciplines.stream()
+                .map(obj -> new DisciplineStatsDTO(
+                        Subject.valueOf((String) obj[0]),
+                        (Long) obj[1]
+                ))
+                .collect(Collectors.toList());
+
+        List<Object[]> rawWeekdays = repository.countByTeacherGroupByWeekday(teacherId);
+        List<WeekdayStatsDTO> byWeekday = rawWeekdays.stream()
+                .map(obj -> new WeekdayStatsDTO(
+                        ((Number) obj[0]).intValue(),
+                        ((Number) obj[1]).longValue()
+                ))
+                .collect(Collectors.toList());
+
+        return new TeacherDashboardDTO(
+                total,
+                pctCancel,
+                hours,
+                byDisc,
+                byWeekday
+        );
     }
 
     @Override

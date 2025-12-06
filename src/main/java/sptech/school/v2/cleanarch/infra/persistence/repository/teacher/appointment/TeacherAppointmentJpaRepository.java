@@ -14,8 +14,8 @@ import java.util.List;
 @Repository
 public interface TeacherAppointmentJpaRepository extends JpaRepository<Appointment, Integer> {
 
-    @Query("SELECT a FROM Appointment a WHERE a.teacher.id = :teacherId AND a.dateTime >= :now ORDER BY a.dateTime ASC")
-    List<Appointment> findUpcomingByTeacher(@Param("teacherId") Integer teacherId, @Param("now") LocalDateTime now);
+    @Query("SELECT a FROM Appointment a WHERE a.teacher.id = :teacherId AND a.status = :status ORDER BY a.dateTime ASC")
+    List<Appointment> findUpcomingByTeacher(@Param("teacherId") Integer teacherId, @Param("status") AppointmentStatus status);
 
     @Query("SELECT a FROM Appointment a WHERE a.teacher.id = :teacherId ORDER BY a.dateTime DESC")
     List<Appointment> findAllByTeacherIdOrderByDateDesc(@Param("teacherId") Integer teacherId);
@@ -29,4 +29,18 @@ public interface TeacherAppointmentJpaRepository extends JpaRepository<Appointme
 
     @Query("SELECT COALESCE(SUM(a.lessonDuration), 0) FROM Appointment a WHERE a.teacher.id = :tid AND a.status = :status")
     Double sumDurationByTeacherAndStatus(@Param("tid") Integer tid, @Param("status") AppointmentStatus status);
+
+    long countByTeacherId(Integer teacherId);
+
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.teacher.id = :teacherId AND a.status = :status")
+    long countByTeacherAndStatus(@Param("teacherId") Integer teacherId, @Param("status") AppointmentStatus status);
+
+    @Query("SELECT COALESCE(SUM(a.lessonDuration), 0) FROM Appointment a WHERE a.teacher.id = :teacherId")
+    Double sumTotalDurationByTeacher(@Param("teacherId") Integer teacherId);
+
+    @Query("SELECT a.subject, COUNT(a) FROM Appointment a WHERE a.teacher.id = :teacherId GROUP BY a.subject")
+    List<Object[]> countByTeacherGroupBySubject(@Param("teacherId") Integer teacherId);
+
+    @Query("SELECT FUNCTION('DAYOFWEEK', a.dateTime) as weekday, COUNT(a) as total FROM Appointment a WHERE a.teacher.id = :teacherId GROUP BY FUNCTION('DAYOFWEEK', a.dateTime)")
+    List<Object[]> countByTeacherGroupByWeekday(@Param("teacherId") Integer teacherId);
 }

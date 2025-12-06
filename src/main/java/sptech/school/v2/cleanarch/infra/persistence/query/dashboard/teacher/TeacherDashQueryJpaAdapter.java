@@ -14,6 +14,7 @@ import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.teacher
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class TeacherDashQueryJpaAdapter implements TeacherDashQueryGateway {
@@ -27,19 +28,28 @@ public class TeacherDashQueryJpaAdapter implements TeacherDashQueryGateway {
     @Override
     public TeacherDashResponseDTO getTeacherDashData(LocalDateTime start, LocalDateTime end) {
         List<TeacherBasicProjection> teachers = repository.findAllBasic();
+        int totalTeachers = teachers.size();
 
         List<HoursByTeacher> hoursList = repository.sumHoursPerTeacherBetween(start, end);
         Map<Integer, Double> hoursPerTeacher = hoursList.stream()
-                .collect(Collectors.toMap(HoursByTeacher::getTeacherId, h -> Optional.ofNullable(h.getHours()).orElse(0.0)));
+                .collect(Collectors.toMap(
+                        HoursByTeacher::getTeacherId,
+                        h -> Optional.ofNullable(h.getHours()).orElse(0.0)
+                ));
 
-        int totalTeachers = teachers.size();
-
-        double totalHours = hoursPerTeacher.values().stream().filter(Objects::nonNull).mapToDouble(Double::doubleValue).sum();
-
+        double totalHours = hoursPerTeacher.values().stream()
+                .filter(Objects::nonNull)
+                .mapToDouble(Double::doubleValue)
+                .sum();
         double averageHours = totalTeachers == 0 ? 0.0 : totalHours / totalTeachers;
 
-        double totalHourlyRate = teachers.stream().filter(t -> t.getHourlyRate() != null).mapToDouble(TeacherBasicProjection::getHourlyRate).sum();
+        double totalHourlyRate = teachers.stream()
+                .filter(t -> t.getHourlyRate() != null)
+                .mapToDouble(TeacherBasicProjection::getHourlyRate)
+                .sum();
         double averageHourlyRate = totalTeachers == 0 ? 0.0 : totalHourlyRate / totalTeachers;
+
+        TeacherStatsDTO stats = new TeacherStatsDTO(totalTeachers, averageHours, averageHourlyRate, totalHours);
 
         List<Map.Entry<Integer, Double>> top = hoursPerTeacher.entrySet().stream()
                 .sorted(Map.Entry.<Integer, Double>comparingByValue().reversed())
@@ -59,8 +69,16 @@ public class TeacherDashQueryJpaAdapter implements TeacherDashQueryGateway {
                 .collect(Collectors.toList());
 
         Map<String, Long> countBySubject = teachers.stream()
-                .filter(t -> t.getSubjects() != null)
-                .collect(Collectors.groupingBy(TeacherBasicProjection::getSubjects, Collectors.counting()));
+                .flatMap(t -> {
+                    String subjectString = t.getSubjects();
+                    if (subjectString == null || subjectString.trim().isEmpty()) {
+                        return Stream.empty();
+                    }
+                    return Arrays.stream(subjectString.split(","))
+                            .map(String::trim);
+                })
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
 
         List<ChartPieDTO> disciplineDistribution = countBySubject.entrySet().stream()
                 .map(e -> new ChartPieDTO(e.getKey(), totalTeachers == 0 ? 0.0 : (e.getValue() * 100.0) / totalTeachers))
@@ -69,15 +87,13 @@ public class TeacherDashQueryJpaAdapter implements TeacherDashQueryGateway {
         List<TeacherTableDTO> table = teachers.stream()
                 .map(t -> {
                     String name = t.getName();
-                    String subject = t.getSubjects() == null ? "—" : t.getSubjects();
+                    String subject = t.getSubjects() == null || t.getSubjects().trim().isEmpty() ? "—" : t.getSubjects();
                     Double hoursWorked = hoursPerTeacher.getOrDefault(t.getId(), 0.0);
                     String hourlyRate = t.getHourlyRate() != null ? String.format("R$ %.2f", t.getHourlyRate()) : "—";
-                    String status = "Active";
+                    String status = "Active"; // Supondo que todos na lista 'teachers' estejam ativos
                     return new TeacherTableDTO(name, subject, hoursWorked, hourlyRate, status);
                 })
                 .collect(Collectors.toList());
-
-        TeacherStatsDTO stats = new TeacherStatsDTO(totalTeachers, averageHours, averageHourlyRate, totalHours);
 
         return new TeacherDashResponseDTO(stats, topTeachers, disciplineDistribution, table);
     }

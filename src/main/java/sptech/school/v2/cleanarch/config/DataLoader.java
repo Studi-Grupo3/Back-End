@@ -46,84 +46,94 @@ public class DataLoader implements CommandLineRunner {
         if (teacherRepository.count() == 0) {
             List<Teacher> teachers = new ArrayList<>();
 
-            Teacher t1 = new Teacher("Prof. Carlos Lima", "carlos.lima.prof@email.com",
+            Teacher t1 = new Teacher("Prof. Carlos Lima", "carlos.prof@gmail.com",
                     "746.130.980-33", passwordEncoder.encode("senha123"), List.of(Subject.MATHEMATICS, Subject.PHYSICS, Subject.SCIENCE));
             t1.setHourlyRate(75.5);
             t1.setResumeTeacher("Especialista em matemática para ensino médio e pré-vestibular, com 10 anos de experiência.");
             t1.setYearsExperience("10 anos");
             t1.setAcademicFormation("Mestrado em Matemática Aplicada - USP");
+            t1.setCellphoneNumber("11911110001");
             teachers.add(t1);
 
-            Teacher t2 = new Teacher("Prof. Beatriz Costa", "beatriz.costa.prof@email.com",
+            Teacher t2 = new Teacher("Prof. Beatriz Costa", "beatriz.prof@gmail.com",
                     "046.304.470-32", passwordEncoder.encode("senha123"), List.of(Subject.CHEMISTRY, Subject.PHYSICS, Subject.BIOLOGY));
             t2.setHourlyRate(85.0);
             t2.setResumeTeacher("Doutora em Química e Física, focada em preparação para olimpíadas científicas.");
             t2.setYearsExperience("15 anos");
             t2.setAcademicFormation("Doutorado em Química - UNICAMP");
+            t2.setCellphoneNumber("11911110002");
             teachers.add(t2);
 
-            Teacher t3 = new Teacher("Prof. Fernanda Alvez", "fernanda.alvez.prof@email.com",
+            Teacher t3 = new Teacher("Prof. Fernanda Alvez", "fernanda.prof@gmail.com",
                     "075.402.100-95", passwordEncoder.encode("senha123"), List.of(Subject.PORTUGUESE, Subject.LITERACY, Subject.ENGLISH));
             t3.setHourlyRate(60.0);
             t3.setResumeTeacher("Professora de português e redação, ajuda alunos em ENEM e concursos.");
             t3.setYearsExperience("8 anos");
             t3.setAcademicFormation("Licenciatura em Letras - UFRJ");
+            t3.setCellphoneNumber("11911110003");
             teachers.add(t3);
 
-            Teacher t4 = new Teacher("Prof. Rodrigo Santos", "rodrigo.santos.prof@email.com",
+            Teacher t4 = new Teacher("Prof. Rodrigo Santos", "rodrigo.prof@gmail.com",
                     "105.087.170-78", passwordEncoder.encode("senha123"), List.of(Subject.PHYSICS, Subject.MATHEMATICS, Subject.CHEMISTRY));
             t4.setHourlyRate(95.0);
             t4.setResumeTeacher("Professor de física com forte background em pesquisa experimental.");
             t4.setYearsExperience("12 anos");
             t4.setAcademicFormation("Doutorado em Física - USP");
+            t4.setCellphoneNumber("11911110004");
             teachers.add(t4);
 
-            Teacher t5 = new Teacher("Prof. Marina Oliveira", "marina.oliveira.prof@email.com",
+            Teacher t5 = new Teacher("Prof. Marina Oliveira", "marina.prof@gmail.com",
                     "687.493.230-67", passwordEncoder.encode("senha123"), List.of(Subject.CHEMISTRY, Subject.SCIENCE, Subject.BIOLOGY));
             t5.setHourlyRate(70.0);
             t5.setResumeTeacher("Ensina química e ciências, foco em práticas laboratoriais seguras.");
             t5.setYearsExperience("9 anos");
             t5.setAcademicFormation("Mestrado em Química - UFMG");
+            t5.setCellphoneNumber("11911110005");
             teachers.add(t5);
 
-            Teacher t6 = new Teacher("Prof. Gustavo Pereira", "gustavo.pereira.prof@email.com",
+            Teacher t6 = new Teacher("Prof. Gustavo Pereira", "gustavo.prof@gmail.com",
                     "840.175.750-99", passwordEncoder.encode("senha123"), List.of(Subject.BIOLOGY, Subject.SCIENCE, Subject.CHEMISTRY));
             t6.setHourlyRate(80.0);
             t6.setResumeTeacher("Professor de biologia com experiência em ensino médio e olimpíadas.");
             t6.setYearsExperience("18 anos");
             t6.setAcademicFormation("Doutorado em Biologia - UNICAMP");
+            t6.setCellphoneNumber("11911110006");
             teachers.add(t6);
 
-            Teacher t7 = new Teacher("Prof. Helena Moura", "helena.moura.prof@email.com",
+            Teacher t7 = new Teacher("Prof. Helena Moura", "helena.prof@gmail.com",
                     "105.315.720-72", passwordEncoder.encode("senha123"), List.of(Subject.ENGLISH, Subject.SPANISH, Subject.PORTUGUESE));
             t7.setHourlyRate(65.0);
             t7.setResumeTeacher("Professora de inglês e espanhol, foco em conversação e gramática.");
             t7.setYearsExperience("11 anos");
             t7.setAcademicFormation("Licenciatura em Letras - PUC");
+            t7.setCellphoneNumber("11911110007");
             teachers.add(t7);
 
-            Teacher t8 = new Teacher("Prof. João Neto", "joao.neto.prof@email.com",
+            Teacher t8 = new Teacher("Prof. João Neto", "joao.prof@gmail.com",
                     "942.489.560-71", passwordEncoder.encode("senha123"), List.of(Subject.GEOGRAPHY, Subject.HISTORY, Subject.SOCIOLOGY));
             t8.setHourlyRate(90.0);
             t8.setResumeTeacher("Professor de geografia e história, especialista em geopolítica.");
             t8.setYearsExperience("20 anos");
             t8.setAcademicFormation("Mestrado em Geografia - UFRJ");
+            t8.setCellphoneNumber("11911110008");
             teachers.add(t8);
 
-            Teacher t9 = new Teacher("Prof. Carla Mendes", "carla.mendes.prof@email.com",
+            Teacher t9 = new Teacher("Prof. Carla Mendes", "carla.prof@gmail.com",
                     "550.434.200-73", passwordEncoder.encode("senha123"), List.of(Subject.ART, Subject.LITERACY));
             t9.setHourlyRate(68.0);
             t9.setResumeTeacher("Professora de artes e alfabetização para séries iniciais.");
             t9.setYearsExperience("7 anos");
             t9.setAcademicFormation("Licenciatura em Educação Artística - UERJ");
+            t9.setCellphoneNumber("11911110009");
             teachers.add(t9);
 
-            Teacher t10 = new Teacher("Prof. Marcos Vinicius", "marcos.vinicius.prof@email.com",
+            Teacher t10 = new Teacher("Prof. Marcos Vinicius", "marcos.prof@gmail.com",
                     "676.706.780-62", passwordEncoder.encode("senha123"), List.of(Subject.PHILOSOPHY, Subject.SOCIOLOGY, Subject.HISTORY));
             t10.setHourlyRate(82.0);
             t10.setResumeTeacher("Professor com formação diversificada em ciências e filosofia.");
             t10.setYearsExperience("14 anos");
             t10.setAcademicFormation("Doutorado em Filosofia da Ciência - USP");
+            t10.setCellphoneNumber("11911110010");
             teachers.add(t10);
 
             teacherRepository.saveAll(teachers);
@@ -132,7 +142,7 @@ public class DataLoader implements CommandLineRunner {
         if (studentRepository.count() == 0) {
             List<Student> students = new ArrayList<>();
 
-            Student s1 = new Student("Matheus Alves", "matheus.alves@email.com",
+            Student s1 = new Student("Matheus Alves", "matheus@gmail.com",
                     "048.043.020-93", passwordEncoder.encode("senha123"));
             s1.setCellphoneNumber("11912345678");
             s1.setDateBirth(LocalDate.of(2008,5,10));
@@ -147,7 +157,7 @@ public class DataLoader implements CommandLineRunner {
             s1.setResponsible(r1);
             students.add(s1);
 
-            Student s2 = new Student("Ana Beatriz Silva", "ana.silva@email.com",
+            Student s2 = new Student("Ana Beatriz Silva", "ana@gmail.com",
                     "612.325.610-61", passwordEncoder.encode("senha123"));
             s2.setCellphoneNumber("21988776655");
             s2.setDateBirth(LocalDate.of(2006,2,20));
@@ -162,7 +172,7 @@ public class DataLoader implements CommandLineRunner {
             s2.setResponsible(r2);
             students.add(s2);
 
-            Student s3 = new Student("Lucas Ferreira", "lucas.ferreira@email.com",
+            Student s3 = new Student("Lucas Ferreira", "lucas@gmail.com",
                     "042.888.500-45", passwordEncoder.encode("senha123"));
             s3.setCellphoneNumber("11944445555");
             s3.setDateBirth(LocalDate.of(2007,8,02));
@@ -177,7 +187,7 @@ public class DataLoader implements CommandLineRunner {
             s3.setResponsible(r3);
             students.add(s3);
 
-            Student s4 = new Student("Mariana Costa", "mariana.costa@email.com",
+            Student s4 = new Student("Mariana Costa", "mariana@gmail.com",
                     "679.351.970-08", passwordEncoder.encode("senha123"));
             s4.setCellphoneNumber("21999998888");
             s4.setDateBirth(LocalDate.of(2009,1,15));
@@ -192,7 +202,7 @@ public class DataLoader implements CommandLineRunner {
             s4.setResponsible(r4);
             students.add(s4);
 
-            Student s5 = new Student("Gabriel Rocha", "gabriel.rocha@email.com",
+            Student s5 = new Student("Gabriel Rocha", "gabriel@gmail.com",
                     "507.331.300-38", passwordEncoder.encode("senha123"));
             s5.setCellphoneNumber("11922223333");
             s5.setDateBirth(LocalDate.of(2005,2,05));
@@ -207,7 +217,7 @@ public class DataLoader implements CommandLineRunner {
             s5.setResponsible(r5);
             students.add(s5);
 
-            Student s6 = new Student("Isabela Martins", "isabela.martins@email.com",
+            Student s6 = new Student("Isabela Martins", "isabela@gmail.com",
                     "749.943.170-38", passwordEncoder.encode("senha123"));
             s6.setCellphoneNumber("21944443333");
             s6.setDateBirth(LocalDate.of(2006,7,30));
@@ -222,7 +232,7 @@ public class DataLoader implements CommandLineRunner {
             s6.setResponsible(r6);
             students.add(s6);
 
-            Student s7 = new Student("Rafael Gomes", "rafael.gomes@email.com",
+            Student s7 = new Student("Rafael Gomes", "rafael@gmail.com",
                     "029.249.460-26", passwordEncoder.encode("senha123"));
             s7.setCellphoneNumber("11977778888");
             s7.setDateBirth(LocalDate.of(2007,3,21));
@@ -237,7 +247,7 @@ public class DataLoader implements CommandLineRunner {
             s7.setResponsible(r7);
             students.add(s7);
 
-            Student s8 = new Student("Larissa Pereira", "larissa.pereira@email.com",
+            Student s8 = new Student("Larissa Pereira", "larissa@gmail.com",
                     "662.982.980-88", passwordEncoder.encode("senha123"));
             s8.setCellphoneNumber("21922224444");
             s8.setDateBirth(LocalDate.of(2008,9,12));
@@ -252,7 +262,7 @@ public class DataLoader implements CommandLineRunner {
             s8.setResponsible(r8);
             students.add(s8);
 
-            Student s9 = new Student("Pedro Albuquerque", "pedro.albuquerque@email.com",
+            Student s9 = new Student("Pedro Albuquerque", "pedro@gmail.com",
                     "668.540.040-47", passwordEncoder.encode("senha123"));
             s9.setCellphoneNumber("11911113333");
             s9.setDateBirth(LocalDate.of(2005,4,25));
@@ -267,7 +277,7 @@ public class DataLoader implements CommandLineRunner {
             s9.setResponsible(r9);
             students.add(s9);
 
-            Student s10 = new Student("Beatriz Ramos", "beatriz.ramos@email.com",
+            Student s10 = new Student("Beatriz Ramos", "beatriz@gmail.com",
                     "933.171.820-91", passwordEncoder.encode("senha123"));
             s10.setCellphoneNumber("21910101010");
             s10.setDateBirth(LocalDate.of(2009,6,18));
@@ -285,7 +295,6 @@ public class DataLoader implements CommandLineRunner {
             studentRepository.saveAll(students);
         }
 
-        // Cria appointments/aulas (parecido com o JSON)
         if (appointmentRepository.count() == 0) {
             List<Appointment> appointments = new ArrayList<>();
 
@@ -305,155 +314,198 @@ public class DataLoader implements CommandLineRunner {
                             .orElseThrow(() -> new IllegalStateException("Teacher not found: " + name));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("matheus.alves@email.com"),
+                    findStudentByEmail.apply("matheus@gmail.com"),
                     findTeacherByName.apply("Prof. Carlos Lima"),
                     "2025-11-20T10:00:00", 90.0, AppointmentStatus.SCHEDULED, "Online", 113.25, PaymentStatus.PENDING, "MATHEMATICS"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("ana.silva@email.com"),
+                    findStudentByEmail.apply("ana@gmail.com"),
                     findTeacherByName.apply("Prof. Beatriz Costa"),
                     "2025-11-21T14:00:00", 120.0, AppointmentStatus.COMPLETED, "Presencial", 170.00, PaymentStatus.PAID, "CHEMISTRY"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("matheus.alves@email.com"),
+                    findStudentByEmail.apply("matheus@gmail.com"),
                     findTeacherByName.apply("Prof. Beatriz Costa"),
                     "2025-11-22T09:00:00", 60.0, AppointmentStatus.CANCELLED, "Online", 85.00, PaymentStatus.CANCELLED, "PHYSICS"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("lucas.ferreira@email.com"),
+                    findStudentByEmail.apply("lucas@gmail.com"),
                     findTeacherByName.apply("Prof. Fernanda Alvez"),
                     "2025-11-23T11:00:00", 60.0, AppointmentStatus.COMPLETED, "Online", 60.00, PaymentStatus.PAID, "PORTUGUESE"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("mariana.costa@email.com"),
+                    findStudentByEmail.apply("mariana@gmail.com"),
                     findTeacherByName.apply("Prof. Rodrigo Santos"),
                     "2025-11-24T09:30:00", 90.0, AppointmentStatus.SCHEDULED, "Presencial", 142.5, PaymentStatus.PENDING, "MATHEMATICS"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("gabriel.rocha@email.com"),
+                    findStudentByEmail.apply("gabriel@gmail.com"),
                     findTeacherByName.apply("Prof. Marina Oliveira"),
                     "2025-11-24T16:00:00", 120.0, AppointmentStatus.COMPLETED, "Presencial", 140.00, PaymentStatus.PAID, "BIOLOGY"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("isabela.martins@email.com"),
+                    findStudentByEmail.apply("isabela@gmail.com"),
                     findTeacherByName.apply("Prof. Gustavo Pereira"),
                     "2025-11-25T10:00:00", 60.0, AppointmentStatus.SCHEDULED, "Online", 80.00, PaymentStatus.PENDING, "SCIENCE"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("rafael.gomes@email.com"),
+                    findStudentByEmail.apply("rafael@gmail.com"),
                     findTeacherByName.apply("Prof. Helena Moura"),
                     "2025-11-25T13:00:00", 90.0, AppointmentStatus.COMPLETED, "Online", 97.5, PaymentStatus.PAID, "ENGLISH"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("larissa.pereira@email.com"),
+                    findStudentByEmail.apply("larissa@gmail.com"),
                     findTeacherByName.apply("Prof. João Neto"),
                     "2025-11-26T15:00:00", 120.0, AppointmentStatus.SCHEDULED, "Presencial", 180.00, PaymentStatus.PENDING, "HISTORY"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("pedro.albuquerque@email.com"),
+                    findStudentByEmail.apply("pedro@gmail.com"),
                     findTeacherByName.apply("Prof. Carla Mendes"),
                     "2025-11-26T09:00:00", 60.0, AppointmentStatus.COMPLETED, "Presencial", 68.00, PaymentStatus.PAID, "ART"));
 
-            // restantes do JSON (mantidos como exemplo)
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("beatriz.ramos@email.com"),
+                    findStudentByEmail.apply("beatriz@gmail.com"),
                     findTeacherByName.apply("Prof. Marcos Vinicius"),
                     "2025-11-27T11:30:00", 90.0, AppointmentStatus.CANCELLED, "Online", 123.00, PaymentStatus.CANCELLED, "PHILOSOPHY"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("matheus.alves@email.com"),
+                    findStudentByEmail.apply("matheus@gmail.com"),
                     findTeacherByName.apply("Prof. Fernanda Alvez"),
                     "2025-11-28T10:00:00", 120.0, AppointmentStatus.SCHEDULED, "Online", 120.00, PaymentStatus.PENDING, "PORTUGUESE"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("ana.silva@email.com"),
+                    findStudentByEmail.apply("ana@gmail.com"),
                     findTeacherByName.apply("Prof. Rodrigo Santos"),
                     "2025-11-28T14:00:00", 60.0, AppointmentStatus.COMPLETED, "Presencial", 95.00, PaymentStatus.PAID, "CHEMISTRY"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("lucas.ferreira@email.com"),
+                    findStudentByEmail.apply("lucas@gmail.com"),
                     findTeacherByName.apply("Prof. Marina Oliveira"),
                     "2025-11-29T09:00:00", 90.0, AppointmentStatus.COMPLETED, "Presencial", 105.00, PaymentStatus.PAID, "BIOLOGY"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("mariana.costa@email.com"),
+                    findStudentByEmail.apply("mariana@gmail.com"),
                     findTeacherByName.apply("Prof. Gustavo Pereira"),
                     "2025-11-29T15:00:00", 120.0, AppointmentStatus.SCHEDULED, "Online", 160.00, PaymentStatus.PENDING, "SCIENCE"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("gabriel.rocha@email.com"),
+                    findStudentByEmail.apply("gabriel@gmail.com"),
                     findTeacherByName.apply("Prof. Helena Moura"),
                     "2025-11-30T10:00:00", 60.0, AppointmentStatus.COMPLETED, "Online", 65.00, PaymentStatus.PAID, "ENGLISH"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("isabela.martins@email.com"),
+                    findStudentByEmail.apply("isabela@gmail.com"),
                     findTeacherByName.apply("Prof. João Neto"),
                     "2025-12-01T13:00:00", 90.0, AppointmentStatus.SCHEDULED, "Presencial", 135.00, PaymentStatus.PENDING, "HISTORY"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("rafael.gomes@email.com"),
+                    findStudentByEmail.apply("rafael@gmail.com"),
                     findTeacherByName.apply("Prof. Carla Mendes"),
                     "2025-12-02T09:00:00", 120.0, AppointmentStatus.COMPLETED, "Presencial", 136.00, PaymentStatus.PAID, "ART"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("larissa.pereira@email.com"),
+                    findStudentByEmail.apply("larissa@gmail.com"),
                     findTeacherByName.apply("Prof. Marcos Vinicius"),
                     "2025-12-02T11:00:00", 60.0, AppointmentStatus.SCHEDULED, "Online", 8120.00, PaymentStatus.PENDING, "MATHEMATICS"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("pedro.albuquerque@email.com"),
+                    findStudentByEmail.apply("pedro@gmail.com"),
                     findTeacherByName.apply("Prof. Carlos Lima"),
                     "2025-12-03T14:00:00", 90.0, AppointmentStatus.COMPLETED, "Online", 113.25, PaymentStatus.PAID, "PHYSICS"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("beatriz.ramos@email.com"),
+                    findStudentByEmail.apply("beatriz@gmail.com"),
                     findTeacherByName.apply("Prof. Beatriz Costa"),
                     "2025-12-03T16:00:00", 120.0, AppointmentStatus.SCHEDULED, "Presencial", 170.00, PaymentStatus.PENDING, "CHEMISTRY"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("matheus.alves@email.com"),
+                    findStudentByEmail.apply("matheus@gmail.com"),
                     findTeacherByName.apply("Prof. Rodrigo Santos"),
                     "2025-12-04T09:00:00", 60.0, AppointmentStatus.COMPLETED, "Presencial", 95.00, PaymentStatus.PAID, "MATHEMATICS"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("ana.silva@email.com"),
+                    findStudentByEmail.apply("ana@gmail.com"),
                     findTeacherByName.apply("Prof. Marina Oliveira"),
                     "2025-12-04T11:00:00", 90.0, AppointmentStatus.CANCELLED, "Online", 105.00, PaymentStatus.CANCELLED, "BIOLOGY"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("lucas.ferreira@email.com"),
+                    findStudentByEmail.apply("lucas@gmail.com"),
                     findTeacherByName.apply("Prof. Gustavo Pereira"),
                     "2025-12-05T10:30:00", 60.0, AppointmentStatus.SCHEDULED, "Online", 80.00, PaymentStatus.PENDING, "SCIENCE"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("mariana.costa@email.com"),
+                    findStudentByEmail.apply("mariana@gmail.com"),
                     findTeacherByName.apply("Prof. Helena Moura"),
                     "2025-12-05T14:30:00", 120.0, AppointmentStatus.COMPLETED, "Online", 130.00, PaymentStatus.PAID, "PORTUGUESE"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("gabriel.rocha@email.com"),
+                    findStudentByEmail.apply("gabriel@gmail.com"),
                     findTeacherByName.apply("Prof. João Neto"),
                     "2025-12-06T09:00:00", 60.0, AppointmentStatus.SCHEDULED, "Presencial", 90.00, PaymentStatus.PENDING, "HISTORY"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("isabela.martins@email.com"),
+                    findStudentByEmail.apply("isabela@gmail.com"),
                     findTeacherByName.apply("Prof. Carla Mendes"),
                     "2025-12-06T11:00:00", 90.0, AppointmentStatus.COMPLETED, "Presencial", 102.00, PaymentStatus.PAID, "ART"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("rafael.gomes@email.com"),
+                    findStudentByEmail.apply("rafael@gmail.com"),
                     findTeacherByName.apply("Prof. Marcos Vinicius"),
                     "2025-12-07T10:00:00", 90.0, AppointmentStatus.SCHEDULED, "Online", 123.00, PaymentStatus.PENDING, "MATHEMATICS"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("larissa.pereira@email.com"),
+                    findStudentByEmail.apply("larissa@gmail.com"),
                     findTeacherByName.apply("Prof. Carlos Lima"),
                     "2025-12-08T15:00:00", 120.0, AppointmentStatus.COMPLETED, "Online", 156.00, PaymentStatus.PENDING, "PHYSICS"));
 
             appointments.add(buildAppointment(
-                    findStudentByEmail.apply("pedro.albuquerque@email.com"),
+                    findStudentByEmail.apply("pedro@gmail.com"),
                     findTeacherByName.apply("Prof. Beatriz Costa"),
                     "2025-12-09T09:00:00", 90.0, AppointmentStatus.SCHEDULED, "Online", 127.50, PaymentStatus.PENDING, "CHEMISTRY"));
+
+            // Appointments extra para Prof. Carlos Lima (5+)
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2025-12-10T09:00:00", 60.0, AppointmentStatus.SCHEDULED, "Online", 75.50, PaymentStatus.PENDING, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("ana@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2025-12-11T10:30:00", 90.0, AppointmentStatus.SCHEDULED, "Presencial", 113.25, PaymentStatus.PENDING, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("lucas@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2025-12-12T14:00:00", 120.0, AppointmentStatus.SCHEDULED, "Online", 151.00, PaymentStatus.PENDING, "SCIENCE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("mariana@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2025-12-13T08:30:00", 90.0, AppointmentStatus.SCHEDULED, "Presencial", 113.25, PaymentStatus.PENDING, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("pedro@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2025-12-14T16:00:00", 60.0, AppointmentStatus.SCHEDULED, "Online", 75.50, PaymentStatus.PENDING, "PHYSICS"));
+
+            // Appointments extra para aluno Matheus (5+)
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Rodrigo Santos"),
+                    "2025-12-10T11:00:00", 60.0, AppointmentStatus.SCHEDULED, "Presencial", 95.00, PaymentStatus.PENDING, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Beatriz Costa"),
+                    "2025-12-11T13:00:00", 90.0, AppointmentStatus.SCHEDULED, "Online", 127.50, PaymentStatus.PENDING, "CHEMISTRY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Fernanda Alvez"),
+                    "2025-12-12T15:30:00", 120.0, AppointmentStatus.SCHEDULED, "Online", 120.00, PaymentStatus.PENDING, "PORTUGUESE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Helena Moura"),
+                    "2025-12-13T10:00:00", 60.0, AppointmentStatus.SCHEDULED, "Online", 65.00, PaymentStatus.PENDING, "ENGLISH"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. João Neto"),
+                    "2025-12-14T14:00:00", 90.0, AppointmentStatus.SCHEDULED, "Presencial", 135.00, PaymentStatus.PENDING, "HISTORY"));
 
             appointmentRepository.saveAll(appointments);
         }
