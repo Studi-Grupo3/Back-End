@@ -10,6 +10,7 @@ public class LessonHistoryDTO {
     private Integer studentId;
     private String studentName;
     private String studentPhone;
+    private String studentImageUrl;
     private LocalDate date;
     private LocalTime time;
     private Double duration;      // em minutos
@@ -24,6 +25,7 @@ public class LessonHistoryDTO {
 
     public LessonHistoryDTO(Integer id, String subject, Integer studentId, String studentName,
                             String studentPhone,
+                            String studentImageUrl,
                             LocalDate date, LocalTime time, Double duration,
                             String location, Boolean online, String status, Double totalValue,
                             String motivoCancelamento, LocalDateTime cancelDateTime) {
@@ -32,6 +34,7 @@ public class LessonHistoryDTO {
         this.studentId = studentId;
         this.studentName = studentName;
         this.studentPhone = studentPhone;
+        this.studentImageUrl = studentImageUrl;
         this.date = date;
         this.time = time;
         this.duration = duration;
@@ -71,6 +74,8 @@ public class LessonHistoryDTO {
     }
     public String getStudentPhone() { return studentPhone; }
     public void setStudentPhone(String studentPhone) { this.studentPhone = studentPhone; }
+    public String getStudentImageUrl() { return studentImageUrl; }
+    public void setStudentImageUrl(String studentImageUrl) { this.studentImageUrl = studentImageUrl; }
     public LocalDate getDate() {
         return date;
     }
