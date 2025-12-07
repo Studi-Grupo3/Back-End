@@ -1,6 +1,10 @@
 package sptech.school.v2.cleanarch.infra.persistence.repository.teacher;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 
@@ -13,7 +17,13 @@ public interface TeacherJpaRepository extends JpaRepository<Teacher, Integer> {
 
     Optional<Teacher> findByEmail(String email);
 
-    Optional<Integer> findIdByEmail(String email);
+    @Query("SELECT t.id FROM Teacher t WHERE t.email = :email")
+    Optional<Integer> findIdByEmail(@Param("email") String email);
 
-    Optional<Integer> findIdByCpf(String cpf);
+    @Query("SELECT t.id FROM Teacher t WHERE t.cpf = :cpf")
+    Optional<Integer> findIdByCpf(@Param("cpf") String cpf);
+
+    Page<Teacher> findAllByDeletedFalse(Pageable pageable);
+
+    Optional<Teacher> findByEmailAndDeletedFalse(String email);
 }

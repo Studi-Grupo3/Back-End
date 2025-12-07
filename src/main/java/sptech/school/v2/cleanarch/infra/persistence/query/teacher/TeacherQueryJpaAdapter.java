@@ -35,12 +35,12 @@ public class TeacherQueryJpaAdapter implements TeacherQueryGateway {
 
     @Override
     public Page<Teacher> listAll(Pageable pageable) {
-        return teacherJpaRepository.findAll(pageable);
+        return teacherJpaRepository.findAllByDeletedFalse(pageable);
     }
 
     @Override
     public Optional<Teacher> findByEmail(String email) {
-        return teacherJpaRepository.findByEmail(email);
+        return teacherJpaRepository.findByEmailAndDeletedFalse(email);
     }
 
     @Override

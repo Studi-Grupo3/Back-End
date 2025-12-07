@@ -154,6 +154,7 @@ public class DataLoader implements CommandLineRunner {
             s1.setDateBirth(LocalDate.of(2008,5,10));
             s1.setSchoolGrade("9º Ano - Ensino Fundamental");
             s1.setSchoolName("Escola Estadual Central");
+            s1.setStudentImageUrl(buildStudentImageUrl(s1.getName()));
             Responsible r1 = new Responsible();
             r1.setResponsibleName("Ricardo Alves");
             r1.setKinship("Pai");
@@ -169,6 +170,7 @@ public class DataLoader implements CommandLineRunner {
             s2.setDateBirth(LocalDate.of(2006,2,20));
             s2.setSchoolGrade("3º Ano - Ensino Médio");
             s2.setSchoolName("Colégio Particular Progressivo");
+            s2.setStudentImageUrl(buildStudentImageUrl(s2.getName()));
             Responsible r2 = new Responsible();
             r2.setResponsibleName("Maria Silva");
             r2.setKinship("Mãe");
@@ -184,6 +186,7 @@ public class DataLoader implements CommandLineRunner {
             s3.setDateBirth(LocalDate.of(2007, 8, 2));
             s3.setSchoolGrade("8º Ano - Ensino Fundamental");
             s3.setSchoolName("Escola Municipal Nova Era");
+            s3.setStudentImageUrl(buildStudentImageUrl(s3.getName()));
             Responsible r3 = new Responsible();
             r3.setResponsibleName("Paula Ferreira");
             r3.setKinship("Mãe");
@@ -199,6 +202,7 @@ public class DataLoader implements CommandLineRunner {
             s4.setDateBirth(LocalDate.of(2009,1,15));
             s4.setSchoolGrade("7º Ano - Ensino Fundamental");
             s4.setSchoolName("Escola Estadual Central");
+            s4.setStudentImageUrl(buildStudentImageUrl(s4.getName()));
             Responsible r4 = new Responsible();
             r4.setResponsibleName("João Costa");
             r4.setKinship("Pai");
@@ -214,6 +218,7 @@ public class DataLoader implements CommandLineRunner {
             s5.setDateBirth(LocalDate.of(2005, 2, 5));
             s5.setSchoolGrade("2º Ano - Ensino Médio");
             s5.setSchoolName("Colégio Estadual Alpha");
+            s5.setStudentImageUrl(buildStudentImageUrl(s5.getName()));
             Responsible r5 = new Responsible();
             r5.setResponsibleName("Roberto Rocha");
             r5.setKinship("Pai");
@@ -229,6 +234,7 @@ public class DataLoader implements CommandLineRunner {
             s6.setDateBirth(LocalDate.of(2006,7,30));
             s6.setSchoolGrade("3º Ano - Ensino Médio");
             s6.setSchoolName("Colégio Particular Progressivo");
+            s6.setStudentImageUrl(buildStudentImageUrl(s6.getName()));
             Responsible r6 = new Responsible();
             r6.setResponsibleName("Sônia Martins");
             r6.setKinship("Mãe");
@@ -244,6 +250,7 @@ public class DataLoader implements CommandLineRunner {
             s7.setDateBirth(LocalDate.of(2007,3,21));
             s7.setSchoolGrade("8º Ano - Ensino Fundamental");
             s7.setSchoolName("Instituto São Lucas");
+            s7.setStudentImageUrl(buildStudentImageUrl(s7.getName()));
             Responsible r7 = new Responsible();
             r7.setResponsibleName("Cecília Gomes");
             r7.setKinship("Mãe");
@@ -259,6 +266,7 @@ public class DataLoader implements CommandLineRunner {
             s8.setDateBirth(LocalDate.of(2008,9,12));
             s8.setSchoolGrade("9º Ano - Ensino Fundamental");
             s8.setSchoolName("Escola Municipal Nova Era");
+            s8.setStudentImageUrl(buildStudentImageUrl(s8.getName()));
             Responsible r8 = new Responsible();
             r8.setResponsibleName("Helena Pereira");
             r8.setKinship("Mãe");
@@ -274,6 +282,7 @@ public class DataLoader implements CommandLineRunner {
             s9.setDateBirth(LocalDate.of(2005,4,25));
             s9.setSchoolGrade("2º Ano - Ensino Médio");
             s9.setSchoolName("Colégio Estadual Alpha");
+            s9.setStudentImageUrl(buildStudentImageUrl(s9.getName()));
             Responsible r9 = new Responsible();
             r9.setResponsibleName("Marcos Albuquerque");
             r9.setKinship("Pai");
@@ -289,6 +298,7 @@ public class DataLoader implements CommandLineRunner {
             s10.setDateBirth(LocalDate.of(2009,6,18));
             s10.setSchoolGrade("7º Ano - Ensino Fundamental");
             s10.setSchoolName("Escola Estadual Central");
+            s10.setStudentImageUrl(buildStudentImageUrl(s10.getName()));
             Responsible r10 = new Responsible();
             r10.setResponsibleName("Renata Ramos");
             r10.setKinship("Mãe");
@@ -533,5 +543,11 @@ public class DataLoader implements CommandLineRunner {
         a.setPaymentStatus(paymentStatus);
         a.setSubject(subject);
         return a;
+    }
+
+    private String buildStudentImageUrl(String name) {
+        if (name == null) return null;
+        String slug = name.trim().toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("(^-|-$)", "");
+        return "/public/images/students/" + slug + ".png";
     }
 }
