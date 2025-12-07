@@ -48,7 +48,6 @@ public class TeacherFacade implements TeacherFacadeContract {
 
     @Override
     public Teacher create(Teacher teacher) {
-        teacher.setCpf(sanitizeCpf(teacher.getCpf()));
         verifyEmailAndCpfUtil.verify(teacher);
         Teacher created = teacherCommandUseCase.create(teacher);
         loadProfileImage(created);
@@ -69,7 +68,6 @@ public class TeacherFacade implements TeacherFacadeContract {
 
     @Override
     public Teacher update(Teacher teacher, Integer id) {
-        teacher.setCpf(sanitizeCpf(teacher.getCpf()));
         verifyEmailAndCpfUtil.verify(teacher, id);
         teacher.setId(id);
         Teacher updated = teacherCommandUseCase.update(teacher);
@@ -210,11 +208,6 @@ public class TeacherFacade implements TeacherFacadeContract {
             return "application/octet-stream";
         }
         return contentType;
-    }
-
-    private String sanitizeCpf(String cpf) {
-        if (cpf == null) return null;
-        return cpf.replaceAll("[^0-9]", "");
     }
 }
 

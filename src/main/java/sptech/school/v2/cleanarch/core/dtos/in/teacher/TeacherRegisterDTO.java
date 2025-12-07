@@ -12,5 +12,7 @@ public record TeacherRegisterDTO(
         , @Email @NotBlank String email
         , @CPF String cpf
         , @NotBlank String password
-        , List<Subject> subjects) {
+        , List<Subject> subjects
+        , String subject
+) {
 }

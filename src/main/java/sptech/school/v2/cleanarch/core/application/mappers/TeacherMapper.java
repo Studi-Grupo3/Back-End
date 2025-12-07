@@ -9,10 +9,13 @@ import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherUpdateDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
+import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mapper(componentModel = "spring", uses =  StringMapperUtil.class)
 public interface TeacherMapper {
@@ -25,6 +28,23 @@ public interface TeacherMapper {
     TeacherResponseDTO toDtoResponse(Teacher teacher);
     Teacher dtoRequestToEntity(TeacherRequestDTO dto);
     Teacher toEntity(TeacherRegisterDTO dto);
+
+    @AfterMapping
+    default void mapSubjectsOnCreate(@MappingTarget Teacher teacher, TeacherRegisterDTO dto) {
+        List<Subject> list = new ArrayList<>();
+        if (dto.subjects() != null && !dto.subjects().isEmpty()) {
+            list.addAll(dto.subjects());
+        }
+        if (dto.subject() != null && !dto.subject().isBlank()) {
+            try {
+                list.add(Subject.valueOf(dto.subject()));
+            } catch (IllegalArgumentException ignored) {
+            }
+        }
+        if (!list.isEmpty()) {
+            teacher.setSubjects(list);
+        }
+    }
 
     @Named("mapProfileImageUrl")
     default String mapProfileImageUrl(ResourceFile profileImage) {
@@ -39,58 +59,51 @@ public interface TeacherMapper {
 
     @AfterMapping
     default void validateAndUpdateFields(@MappingTarget Teacher teacherSaved, @Valid TeacherUpdateDTO teacherSended) {
-        System.out.println("Entrou no método");
-        if (teacherSended.name() != null && teacherSaved.getName() == null) {
-            System.out.println("Atualizou o Name");
+        if (teacherSended.name() != null) {
             teacherSaved.setName(teacherSended.name());
         }
-        if (teacherSended.email() != null && teacherSaved.getEmail() == null) {
-            System.out.println("Atualizou o Email");
+        if (teacherSended.email() != null) {
             teacherSaved.setEmail(teacherSended.email());
         }
-        if (teacherSended.cpf() != null && teacherSaved.getCpf() == null) {
-            System.out.println("Atualizou o Cpf");
+        if (teacherSended.cpf() != null) {
             teacherSaved.setCpf(teacherSended.cpf());
         }
-        if (teacherSended.subjects() != null && teacherSaved.getSubjects() == null) {
-            System.out.println("Atualizou o Subject");
-            teacherSaved.setSubjects(teacherSended.subjects());
-        }
-        if (teacherSended.cellphoneNumber() != null && teacherSaved.getCellphoneNumber() == null) {
-            System.out.println("Atualizou o CellphoneNumber");
+        if (teacherSended.cellphoneNumber() != null) {
             teacherSaved.setCellphoneNumber(teacherSended.cellphoneNumber());
         }
-        if (teacherSended.dateBirth() != null && teacherSaved.getDateBirth() == null) {
-            System.out.println("Atualizou o DateBirth");
+        if (teacherSended.dateBirth() != null) {
             teacherSaved.setDateBirth(teacherSended.dateBirth());
         }
-
-        if (teacherSended.resumeTeacher() != null && teacherSaved.getResumeTeacher() == null) {
-            System.out.println("Atualizou o resume");
+        if (teacherSended.resumeTeacher() != null) {
             teacherSaved.setResumeTeacher(teacherSended.resumeTeacher());
         }
-
-        if (teacherSended.yearsExperience() != null && teacherSaved.getYearsExperience() == null) {
-            System.out.println("Atualizou o yearsExperience");
+        if (teacherSended.yearsExperience() != null) {
             teacherSaved.setYearsExperience(teacherSended.yearsExperience());
         }
-
-        if (teacherSended.academicFormation() != null && teacherSaved.getAcademicFormation() == null) {
-            System.out.println("Atualizou o academicFormation");
+        if (teacherSended.academicFormation() != null) {
             teacherSaved.setAcademicFormation(teacherSended.academicFormation());
+        }
+        if (teacherSended.hourlyRate() != null) {
+            teacherSaved.setHourlyRate(teacherSended.hourlyRate());
         }
 
         if (teacherSended.subjects() != null) {
-            System.out.println("Atualizou o subjects");
             teacherSaved.setSubjects(teacherSended.subjects());
+        } else if (teacherSended.subject() != null && !teacherSended.subject().isBlank()) {
+            try {
+                Subject s = Subject.valueOf(teacherSended.subject());
+                List<Subject> only = new java.util.ArrayList<>();
+                only.add(s);
+                teacherSaved.setSubjects(only);
+            } catch (IllegalArgumentException ignored) {
+                // código inválido, ignora
+            }
         }
 
-        if (teacherSended.hourlyRate() != null && teacherSaved.getHourlyRate() == null) {
-            System.out.println("Atualizou o hourlyRate");
-            teacherSaved.setHourlyRate(teacherSended.hourlyRate());
+        if (teacherSended.active() != null) {
+            boolean active = teacherSended.active();
+            teacherSaved.setDeleted(!active);
         }
-        System.out.println("Teacher: " + teacherSaved);
-        System.out.println("Dto: " + teacherSended);
     }
 
     @Mapping(target = "profileImageContentType", source = "profileImage", qualifiedByName = "mapProfileImageContentType")

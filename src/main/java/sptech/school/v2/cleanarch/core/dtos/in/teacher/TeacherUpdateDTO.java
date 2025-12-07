@@ -13,10 +13,12 @@ public record TeacherUpdateDTO(
         , @Email String email
         , @CPF String cpf
         , List<Subject> subjects
+        , String subject
         , String cellphoneNumber
         , @Past LocalDate dateBirth
         , String resumeTeacher
         , String yearsExperience
         , String academicFormation
         , Double hourlyRate
+        , Boolean active
 ) {}
