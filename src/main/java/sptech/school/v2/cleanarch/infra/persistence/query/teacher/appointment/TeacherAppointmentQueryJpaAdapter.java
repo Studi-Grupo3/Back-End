@@ -49,6 +49,7 @@ public class TeacherAppointmentQueryJpaAdapter implements TeacherAppointmentQuer
                         a.getSubject(),
                         a.getStudent().getId(),
                         a.getStudent().getName(),
+                        a.getStudent().getCellphoneNumber(),
                         a.getDateTime().toLocalDate(),
                         a.getDateTime().toLocalTime(),
                         a.getLessonDuration(),
