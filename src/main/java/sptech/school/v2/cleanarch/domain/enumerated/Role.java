@@ -2,7 +2,8 @@ package sptech.school.v2.cleanarch.domain.enumerated;
 
 public enum Role {
     TEACHER("Teacher"),
-    STUDENT("Student");
+    STUDENT("Student"),
+    ADMIN("Admin");
 
     private final String description;
 

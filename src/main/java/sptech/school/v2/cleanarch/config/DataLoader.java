@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 @Component
-@Profile("dev")
+@Profile("prod")
 public class DataLoader implements CommandLineRunner {
 
     private final TeacherJpaRepository teacherRepository;
@@ -29,6 +29,20 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        // Verifica se o usuário admin já existe
+        if (!teacherRepository.existsByEmail("admin@exemplo.com")) {
+            Teacher admin = new Teacher(
+                "Admin",
+                "admin@exemplo.com",
+                generateCpf(),
+                bCryptPasswordEncoder.encode("password")
+            );
+            admin.setResumeTeacher("Administrador do sistema.");
+            admin.setYearsExperience("N/A");
+            admin.setAcademicFormation("N/A");
+            teacherRepository.save(admin);
+        }
+
         if (teacherRepository.count() >= 0) {
             Teacher t1 = new Teacher("Pedro Silva", "pedro.silva@example.com", generateCpf(), bCryptPasswordEncoder.encode("banana"), List.of(Subject.MATHEMATICS, Subject.PHYSICS));
             t1.setHourlyRate(80.0);
