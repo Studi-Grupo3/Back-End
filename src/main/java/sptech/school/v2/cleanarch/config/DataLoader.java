@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 @Component
 @Profile("prod")
@@ -43,6 +44,18 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        if (!teacherRepository.existsByEmail("admin@exemplo.com")) {
+            Teacher admin = new Teacher(
+                    "Admin",
+                    "admin@exemplo.com",
+                    generateCpf(),
+                    passwordEncoder.encode("password")
+            );
+            admin.setResumeTeacher("Administrador do sistema.");
+            admin.setYearsExperience("N/A");
+            admin.setAcademicFormation("N/A");
+            teacherRepository.save(admin);
+        }
         if (teacherRepository.count() == 0) {
             List<Teacher> teachers = new ArrayList<>();
 
@@ -475,5 +488,35 @@ public class DataLoader implements CommandLineRunner {
         a.setPaymentStatus(paymentStatus);
         a.setSubject(subject);
         return a;
+    }
+
+    // Generates a valid Brazilian CPF string of 11 digits
+    private String generateCpf() {
+        Random rnd = new Random();
+        int[] n = new int[11];
+        for (int i = 0; i < 9; i++) {
+            n[i] = rnd.nextInt(10);
+        }
+        // first check digit
+        int sum = 0;
+        for (int i = 0; i < 9; i++) {
+            sum += n[i] * (10 - i);
+        }
+        int d1 = 11 - (sum % 11);
+        if (d1 >= 10) d1 = 0;
+        n[9] = d1;
+
+        // second check digit
+        sum = 0;
+        for (int i = 0; i < 10; i++) {
+            sum += n[i] * (11 - i);
+        }
+        int d2 = 11 - (sum % 11);
+        if (d2 >= 10) d2 = 0;
+        n[10] = d2;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 11; i++) sb.append(n[i]);
+        return sb.toString();
     }
 }
