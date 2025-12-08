@@ -6,6 +6,8 @@ import sptech.school.v2.cleanarch.domain.entities.Teacher;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherCommandGateway;
 import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
+import java.util.Optional;
+
 @Component
 public class TeacherCommandJpaAdapter implements TeacherCommandGateway {
 
@@ -28,6 +30,10 @@ public class TeacherCommandJpaAdapter implements TeacherCommandGateway {
 
     @Override
     public void delete(Integer id) {
-        repository.deleteById(id);
+        Optional<Teacher> opt = repository.findById(id);
+        if (opt.isEmpty()) return;
+        Teacher teacher = opt.get();
+        teacher.setDeleted(true);
+        repository.save(teacher);
     }
 }

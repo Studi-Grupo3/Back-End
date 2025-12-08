@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sptech.school.v2.cleanarch.core.application.facades.teacher.appointment.TeacherAppointmentFacadeContract;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.LessonHistoryDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherDashboardDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.UpcomingLessonDTO;
 
@@ -42,5 +43,12 @@ public class TeacherAppointmentController {
     public ResponseEntity<TeacherStatsDTO> getStats(@PathVariable("teacherId") Integer teacherId) {
         TeacherStatsDTO stats = facade.getStats(teacherId);
         return ResponseEntity.ok(stats);
+    }
+
+    @GetMapping("/{teacherId}/dashboard")
+    @Operation(summary = "Dados completos do dashboard do professor")
+    public ResponseEntity<TeacherDashboardDTO> getDashboard(@PathVariable("teacherId") Integer teacherId) {
+        TeacherDashboardDTO dto = facade.getDashboard(teacherId);
+        return ResponseEntity.ok(dto);
     }
 }

@@ -17,6 +17,7 @@ import sptech.school.v2.cleanarch.infra.persistence.repository.appointment.Appoi
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
@@ -32,6 +33,11 @@ public class DataLoader implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
 
     private final DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    private final LocalDate baseDate = LocalDate.now();
+
+    private String iso(int plusDays, int hour, int minute) {
+        return baseDate.plusDays(plusDays).atTime(LocalTime.of(hour, minute)).toString();
+    }
 
     public DataLoader(TeacherJpaRepository teacherRepository,
                       StudentJpaRepository studentRepository,
@@ -56,87 +62,98 @@ public class DataLoader implements CommandLineRunner {
             admin.setAcademicFormation("N/A");
             teacherRepository.save(admin);
         }
+
         if (teacherRepository.count() == 0) {
             List<Teacher> teachers = new ArrayList<>();
 
-            Teacher t1 = new Teacher("Prof. Carlos Lima", "carlos.lima.prof@email.com",
+            Teacher t1 = new Teacher("Prof. Carlos Lima", "carlos.prof@gmail.com",
                     "746.130.980-33", passwordEncoder.encode("senha123"), List.of(Subject.MATHEMATICS, Subject.PHYSICS, Subject.SCIENCE));
             t1.setHourlyRate(75.5);
             t1.setResumeTeacher("Especialista em matemática para ensino médio e pré-vestibular, com 10 anos de experiência.");
             t1.setYearsExperience("10 anos");
             t1.setAcademicFormation("Mestrado em Matemática Aplicada - USP");
+            t1.setCellphoneNumber("11911110001");
             teachers.add(t1);
 
-            Teacher t2 = new Teacher("Prof. Beatriz Costa", "beatriz.costa.prof@email.com",
+            Teacher t2 = new Teacher("Prof. Beatriz Costa", "beatriz.prof@gmail.com",
                     "046.304.470-32", passwordEncoder.encode("senha123"), List.of(Subject.CHEMISTRY, Subject.PHYSICS, Subject.BIOLOGY));
             t2.setHourlyRate(85.0);
             t2.setResumeTeacher("Doutora em Química e Física, focada em preparação para olimpíadas científicas.");
             t2.setYearsExperience("15 anos");
             t2.setAcademicFormation("Doutorado em Química - UNICAMP");
+            t2.setCellphoneNumber("11911110002");
             teachers.add(t2);
 
-            Teacher t3 = new Teacher("Prof. Fernanda Alvez", "fernanda.alvez.prof@email.com",
+            Teacher t3 = new Teacher("Prof. Fernanda Alvez", "fernanda.prof@gmail.com",
                     "075.402.100-95", passwordEncoder.encode("senha123"), List.of(Subject.PORTUGUESE, Subject.LITERACY, Subject.ENGLISH));
             t3.setHourlyRate(60.0);
             t3.setResumeTeacher("Professora de português e redação, ajuda alunos em ENEM e concursos.");
             t3.setYearsExperience("8 anos");
             t3.setAcademicFormation("Licenciatura em Letras - UFRJ");
+            t3.setCellphoneNumber("11911110003");
             teachers.add(t3);
 
-            Teacher t4 = new Teacher("Prof. Rodrigo Santos", "rodrigo.santos.prof@email.com",
+            Teacher t4 = new Teacher("Prof. Rodrigo Santos", "rodrigo.prof@gmail.com",
                     "105.087.170-78", passwordEncoder.encode("senha123"), List.of(Subject.PHYSICS, Subject.MATHEMATICS, Subject.CHEMISTRY));
             t4.setHourlyRate(95.0);
             t4.setResumeTeacher("Professor de física com forte background em pesquisa experimental.");
             t4.setYearsExperience("12 anos");
             t4.setAcademicFormation("Doutorado em Física - USP");
+            t4.setCellphoneNumber("11911110004");
             teachers.add(t4);
 
-            Teacher t5 = new Teacher("Prof. Marina Oliveira", "marina.oliveira.prof@email.com",
+            Teacher t5 = new Teacher("Prof. Marina Oliveira", "marina.prof@gmail.com",
                     "687.493.230-67", passwordEncoder.encode("senha123"), List.of(Subject.CHEMISTRY, Subject.SCIENCE, Subject.BIOLOGY));
             t5.setHourlyRate(70.0);
             t5.setResumeTeacher("Ensina química e ciências, foco em práticas laboratoriais seguras.");
             t5.setYearsExperience("9 anos");
             t5.setAcademicFormation("Mestrado em Química - UFMG");
+            t5.setCellphoneNumber("11911110005");
             teachers.add(t5);
 
-            Teacher t6 = new Teacher("Prof. Gustavo Pereira", "gustavo.pereira.prof@email.com",
+            Teacher t6 = new Teacher("Prof. Gustavo Pereira", "gustavo.prof@gmail.com",
                     "840.175.750-99", passwordEncoder.encode("senha123"), List.of(Subject.BIOLOGY, Subject.SCIENCE, Subject.CHEMISTRY));
             t6.setHourlyRate(80.0);
             t6.setResumeTeacher("Professor de biologia com experiência em ensino médio e olimpíadas.");
             t6.setYearsExperience("18 anos");
             t6.setAcademicFormation("Doutorado em Biologia - UNICAMP");
+            t6.setCellphoneNumber("11911110006");
             teachers.add(t6);
 
-            Teacher t7 = new Teacher("Prof. Helena Moura", "helena.moura.prof@email.com",
+            Teacher t7 = new Teacher("Prof. Helena Moura", "helena.prof@gmail.com",
                     "105.315.720-72", passwordEncoder.encode("senha123"), List.of(Subject.ENGLISH, Subject.SPANISH, Subject.PORTUGUESE));
             t7.setHourlyRate(65.0);
             t7.setResumeTeacher("Professora de inglês e espanhol, foco em conversação e gramática.");
             t7.setYearsExperience("11 anos");
             t7.setAcademicFormation("Licenciatura em Letras - PUC");
+            t7.setCellphoneNumber("11911110007");
             teachers.add(t7);
 
-            Teacher t8 = new Teacher("Prof. João Neto", "joao.neto.prof@email.com",
+            Teacher t8 = new Teacher("Prof. João Neto", "joao.prof@gmail.com",
                     "942.489.560-71", passwordEncoder.encode("senha123"), List.of(Subject.GEOGRAPHY, Subject.HISTORY, Subject.SOCIOLOGY));
             t8.setHourlyRate(90.0);
             t8.setResumeTeacher("Professor de geografia e história, especialista em geopolítica.");
             t8.setYearsExperience("20 anos");
             t8.setAcademicFormation("Mestrado em Geografia - UFRJ");
+            t8.setCellphoneNumber("11911110008");
             teachers.add(t8);
 
-            Teacher t9 = new Teacher("Prof. Carla Mendes", "carla.mendes.prof@email.com",
+            Teacher t9 = new Teacher("Prof. Carla Mendes", "carla.prof@gmail.com",
                     "550.434.200-73", passwordEncoder.encode("senha123"), List.of(Subject.ART, Subject.LITERACY));
             t9.setHourlyRate(68.0);
             t9.setResumeTeacher("Professora de artes e alfabetização para séries iniciais.");
             t9.setYearsExperience("7 anos");
             t9.setAcademicFormation("Licenciatura em Educação Artística - UERJ");
+            t9.setCellphoneNumber("11911110009");
             teachers.add(t9);
 
-            Teacher t10 = new Teacher("Prof. Marcos Vinicius", "marcos.vinicius.prof@email.com",
+            Teacher t10 = new Teacher("Prof. Marcos Vinicius", "marcos.prof@gmail.com",
                     "676.706.780-62", passwordEncoder.encode("senha123"), List.of(Subject.PHILOSOPHY, Subject.SOCIOLOGY, Subject.HISTORY));
             t10.setHourlyRate(82.0);
             t10.setResumeTeacher("Professor com formação diversificada em ciências e filosofia.");
             t10.setYearsExperience("14 anos");
             t10.setAcademicFormation("Doutorado em Filosofia da Ciência - USP");
+            t10.setCellphoneNumber("11911110010");
             teachers.add(t10);
 
             teacherRepository.saveAll(teachers);
@@ -145,12 +162,13 @@ public class DataLoader implements CommandLineRunner {
         if (studentRepository.count() == 0) {
             List<Student> students = new ArrayList<>();
 
-            Student s1 = new Student("Matheus Alves", "matheus.alves@email.com",
+            Student s1 = new Student("Matheus Alves", "matheus@gmail.com",
                     "048.043.020-93", passwordEncoder.encode("senha123"));
             s1.setCellphoneNumber("11912345678");
             s1.setDateBirth(LocalDate.of(2008,5,10));
             s1.setSchoolGrade("9º Ano - Ensino Fundamental");
             s1.setSchoolName("Escola Estadual Central");
+            s1.setStudentImageUrl(buildStudentImageUrl(s1.getName()));
             Responsible r1 = new Responsible();
             r1.setResponsibleName("Ricardo Alves");
             r1.setKinship("Pai");
@@ -160,12 +178,13 @@ public class DataLoader implements CommandLineRunner {
             s1.setResponsible(r1);
             students.add(s1);
 
-            Student s2 = new Student("Ana Beatriz Silva", "ana.silva@email.com",
+            Student s2 = new Student("Ana Beatriz Silva", "ana@gmail.com",
                     "612.325.610-61", passwordEncoder.encode("senha123"));
             s2.setCellphoneNumber("21988776655");
             s2.setDateBirth(LocalDate.of(2006,2,20));
             s2.setSchoolGrade("3º Ano - Ensino Médio");
             s2.setSchoolName("Colégio Particular Progressivo");
+            s2.setStudentImageUrl(buildStudentImageUrl(s2.getName()));
             Responsible r2 = new Responsible();
             r2.setResponsibleName("Maria Silva");
             r2.setKinship("Mãe");
@@ -175,12 +194,13 @@ public class DataLoader implements CommandLineRunner {
             s2.setResponsible(r2);
             students.add(s2);
 
-            Student s3 = new Student("Lucas Ferreira", "lucas.ferreira@email.com",
+            Student s3 = new Student("Lucas Ferreira", "lucas@gmail.com",
                     "042.888.500-45", passwordEncoder.encode("senha123"));
             s3.setCellphoneNumber("11944445555");
-            s3.setDateBirth(LocalDate.of(2007,8,02));
+            s3.setDateBirth(LocalDate.of(2007, 8, 2));
             s3.setSchoolGrade("8º Ano - Ensino Fundamental");
             s3.setSchoolName("Escola Municipal Nova Era");
+            s3.setStudentImageUrl(buildStudentImageUrl(s3.getName()));
             Responsible r3 = new Responsible();
             r3.setResponsibleName("Paula Ferreira");
             r3.setKinship("Mãe");
@@ -190,7 +210,7 @@ public class DataLoader implements CommandLineRunner {
             s3.setResponsible(r3);
             students.add(s3);
 
-            Student s4 = new Student("Mariana Costa", "mariana.costa@email.com",
+            Student s4 = new Student("Mariana Costa", "mariana@gmail.com",
                     "679.351.970-08", passwordEncoder.encode("senha123"));
             s4.setCellphoneNumber("21999998888");
             s4.setDateBirth(LocalDate.of(2009,1,15));
@@ -490,7 +510,6 @@ public class DataLoader implements CommandLineRunner {
         return a;
     }
 
-    // Generates a valid Brazilian CPF string of 11 digits
     private String generateCpf() {
         Random rnd = new Random();
         int[] n = new int[11];
@@ -518,5 +537,11 @@ public class DataLoader implements CommandLineRunner {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 11; i++) sb.append(n[i]);
         return sb.toString();
+    }
+
+    private String buildStudentImageUrl(String name) {
+        if (name == null) return null;
+        String slug = name.trim().toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("(^-|-$)", "");
+        return "/public/images/students/" + slug + ".png";
     }
 }

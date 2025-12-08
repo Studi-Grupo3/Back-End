@@ -6,8 +6,14 @@ import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.payment.PaymentSt
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.payment.PaymentTableDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.payment.PaymentDashResponseDTO;
 import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
-import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.PaymentDashJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.payment.PaymentDashJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.payment.projections.PaymentAppointmentProjection;
+import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.payment.PaymentTeacherPeriodRepository;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
+import sptech.school.v2.cleanarch.domain.entities.PaymentTeacherPeriod;
+import sptech.school.v2.cleanarch.infra.persistence.repository.appointment.AppointmentJpaRepository;
+import sptech.school.v2.cleanarch.domain.entities.Appointment;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,28 +23,80 @@ import java.util.stream.Collectors;
 public class PaymentDashQueryJpaAdapter implements PaymentDashQueryGateway {
 
     private final PaymentDashJpaRepository repository;
+    private final TeacherRepository teacherRepository;
+    private final AppointmentJpaRepository appointmentJpaRepository;
+    private final PaymentTeacherPeriodRepository paymentTeacherPeriodRepository;
 
-    public PaymentDashQueryJpaAdapter(PaymentDashJpaRepository repository) {
+    public PaymentDashQueryJpaAdapter(PaymentDashJpaRepository repository,
+            TeacherRepository teacherRepository,
+            AppointmentJpaRepository appointmentJpaRepository,
+            PaymentTeacherPeriodRepository paymentTeacherPeriodRepository) {
         this.repository = repository;
+        this.teacherRepository = teacherRepository;
+        this.appointmentJpaRepository = appointmentJpaRepository;
+        this.paymentTeacherPeriodRepository = paymentTeacherPeriodRepository;
     }
 
     @Override
     public PaymentDashResponseDTO getPaymentDashData(LocalDateTime start, LocalDateTime end) {
-        Double totalAmountObj = repository.sumTotalBetween(start, end);
-        double totalAmount = totalAmountObj == null ? 0.0 : totalAmountObj;
+        int month = start.getMonthValue();
+        int year = start.getYear();
+        List<Teacher> teachers = teacherRepository.findAll();
+        double totalAmount = 0;
+        double pendingAmount = 0;
+        double realizedAmount = 0;
+        int totalTeachers = 0;
+        int pendingTeachers = 0;
+        int realizedTeachers = 0;
+        List<PaymentTableDTO> recent = new java.util.ArrayList<>();
 
-        long totalTeachers = repository.countDistinctTeachersBetween(start, end);
+        for (Teacher teacher : teachers) {
+            List<Appointment> appointments = appointmentJpaRepository.findByTeacherIdAndMonthAndYear(teacher.getId(),
+                    month, year);
+            int totalMinutes = appointments.stream()
+                    .mapToInt(a -> a.getLessonDuration() != null ? a.getLessonDuration().intValue() : 0).sum();
+            int hours = totalMinutes / 60;
+            double valuePerHour = teacher.getHourlyRate() != null ? teacher.getHourlyRate() : 0.0;
+            double total = valuePerHour * hours;
 
-        Double pendingAmountObj = repository.sumByPaymentStatusBetween(PaymentStatus.PENDING, start, end);
-        double pendingAmount = pendingAmountObj == null ? 0.0 : pendingAmountObj;
+            PaymentTeacherPeriod paymentPeriod = paymentTeacherPeriodRepository
+                    .findByTeacherIdAndMonthAndYear(teacher.getId(), month, year).orElse(null);
+            String status = paymentPeriod == null ? "pending" : paymentPeriod.getStatus().name().toLowerCase();
 
-        long pendingTeachers = repository.countDistinctTeachersByPaymentStatusBetween(PaymentStatus.PENDING, start, end);
+            if ("cancelled".equals(status)) {
+                recent.add(new PaymentTableDTO(
+                        teacher.getId(),
+                        teacher.getName(),
+                        teacher.getSubjects() != null ? teacher.getSubjects().toString() : "",
+                        valuePerHour,
+                        hours,
+                        total,
+                        status));
+                continue;
+            }
 
-        double realizedAmount = totalAmount - pendingAmount;
-        long realizedTeachers = totalTeachers - pendingTeachers;
+            recent.add(new PaymentTableDTO(
+                    teacher.getId(),
+                    teacher.getName(),
+                    teacher.getSubjects() != null ? teacher.getSubjects().toString() : "",
+                    valuePerHour,
+                    hours,
+                    total,
+                    status));
 
-        double averagePerTeacher = totalTeachers == 0 ? 0.0 : totalAmount / totalTeachers;
+            totalTeachers++;
+            totalAmount += total;
 
+            if ("pending".equals(status)) {
+                pendingAmount += total;
+                pendingTeachers++;
+            } else if ("paid".equals(status)) {
+                realizedAmount += total;
+                realizedTeachers++;
+            }
+        }
+
+        double averageAmountPerTeacher = totalTeachers == 0 ? 0.0 : totalAmount / totalTeachers;
         PaymentStatsDTO stats = new PaymentStatsDTO(
                 totalAmount,
                 totalTeachers,
@@ -46,29 +104,7 @@ public class PaymentDashQueryJpaAdapter implements PaymentDashQueryGateway {
                 pendingTeachers,
                 realizedAmount,
                 realizedTeachers,
-                averagePerTeacher
-        );
-
-        List<PaymentAppointmentProjection> appts = repository.findAppointmentsBetween(start, end);
-
-        List<PaymentTableDTO> recent = appts.stream()
-                .map(p -> {
-                    double hoursD = p.getLessonDuration() == null ? 0 : p.getLessonDuration();
-                    int hours = (int) hoursD;
-                    double rate = p.getHourlyRate() == null ? 0 : p.getHourlyRate();
-                    double total = rate * hoursD;
-                    String status = p.getPaymentStatus() == null ? null : p.getPaymentStatus().toLowerCase();
-                    return new PaymentTableDTO(
-                            p.getId(),
-                            p.getTeacherName(),
-                            p.getSubject(),
-                            p.getHourlyRate(),
-                            hours,
-                            total,
-                            status
-                    );
-                })
-                .collect(Collectors.toList());
+                averageAmountPerTeacher);
 
         return new PaymentDashResponseDTO(stats, recent);
     }

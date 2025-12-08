@@ -3,14 +3,14 @@ package sptech.school.v2.cleanarch.core.dtos.out.appointment;
 import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record AppointmentResponseDTO(
         Integer id,
-        List<Subject> subjects,
+        Subject subject,
         String professorName,
         String professorTitle,
         String professorImageUrl,
+        String professorPhone,
         LocalDateTime dateTime,
         Double duration,
         String location,

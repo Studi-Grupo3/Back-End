@@ -25,6 +25,11 @@ public class AppointmentQueryJpaAdapter implements AppointmentQueryGateway {
     }
 
     @Override
+    public List<Appointment> findByStudentId(Integer studentId) {
+        return repository.findByStudentId(studentId);
+    }
+
+    @Override
     public List<Appointment> findAll() {
         return repository.findAll();
     }

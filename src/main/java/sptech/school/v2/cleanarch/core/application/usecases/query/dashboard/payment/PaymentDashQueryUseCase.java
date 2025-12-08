@@ -16,11 +16,10 @@ public class PaymentDashQueryUseCase {
         this.gateway = gateway;
     }
 
-    public PaymentDashResponseDTO getAllDashboardData() {
-        YearMonth now = YearMonth.now(ZoneId.of("America/Sao_Paulo"));
-        LocalDateTime start = now.atDay(1).atStartOfDay();
-        LocalDateTime end = now.atEndOfMonth().atTime(23, 59, 59);
-
+    public PaymentDashResponseDTO getAllDashboardData(int month, int year) {
+        YearMonth ym = YearMonth.of(year, month);
+        LocalDateTime start = ym.atDay(1).atStartOfDay();
+        LocalDateTime end = ym.atEndOfMonth().atTime(23, 59, 59);
         return gateway.getPaymentDashData(start, end);
     }
 }

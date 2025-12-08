@@ -44,21 +44,11 @@ public class StudentQueryJpaAdapter implements StudentQueryGateway {
 
     @Override
     public Optional<Integer> findIdByEmail(String email) {
-        Optional<Student> opt = repository.findIdByEmail(email);
-        if (opt.isPresent()) {
-            System.out.println("Estudante já existe para o email: " + email);
-            return Optional.empty();
-        }
-        return Optional.empty();
+        return repository.findIdByEmail(email);
     }
 
     @Override
     public Optional<Integer> findByCpf(String cpf) {
-        Optional<Student> opt = repository.findIdByCpf(cpf);
-        if (opt.isPresent()) {
-            System.out.println("Estudante já existe para o CPF: " + cpf);
-            return Optional.empty();
-        }
-        return Optional.empty();
+        return repository.findIdByCpf(cpf);
     }
 }

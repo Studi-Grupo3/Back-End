@@ -5,4 +5,5 @@ public interface TeacherBasicProjection {
     String getName();
     String getSubjects();
     Double getHourlyRate();
+    Boolean getDeleted(); // indica soft delete
 }

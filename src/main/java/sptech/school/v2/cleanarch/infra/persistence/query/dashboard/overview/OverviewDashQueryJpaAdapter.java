@@ -65,7 +65,7 @@ public class OverviewDashQueryJpaAdapter implements OverviewDashQueryGateway {
                         p.getSubjects(),
                         p.getHourlyRate(),
                         p.getLessonDuration(),
-                        p.getPaymentStatus()
+                        p.getPaymentStatus().toString()
                 ))
                 .collect(Collectors.toList());
 
