@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.domain.Responsible;
+import sptech.school.v2.cleanarch.domain.entities.Admin;
 import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
@@ -13,6 +14,7 @@ import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
 import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 import sptech.school.v2.cleanarch.infra.persistence.repository.StudentJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.appointment.AppointmentJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.adminsettings.AdminJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
 import java.time.LocalDate;
@@ -31,11 +33,12 @@ public class DataLoader implements CommandLineRunner {
     private final StudentJpaRepository studentRepository;
     private final AppointmentJpaRepository appointmentRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AdminJpaRepository adminRepository;
 
     private final DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private final LocalDate baseDate = LocalDate.now();
 
-    public static final String ADMIN_EMAIL = "admin@exemplo.com";
+    public static final String ADMIN_EMAIL = "admin@studi.com";
 
     private String iso(int plusDays, int hour, int minute) {
         return baseDate.plusDays(plusDays).atTime(LocalTime.of(hour, minute)).toString();
@@ -43,33 +46,32 @@ public class DataLoader implements CommandLineRunner {
 
     public DataLoader(TeacherJpaRepository teacherRepository,
                       StudentJpaRepository studentRepository,
-                      AppointmentJpaRepository appointmentRepository, PasswordEncoder passwordEncoder) {
+                      AppointmentJpaRepository appointmentRepository, PasswordEncoder passwordEncoder,
+                      AdminJpaRepository adminRepository) {
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
         this.appointmentRepository = appointmentRepository;
         this.passwordEncoder = passwordEncoder;
+        this.adminRepository = adminRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        boolean adminExists = teacherRepository.existsByEmail(ADMIN_EMAIL);
+        // criar admin na tabela Admin (não mais como Teacher)
+        boolean adminExists = adminRepository.findFirstByOrderByIdAsc().isPresent();
         if (!adminExists) {
-            Teacher admin = new Teacher(
-                    "Admin",
-                    ADMIN_EMAIL,
-                    "685.958.700-80",
-                    passwordEncoder.encode("password"),
-                    List.of(Subject.CHEMISTRY, Subject.PHYSICS, Subject.BIOLOGY)
-            );
-            admin.setResumeTeacher("Administrador do sistema.");
-            admin.setYearsExperience("N/A");
-            admin.setAcademicFormation("N/A");
-            teacherRepository.save(admin);
-            adminExists = true;
+            Admin admin = new Admin();
+            admin.setEmail(ADMIN_EMAIL);
+            admin.setPassword(passwordEncoder.encode("senha123"));
+            admin.setNotifyAppointments(true);
+            admin.setNotifyPayments(true);
+            admin.setNotifyCancellations(true);
+            adminRepository.save(admin);
         }
-        long teacherCount = teacherRepository.count();
 
-        if (teacherCount == 0 || (teacherCount == 1 && adminExists)) {
+        long teacherCount = teacherRepository.count();
+        // remover criação de Teacher admin aqui, mantendo apenas teachers "reais"
+        if (teacherCount == 0) {
             List<Teacher> teachers = new ArrayList<>();
 
             Teacher t1 = new Teacher("Prof. Carlos Lima", "carlos.prof@gmail.com",
