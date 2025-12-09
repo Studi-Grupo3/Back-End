@@ -39,6 +39,19 @@ public class AppointmentController {
         return ResponseEntity.ok(facade.createAppointment(dto));
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Busca agendamento por ID",
+            description = "Retorna um agendamento específico pelo seu ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Agendamento encontrado"),
+            @ApiResponse(responseCode = "404", description = "Agendamento não encontrado")
+    })
+    public ResponseEntity<AppointmentResponseDTO> getAppointmentById(
+            @Parameter(description = "ID do agendamento") @PathVariable Integer id
+    ) {
+        return ResponseEntity.ok(facade.findAppointmentById(id));
+    }
+
     @GetMapping("student/{studentId}")
     public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentsByStudentId(
             @Parameter(description = "ID do student") @PathVariable Integer studentId

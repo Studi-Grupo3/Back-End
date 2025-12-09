@@ -20,6 +20,7 @@ public class Teacher extends User {
     private String resumeTeacher;
     private String yearsExperience;
     private String academicFormation;
+    private String profileImageUrl;
 
     public Teacher() {
     }
@@ -87,5 +88,13 @@ public class Teacher extends User {
 
     public void setSubjects(List<Subject> subject) {
         this.subjects = subject;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

@@ -15,4 +15,5 @@ public interface AppointmentFacadeContract {
     AppointmentResponseDTO patchStatus(Integer id, AppointmentStatus status);
     void deleteAppointment(Integer id);
     List<AppointmentResponseDTO> listByTeacher(Integer teacherId, AppointmentStatus status);
+    AppointmentResponseDTO findAppointmentById(Integer id);
 }

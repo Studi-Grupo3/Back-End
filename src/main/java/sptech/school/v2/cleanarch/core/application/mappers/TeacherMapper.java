@@ -24,6 +24,7 @@ public interface TeacherMapper {
 
     @Mapping(target = "profileImageContentType", source = "profileImage", qualifiedByName = "mapProfileImageContentType")
     @Mapping(target = "profileImage", source = "profileImage", qualifiedByName = "mapProfileImageBytes")
+    @Mapping(target = "profileImageUrl", source = "profileImageUrl")
     @Mapping(target = "status", expression = "java(teacher.isDeleted() ? \"Inativo\" : \"Ativo\")")
     TeacherResponseDTO toDtoResponse(Teacher teacher);
     Teacher dtoRequestToEntity(TeacherRequestDTO dto);
@@ -108,6 +109,7 @@ public interface TeacherMapper {
 
     @Mapping(target = "profileImageContentType", source = "profileImage", qualifiedByName = "mapProfileImageContentType")
     @Mapping(target = "profileImage", source = "profileImage", qualifiedByName = "mapProfileImageBytes")
+    @Mapping(target = "profileImageUrl", source = "profileImageUrl")
     @Mapping(target = "status", expression = "java(teacherSaved.isDeleted() ? \"Inativo\" : \"Ativo\")")
     TeacherResponseDTO toResponseDTO(Teacher teacherSaved);
 

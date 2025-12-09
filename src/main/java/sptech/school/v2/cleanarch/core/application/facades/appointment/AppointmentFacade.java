@@ -56,4 +56,8 @@ public class AppointmentFacade implements AppointmentFacadeContract {
     public List<AppointmentResponseDTO> listByTeacher(Integer teacherId, AppointmentStatus status) {
         return queryUseCase.listByTeacher(teacherId, status);
     }
+
+    public AppointmentResponseDTO findAppointmentById(Integer id) {
+        return queryUseCase.findById(id);
+    }
 }
