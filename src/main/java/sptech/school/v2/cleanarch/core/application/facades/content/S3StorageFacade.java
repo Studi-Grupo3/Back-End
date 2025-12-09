@@ -7,6 +7,7 @@ import sptech.school.v2.cleanarch.core.application.usecases.content.StorageServi
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.exception.SdkClientException;
@@ -47,14 +48,25 @@ public class S3StorageFacade implements StorageServiceUseCase {
     public S3StorageFacade(
             @Value("${aws.s3.access-key-id}") String accessKeyId,
             @Value("${aws.s3.secret-access-key}") String secretAccessKey,
+            // session token adicionado — opcional (para credenciais temporárias ASIA...)
+            @Value("${aws.s3.session-token:}") String sessionToken,
             @Value("${aws.s3.region}") String region,
             @Value("${aws.s3.bucket-name}") String bucketName
     ) {
-        AwsCredentials credentials = AwsBasicCredentials.create(accessKeyId, secretAccessKey);
         this.region = Region.of(region);
         S3ClientBuilder builder = S3Client.builder()
-                .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .region(this.region);
+
+        // Se houver sessionToken (credenciais temporárias), usa AwsSessionCredentials
+        if (sessionToken != null && !sessionToken.isBlank()) {
+            AwsSessionCredentials sessionCreds = AwsSessionCredentials.create(accessKeyId, secretAccessKey, sessionToken);
+            builder.credentialsProvider(StaticCredentialsProvider.create(sessionCreds));
+            LOGGER.info("S3 client configured with temporary session credentials (session token present)");
+        } else {
+            AwsCredentials credentials = AwsBasicCredentials.create(accessKeyId, secretAccessKey);
+            builder.credentialsProvider(StaticCredentialsProvider.create(credentials));
+            LOGGER.info("S3 client configured with static credentials");
+        }
 
         this.s3Client = builder.build();
         this.bucketName = bucketName;

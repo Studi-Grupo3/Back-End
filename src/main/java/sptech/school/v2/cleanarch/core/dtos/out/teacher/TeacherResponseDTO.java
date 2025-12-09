@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,6 +24,6 @@ public record TeacherResponseDTO(
         , String hourlyRate
         , String profileImageContentType
         , byte[] profileImage
-        , String status // "Ativo" ou "Inativo"
-)
-{}
+        , String status
+) implements Serializable {
+}

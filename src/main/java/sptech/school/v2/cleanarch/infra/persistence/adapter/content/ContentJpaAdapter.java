@@ -17,6 +17,9 @@ public class ContentJpaAdapter implements ContentGateway {
 
     @Override
     public Content save(Content content) {
+        if (content == null) {
+            throw new IllegalArgumentException("Content cannot be null");
+        }
         content.setId(null);
         return repository.save(content);
     }

@@ -1,21 +1,24 @@
 package sptech.school.v2.cleanarch.core.application.facades.teacher;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import sptech.school.v2.cleanarch.infra.persistence.repository.JpaResourceFileRepository;
-import sptech.school.v2.cleanarch.core.application.usecases.content.StorageServiceUseCase;
-import sptech.school.v2.cleanarch.core.dtos.out.ResourceFileResponseDTO;
 import sptech.school.v2.cleanarch.core.application.mappers.ResourceFileMapper;
+import sptech.school.v2.cleanarch.core.application.usecases.command.teacher.TeacherCommandUseCase;
+import sptech.school.v2.cleanarch.core.application.usecases.content.StorageServiceUseCase;
+import sptech.school.v2.cleanarch.core.application.usecases.query.teacher.TeacherQueryUseCase;
+import sptech.school.v2.cleanarch.core.application.utils.VerifyEmailAndCpfUtil;
+import sptech.school.v2.cleanarch.core.dtos.out.ResourceFileResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 import sptech.school.v2.cleanarch.domain.exception.UserDontHaveProfilePhoto;
 import sptech.school.v2.cleanarch.domain.exception.UserNullException;
-import sptech.school.v2.cleanarch.core.application.usecases.command.teacher.TeacherCommandUseCase;
-import sptech.school.v2.cleanarch.core.application.usecases.query.teacher.TeacherQueryUseCase;
-import sptech.school.v2.cleanarch.core.application.utils.VerifyEmailAndCpfUtil;
+import sptech.school.v2.cleanarch.infra.persistence.repository.JpaResourceFileRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -31,22 +34,25 @@ public class TeacherFacade implements TeacherFacadeContract {
     private final StorageServiceUseCase storageServiceUseCase;
     private final JpaResourceFileRepository resourceFileRepository;
     private final ResourceFileMapper resourceFileMapper;
+    private final TeacherJpaRepository teacherJpaRepository;
 
     public TeacherFacade(TeacherCommandUseCase teacherCommandUseCase,
                          TeacherQueryUseCase teacherQueryUseCase,
                          VerifyEmailAndCpfUtil verifyEmailAndCpfUtil,
                          @Qualifier("s3StorageService") StorageServiceUseCase storageServiceUseCase,
                          JpaResourceFileRepository resourceFileRepository,
-                         ResourceFileMapper resourceFileMapper) {
+                         ResourceFileMapper resourceFileMapper, TeacherJpaRepository teacherJpaRepository) {
         this.teacherCommandUseCase = teacherCommandUseCase;
         this.teacherQueryUseCase = teacherQueryUseCase;
         this.verifyEmailAndCpfUtil = verifyEmailAndCpfUtil;
         this.storageServiceUseCase = storageServiceUseCase;
         this.resourceFileRepository = resourceFileRepository;
         this.resourceFileMapper = resourceFileMapper;
+        this.teacherJpaRepository = teacherJpaRepository;
     }
 
     @Override
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
     public Teacher create(Teacher teacher) {
         verifyEmailAndCpfUtil.verify(teacher);
         Teacher created = teacherCommandUseCase.create(teacher);
@@ -67,6 +73,7 @@ public class TeacherFacade implements TeacherFacadeContract {
     }
 
     @Override
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
     public Teacher update(Teacher teacher, Integer id) {
         verifyEmailAndCpfUtil.verify(teacher, id);
         teacher.setId(id);
@@ -76,6 +83,7 @@ public class TeacherFacade implements TeacherFacadeContract {
     }
 
     @Override
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
     public void delete(Integer id) {
         if (findById(id) == null) {
             throw new UserNullException("Teacher dont exist");
@@ -103,27 +111,42 @@ public class TeacherFacade implements TeacherFacadeContract {
     }
 
     @Override
+    @CacheEvict(cacheNames = "teacher", allEntries = true)
+    @Transactional
     public ResourceFileResponseDTO uploadProfileImage(MultipartFile file, Integer id) throws IOException {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("File must not be null or empty");
         }
 
-        Teacher teacher = teacherQueryUseCase.findById(id);
-        if (teacher == null) {
-            throw new UserNullException("Teacher dont exist");
-        }
+        // GARANTIR que obtemos a entidade Teacher gerenciada no mesmo EM
+        Teacher teacher = teacherJpaRepository.findById(id)
+                .orElseThrow(() -> new UserNullException("Teacher dont exist"));
 
+        // Remove antiga imagem (S3 + DB) se existir
         ResourceFile oldProfileImage = teacher.getProfileImage();
         if (oldProfileImage != null) {
             if (oldProfileImage.getFileLocation() != null && !oldProfileImage.getFileLocation().isBlank()) {
-                storageServiceUseCase.deleteFile(oldProfileImage.getFileLocation());
+                try {
+                    storageServiceUseCase.deleteFile(oldProfileImage.getFileLocation());
+                } catch (Exception ex) {
+                    // não interromper o fluxo por falha na remoção do storage
+                    System.out.println("Could not delete previous file from storage: " + ex.getMessage());
+                }
             }
             if (oldProfileImage.getId() != null) {
-                resourceFileRepository.deleteById(oldProfileImage.getId());
+                try {
+                    resourceFileRepository.deleteById(oldProfileImage.getId());
+                    resourceFileRepository.flush();
+                } catch (Exception ex) {
+                    System.out.println("Could not delete previous ResourceFile from database: " + ex.getMessage());
+                }
             }
         }
 
+        // Envia arquivo para S3 (ou storage configurado)
         String location = storageServiceUseCase.saveFile(file);
+
+        // Cria entidade ResourceFile
         ResourceFile resourceFile = new ResourceFile(
                 resolveFileName(file),
                 resolveContentType(file),
@@ -131,11 +154,22 @@ public class TeacherFacade implements TeacherFacadeContract {
                 file.getSize()
         );
 
-        ResourceFile savedFile = resourceFileRepository.save(resourceFile);
-        teacher.setProfileImage(savedFile);
-        Teacher updated = teacherCommandUseCase.update(teacher);
+        // Salva e força flush para garantir que fique persistido/gerenciado
+        ResourceFile savedFile = resourceFileRepository.saveAndFlush(resourceFile);
+
+        // Re-obter explicitamente a entidade gerenciada pelo mesmo EntityManager (defensivo)
+        // (às vezes saveAndFlush já retorna uma instância gerenciada, mas re-find garante que estamos no mesmo contexto)
+        ResourceFile managedFile = resourceFileRepository.findById(savedFile.getId())
+                .orElse(savedFile);
+
+        // Associa ao teacher gerenciado e salva o teacher no mesmo EM/contexto
+        teacher.setProfileImage(managedFile);
+        Teacher updated = teacherJpaRepository.saveAndFlush(teacher);
+
+        // Carrega/normaliza a imagem no objeto retornado (se sua aplicação faz isso)
         loadProfileImage(updated);
-        return resourceFileMapper.toResponse(savedFile);
+
+        return resourceFileMapper.toResponse(managedFile);
     }
 
     @Override
