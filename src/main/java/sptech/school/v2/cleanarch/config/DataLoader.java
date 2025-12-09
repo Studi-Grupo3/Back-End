@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Component
 @Profile("prod")
@@ -566,5 +567,34 @@ public class DataLoader implements CommandLineRunner {
         if (name == null) return null;
         String slug = name.trim().toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("(^-|-$)", "");
         return "/public/images/students/" + slug + ".png";
+    }
+
+    private String generateCpf() {
+        Random rnd = new Random();
+        int[] n = new int[11];
+        for (int i = 0; i < 9; i++) {
+            n[i] = rnd.nextInt(10);
+        }
+        // first check digit
+        int sum = 0;
+        for (int i = 0; i < 9; i++) {
+            sum += n[i] * (10 - i);
+        }
+        int d1 = 11 - (sum % 11);
+        if (d1 >= 10) d1 = 0;
+        n[9] = d1;
+
+        // second check digit
+        sum = 0;
+        for (int i = 0; i < 10; i++) {
+            sum += n[i] * (11 - i);
+        }
+        int d2 = 11 - (sum % 11);
+        if (d2 >= 10) d2 = 0;
+        n[10] = d2;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 11; i++) sb.append(n[i]);
+        return sb.toString();
     }
 }
