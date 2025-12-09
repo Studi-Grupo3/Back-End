@@ -49,6 +49,20 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        if (!teacherRepository.existsByEmail("admin@exemplo.com")) {
+            Teacher admin = new Teacher(
+                    "Admin",
+                    "admin@exemplo.com",
+                    "685.958.700-80",
+                    passwordEncoder.encode("password"),
+                    List.of(Subject.CHEMISTRY, Subject.PHYSICS, Subject.BIOLOGY)
+            );
+            admin.setResumeTeacher("Administrador do sistema.");
+            admin.setYearsExperience("N/A");
+            admin.setAcademicFormation("N/A");
+            teacherRepository.save(admin);
+        }
+
         if (teacherRepository.count() == 0) {
             List<Teacher> teachers = new ArrayList<>();
 

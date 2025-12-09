@@ -59,7 +59,7 @@ public class ProfilePhotoController {
         Role userRole = resolveRole(role);
         ResourceFileResponseDTO dto = switch (userRole) {
             case STUDENT -> studentFacade.uploadProfileImage(file, userId);
-            case TEACHER -> teacherFacade.uploadProfileImage(file, userId);
+            case TEACHER, ADMIN -> teacherFacade.uploadProfileImage(file, userId);
         };
         return ResponseEntity.ok(dto);
     }
@@ -80,7 +80,7 @@ public class ProfilePhotoController {
         Role userRole = resolveRole(role);
         ResourceFile profileImage = switch (userRole) {
             case STUDENT -> studentFacade.getProfileImage(userId);
-            case TEACHER -> teacherFacade.getProfileImage(userId);
+            case TEACHER, ADMIN -> teacherFacade.getProfileImage(userId);
         };
 
         InputStreamResource resource = new InputStreamResource(profileImage.getInputStream());
@@ -98,6 +98,7 @@ public class ProfilePhotoController {
         return switch (role.trim().toLowerCase()) {
             case "student" -> Role.STUDENT;
             case "teacher" -> Role.TEACHER;
+            case "admin" -> Role.ADMIN;
             default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unknown role: " + role);
         };
     }
