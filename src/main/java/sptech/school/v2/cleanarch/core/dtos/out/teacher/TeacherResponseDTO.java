@@ -22,6 +22,7 @@ public record TeacherResponseDTO(
         , String yearsExperience
         , String academicFormation
         , String hourlyRate
+        , String profileImageUrl
         , String profileImageContentType
         , byte[] profileImage
         , String status

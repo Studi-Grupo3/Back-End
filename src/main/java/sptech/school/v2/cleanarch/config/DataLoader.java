@@ -35,6 +35,8 @@ public class DataLoader implements CommandLineRunner {
     private final DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private final LocalDate baseDate = LocalDate.now();
 
+    public static final String ADMIN_EMAIL = "admin@exemplo.com";
+
     private String iso(int plusDays, int hour, int minute) {
         return baseDate.plusDays(plusDays).atTime(LocalTime.of(hour, minute)).toString();
     }
@@ -50,11 +52,11 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        boolean adminExists = teacherRepository.existsByEmail("admin@exemplo.com");
+        boolean adminExists = teacherRepository.existsByEmail(ADMIN_EMAIL);
         if (!adminExists) {
             Teacher admin = new Teacher(
                     "Admin",
-                    "admin@exemplo.com",
+                    ADMIN_EMAIL,
                     "685.958.700-80",
                     passwordEncoder.encode("password"),
                     List.of(Subject.CHEMISTRY, Subject.PHYSICS, Subject.BIOLOGY)
@@ -77,6 +79,7 @@ public class DataLoader implements CommandLineRunner {
             t1.setYearsExperience("10 anos");
             t1.setAcademicFormation("Mestrado em Matemática Aplicada - USP");
             t1.setCellphoneNumber("11911110001");
+            t1.setProfileImageUrl("/public/images/professors/carlos-lima.png");
             teachers.add(t1);
 
             Teacher t2 = new Teacher("Prof. Beatriz Costa", "beatriz.prof@gmail.com",
@@ -86,6 +89,7 @@ public class DataLoader implements CommandLineRunner {
             t2.setYearsExperience("15 anos");
             t2.setAcademicFormation("Doutorado em Química - UNICAMP");
             t2.setCellphoneNumber("11911110002");
+            t2.setProfileImageUrl("/public/images/professors/beatriz-costa.png");
             teachers.add(t2);
 
             Teacher t3 = new Teacher("Prof. Fernanda Alvez", "fernanda.prof@gmail.com",
@@ -95,6 +99,7 @@ public class DataLoader implements CommandLineRunner {
             t3.setYearsExperience("8 anos");
             t3.setAcademicFormation("Licenciatura em Letras - UFRJ");
             t3.setCellphoneNumber("11911110003");
+            t3.setProfileImageUrl("/public/images/professors/fernanda-alvez.png");
             teachers.add(t3);
 
             Teacher t4 = new Teacher("Prof. Rodrigo Santos", "rodrigo.prof@gmail.com",
@@ -104,6 +109,7 @@ public class DataLoader implements CommandLineRunner {
             t4.setYearsExperience("12 anos");
             t4.setAcademicFormation("Doutorado em Física - USP");
             t4.setCellphoneNumber("11911110004");
+            t4.setProfileImageUrl("/public/images/professors/rodrigo-santos.png");
             teachers.add(t4);
 
             Teacher t5 = new Teacher("Prof. Marina Oliveira", "marina.prof@gmail.com",
@@ -113,6 +119,7 @@ public class DataLoader implements CommandLineRunner {
             t5.setYearsExperience("9 anos");
             t5.setAcademicFormation("Mestrado em Química - UFMG");
             t5.setCellphoneNumber("11911110005");
+            t5.setProfileImageUrl("/public/images/professors/marina-oliveira.png");
             teachers.add(t5);
 
             Teacher t6 = new Teacher("Prof. Gustavo Pereira", "gustavo.prof@gmail.com",
@@ -122,6 +129,7 @@ public class DataLoader implements CommandLineRunner {
             t6.setYearsExperience("18 anos");
             t6.setAcademicFormation("Doutorado em Biologia - UNICAMP");
             t6.setCellphoneNumber("11911110006");
+            t6.setProfileImageUrl("/public/images/professors/gustavo-pereira.png");
             teachers.add(t6);
 
             Teacher t7 = new Teacher("Prof. Helena Moura", "helena.prof@gmail.com",
@@ -131,6 +139,7 @@ public class DataLoader implements CommandLineRunner {
             t7.setYearsExperience("11 anos");
             t7.setAcademicFormation("Licenciatura em Letras - PUC");
             t7.setCellphoneNumber("11911110007");
+            t7.setProfileImageUrl("/public/images/professors/helena-moura.png");
             teachers.add(t7);
 
             Teacher t8 = new Teacher("Prof. João Neto", "joao.prof@gmail.com",
@@ -140,6 +149,7 @@ public class DataLoader implements CommandLineRunner {
             t8.setYearsExperience("20 anos");
             t8.setAcademicFormation("Mestrado em Geografia - UFRJ");
             t8.setCellphoneNumber("11911110008");
+            t8.setProfileImageUrl("/public/images/professors/joao-neto.png");
             teachers.add(t8);
 
             Teacher t9 = new Teacher("Prof. Carla Mendes", "carla.prof@gmail.com",
@@ -149,6 +159,7 @@ public class DataLoader implements CommandLineRunner {
             t9.setYearsExperience("7 anos");
             t9.setAcademicFormation("Licenciatura em Educação Artística - UERJ");
             t9.setCellphoneNumber("11911110009");
+            t9.setProfileImageUrl("/public/images/professors/carla-mendes.png");
             teachers.add(t9);
 
             Teacher t10 = new Teacher("Prof. Marcos Vinicius", "marcos.prof@gmail.com",
@@ -158,6 +169,7 @@ public class DataLoader implements CommandLineRunner {
             t10.setYearsExperience("14 anos");
             t10.setAcademicFormation("Doutorado em Filosofia da Ciência - USP");
             t10.setCellphoneNumber("11911110010");
+            t10.setProfileImageUrl("/public/images/professors/marcos-vinicius.png");
             teachers.add(t10);
 
             teacherRepository.saveAll(teachers);
@@ -598,3 +610,4 @@ public class DataLoader implements CommandLineRunner {
         return sb.toString();
     }
 }
+

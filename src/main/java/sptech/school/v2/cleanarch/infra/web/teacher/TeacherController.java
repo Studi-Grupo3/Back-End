@@ -12,14 +12,17 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sptech.school.v2.cleanarch.config.DataLoader;
+import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
+import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
+import sptech.school.v2.cleanarch.core.application.services.cache.TeacherCacheService;
 import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherRegisterDTO;
 import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherUpdateDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherPageResponseDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
-import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
-import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
-import sptech.school.v2.cleanarch.core.application.services.cache.TeacherCacheService;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
+
+import java.util.List;
 
 @Tag(name = "Teachers", description = "Operações de CRUD para professores")
 @SecurityRequirement(name = "bearerAuth")
@@ -111,7 +114,7 @@ public class TeacherController {
     @GetMapping
     @Operation(
             summary = "Lista professores",
-            description = "Retorna professores paginados. Pode retornar lista vazia."
+            description = "Retorna professores paginados. Pode retornar lista vazia. O usuário Admin não é retornado nesta listagem."
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
@@ -123,10 +126,15 @@ public class TeacherController {
             @RequestParam(defaultValue = "10") int size
     ) {
         TeacherPageResponseDTO cachedPage = teacherCacheService.listTeachers(page, size);
+
+        List<TeacherResponseDTO> filteredContent = cachedPage.getContent().stream()
+                .filter(t -> t.email() != null && !t.email().equalsIgnoreCase(DataLoader.ADMIN_EMAIL))
+                .toList();
+
         Page<TeacherResponseDTO> dtoPage = new PageImpl<>(
-                cachedPage.getContent(),
+                filteredContent,
                 PageRequest.of(cachedPage.getPageNumber(), cachedPage.getPageSize()),
-                cachedPage.getTotalElements()
+                filteredContent.size()
         );
         return ResponseEntity.ok(dtoPage);
     }
