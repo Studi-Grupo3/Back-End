@@ -5,22 +5,22 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.domain.Responsible;
+import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
-import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
 import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 import sptech.school.v2.cleanarch.infra.persistence.repository.StudentJpaRepository;
-import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.appointment.AppointmentJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Profile("prod")
@@ -49,7 +49,24 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (teacherRepository.count() == 0) {
+        boolean adminExists = teacherRepository.existsByEmail("admin@exemplo.com");
+        if (!adminExists) {
+            Teacher admin = new Teacher(
+                    "Admin",
+                    "admin@exemplo.com",
+                    "685.958.700-80",
+                    passwordEncoder.encode("password"),
+                    List.of(Subject.CHEMISTRY, Subject.PHYSICS, Subject.BIOLOGY)
+            );
+            admin.setResumeTeacher("Administrador do sistema.");
+            admin.setYearsExperience("N/A");
+            admin.setAcademicFormation("N/A");
+            teacherRepository.save(admin);
+            adminExists = true;
+        }
+        long teacherCount = teacherRepository.count();
+
+        if (teacherCount == 0 || (teacherCount == 1 && adminExists)) {
             List<Teacher> teachers = new ArrayList<>();
 
             Teacher t1 = new Teacher("Prof. Carlos Lima", "carlos.prof@gmail.com",
@@ -151,7 +168,7 @@ public class DataLoader implements CommandLineRunner {
             Student s1 = new Student("Matheus Alves", "matheus@gmail.com",
                     "048.043.020-93", passwordEncoder.encode("senha123"));
             s1.setCellphoneNumber("11912345678");
-            s1.setDateBirth(LocalDate.of(2008,5,10));
+            s1.setDateBirth(LocalDate.of(2008, 5, 10));
             s1.setSchoolGrade("9º Ano - Ensino Fundamental");
             s1.setSchoolName("Escola Estadual Central");
             s1.setStudentImageUrl(buildStudentImageUrl(s1.getName()));
@@ -167,7 +184,7 @@ public class DataLoader implements CommandLineRunner {
             Student s2 = new Student("Ana Beatriz Silva", "ana@gmail.com",
                     "612.325.610-61", passwordEncoder.encode("senha123"));
             s2.setCellphoneNumber("21988776655");
-            s2.setDateBirth(LocalDate.of(2006,2,20));
+            s2.setDateBirth(LocalDate.of(2006, 2, 20));
             s2.setSchoolGrade("3º Ano - Ensino Médio");
             s2.setSchoolName("Colégio Particular Progressivo");
             s2.setStudentImageUrl(buildStudentImageUrl(s2.getName()));
@@ -199,7 +216,7 @@ public class DataLoader implements CommandLineRunner {
             Student s4 = new Student("Mariana Costa", "mariana@gmail.com",
                     "679.351.970-08", passwordEncoder.encode("senha123"));
             s4.setCellphoneNumber("21999998888");
-            s4.setDateBirth(LocalDate.of(2009,1,15));
+            s4.setDateBirth(LocalDate.of(2009, 1, 15));
             s4.setSchoolGrade("7º Ano - Ensino Fundamental");
             s4.setSchoolName("Escola Estadual Central");
             s4.setStudentImageUrl(buildStudentImageUrl(s4.getName()));
@@ -231,7 +248,7 @@ public class DataLoader implements CommandLineRunner {
             Student s6 = new Student("Isabela Martins", "isabela@gmail.com",
                     "749.943.170-38", passwordEncoder.encode("senha123"));
             s6.setCellphoneNumber("21944443333");
-            s6.setDateBirth(LocalDate.of(2006,7,30));
+            s6.setDateBirth(LocalDate.of(2006, 7, 30));
             s6.setSchoolGrade("3º Ano - Ensino Médio");
             s6.setSchoolName("Colégio Particular Progressivo");
             s6.setStudentImageUrl(buildStudentImageUrl(s6.getName()));
@@ -247,7 +264,7 @@ public class DataLoader implements CommandLineRunner {
             Student s7 = new Student("Rafael Gomes", "rafael@gmail.com",
                     "029.249.460-26", passwordEncoder.encode("senha123"));
             s7.setCellphoneNumber("11977778888");
-            s7.setDateBirth(LocalDate.of(2007,3,21));
+            s7.setDateBirth(LocalDate.of(2007, 3, 21));
             s7.setSchoolGrade("8º Ano - Ensino Fundamental");
             s7.setSchoolName("Instituto São Lucas");
             s7.setStudentImageUrl(buildStudentImageUrl(s7.getName()));
@@ -263,7 +280,7 @@ public class DataLoader implements CommandLineRunner {
             Student s8 = new Student("Larissa Pereira", "larissa@gmail.com",
                     "662.982.980-88", passwordEncoder.encode("senha123"));
             s8.setCellphoneNumber("21922224444");
-            s8.setDateBirth(LocalDate.of(2008,9,12));
+            s8.setDateBirth(LocalDate.of(2008, 9, 12));
             s8.setSchoolGrade("9º Ano - Ensino Fundamental");
             s8.setSchoolName("Escola Municipal Nova Era");
             s8.setStudentImageUrl(buildStudentImageUrl(s8.getName()));
@@ -279,7 +296,7 @@ public class DataLoader implements CommandLineRunner {
             Student s9 = new Student("Pedro Albuquerque", "pedro@gmail.com",
                     "668.540.040-47", passwordEncoder.encode("senha123"));
             s9.setCellphoneNumber("11911113333");
-            s9.setDateBirth(LocalDate.of(2005,4,25));
+            s9.setDateBirth(LocalDate.of(2005, 4, 25));
             s9.setSchoolGrade("2º Ano - Ensino Médio");
             s9.setSchoolName("Colégio Estadual Alpha");
             s9.setStudentImageUrl(buildStudentImageUrl(s9.getName()));
@@ -295,7 +312,7 @@ public class DataLoader implements CommandLineRunner {
             Student s10 = new Student("Beatriz Ramos", "beatriz@gmail.com",
                     "933.171.820-91", passwordEncoder.encode("senha123"));
             s10.setCellphoneNumber("21910101010");
-            s10.setDateBirth(LocalDate.of(2009,6,18));
+            s10.setDateBirth(LocalDate.of(2009, 6, 18));
             s10.setSchoolGrade("7º Ano - Ensino Fundamental");
             s10.setSchoolName("Escola Estadual Central");
             s10.setStudentImageUrl(buildStudentImageUrl(s10.getName()));
