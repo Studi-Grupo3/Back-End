@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import sptech.school.v2.cleanarch.core.application.facades.appointment.AppointmentFacadeContract;
 import sptech.school.v2.cleanarch.core.dtos.in.AppointmentStatusDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.AppointmentDTO;
-import sptech.school.v2.cleanarch.core.dtos.out.AppointmentResponseDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.appointment.AppointmentResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 
@@ -39,17 +39,17 @@ public class AppointmentController {
         return ResponseEntity.ok(facade.createAppointment(dto));
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Recupera um agendamento por id",
-            description = "Retorna a entidade Appointment correspondente ao id informado.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Agendamento retornado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Agendamento não encontrado")
-    })
-    public ResponseEntity<Appointment> getAppointmentById(
-            @Parameter(description = "ID do agendamento") @PathVariable Integer id
+    @GetMapping("student/{studentId}")
+    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentsByStudentId(
+            @Parameter(description = "ID do student") @PathVariable Integer studentId
     ) {
-        return ResponseEntity.ok(facade.getAppointmentById(id));
+        List<AppointmentResponseDTO> appointments = facade.getAppointmentById(studentId);
+
+        if (appointments.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(appointments);
     }
 
     @GetMapping

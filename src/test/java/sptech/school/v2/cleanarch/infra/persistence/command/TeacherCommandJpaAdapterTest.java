@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 import sptech.school.v2.cleanarch.domain.enumerated.Subject;
-import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
 import java.util.ArrayList;
 import java.util.List;

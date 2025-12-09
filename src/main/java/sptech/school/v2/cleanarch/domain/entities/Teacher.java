@@ -29,6 +29,10 @@ public class Teacher extends User {
         this.subjects = subjects;
     }
 
+    public Teacher(String name, String email, String cpf, String password) {
+        super(name, email, cpf, password);
+    }
+
     public String getYearsExperience() {
         return yearsExperience;
     }

@@ -7,18 +7,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import sptech.school.v2.cleanarch.infra.persistence.repository.JpaResourceFileRepository;
-import sptech.school.v2.cleanarch.core.application.usecases.content.StorageServiceUseCase;
-import sptech.school.v2.cleanarch.core.dtos.out.ResourceFileResponseDTO;
 import sptech.school.v2.cleanarch.core.application.mappers.ResourceFileMapper;
+import sptech.school.v2.cleanarch.core.application.usecases.command.teacher.TeacherCommandUseCase;
+import sptech.school.v2.cleanarch.core.application.usecases.content.StorageServiceUseCase;
+import sptech.school.v2.cleanarch.core.application.usecases.query.teacher.TeacherQueryUseCase;
+import sptech.school.v2.cleanarch.core.application.utils.VerifyEmailAndCpfUtil;
+import sptech.school.v2.cleanarch.core.dtos.out.ResourceFileResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.ResourceFile;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 import sptech.school.v2.cleanarch.domain.exception.UserDontHaveProfilePhoto;
 import sptech.school.v2.cleanarch.domain.exception.UserNullException;
-import sptech.school.v2.cleanarch.core.application.usecases.command.teacher.TeacherCommandUseCase;
-import sptech.school.v2.cleanarch.core.application.usecases.query.teacher.TeacherQueryUseCase;
-import sptech.school.v2.cleanarch.core.application.utils.VerifyEmailAndCpfUtil;
-import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.JpaResourceFileRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -244,3 +244,4 @@ public class TeacherFacade implements TeacherFacadeContract {
         return contentType;
     }
 }
+

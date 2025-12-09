@@ -14,6 +14,8 @@ public class Student extends User {
 
     private String schoolName;
 
+    private String studentImageUrl;
+
     @Embedded
     private Responsible responsible;
 
@@ -46,6 +48,14 @@ public class Student extends User {
 
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
+    }
+
+    public String getStudentImageUrl() {
+        return studentImageUrl;
+    }
+
+    public void setStudentImageUrl(String studentImageUrl) {
+        this.studentImageUrl = studentImageUrl;
     }
 
     public Responsible getResponsible() {

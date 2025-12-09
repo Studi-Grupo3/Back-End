@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.AppointmentNext5;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.StatusCount;
-import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.WeekCount;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,28 +32,20 @@ public interface AppointmentDashJpaRepository extends JpaRepository<Appointment,
     @Query("SELECT AVG(a.lessonDuration) FROM Appointment a WHERE a.dateTime BETWEEN :start AND :end")
     Double averageDurationBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
-    @Query(value = """
-       SELECT
-         (WEEK(a.date_time, 1) - WEEK(DATE_SUB(a.date_time, INTERVAL DAY(a.date_time)-1 DAY), 1) + 1) AS week,
-         COUNT(*) AS total
-       FROM tb_appointment a
-       WHERE a.date_time BETWEEN :start AND :end
-       GROUP BY week
-       ORDER BY week
-       """, nativeQuery = true)
-    List<WeekCount> countByWeekOfMonthBetween(@Param("start") LocalDateTime start,
-                                              @Param("end") LocalDateTime end);
+    @Query("""
+        SELECT a.dateTime
+        FROM Appointment a 
+        WHERE a.dateTime BETWEEN :start AND :end
+        AND a.status = 'COMPLETED'
+    """)
+    List<LocalDateTime> findCompletedLessonDatesBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query("""
-      SELECT a.student.name AS studentName,
-             a.teacher.name AS teacherName,
-             a.dateTime AS dateTime,
-             a.lessonDuration AS duration,
-             a.location AS location,
-             a.status AS status
-        FROM Appointment a
-       WHERE a.dateTime BETWEEN :start AND :end
-       ORDER BY a.dateTime ASC
+        SELECT a.student.name AS studentName, a.teacher.name AS teacherName, a.dateTime AS dateTime, 
+               a.lessonDuration AS duration, a.location AS location, CAST(a.status AS string) AS status
+        FROM Appointment a 
+        WHERE a.dateTime BETWEEN :start AND :end
+        ORDER BY a.dateTime ASC
     """)
     List<AppointmentNext5> findNextAppointmentsBetween(@Param("start") LocalDateTime start,
                                                        @Param("end") LocalDateTime end,

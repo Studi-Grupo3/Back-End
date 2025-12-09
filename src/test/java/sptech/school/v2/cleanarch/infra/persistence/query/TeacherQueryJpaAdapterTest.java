@@ -11,8 +11,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
-import sptech.school.v2.cleanarch.infra.persistence.adapter.teacher.TeacherQueryJpaAdapter;
-import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.query.teacher.TeacherQueryJpaAdapter;
+import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package sptech.school.v2.cleanarch.infra.web;
+package sptech.school.v2.cleanarch.infra.web.teacher;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

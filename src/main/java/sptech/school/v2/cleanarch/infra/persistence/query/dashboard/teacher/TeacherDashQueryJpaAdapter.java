@@ -7,9 +7,10 @@ import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.ChartPieDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.teacher.TeacherStatsDTO;
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.teacher.TeacherTableDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.teacher.TeacherDashResponseDTO;
+import sptech.school.v2.cleanarch.domain.entities.Teacher;
+import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.teacher.TeacherDashJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.teacher.projections.HoursByTeacher;
-import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.teacher.projections.TeacherBasicProjection;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,22 +27,37 @@ public class TeacherDashQueryJpaAdapter implements TeacherDashQueryGateway {
 
     @Override
     public TeacherDashResponseDTO getTeacherDashData(LocalDateTime start, LocalDateTime end) {
-        List<TeacherBasicProjection> teachers = repository.findAllBasic();
+        List<Teacher> teachers = repository.findAllBasic();
+        int totalTeachers = teachers.size();
+
+        List<Teacher> activeTeachers = teachers.stream()
+                .filter(t -> !t.isDeleted())
+                .toList();
+        int totalActive = activeTeachers.size();
 
         List<HoursByTeacher> hoursList = repository.sumHoursPerTeacherBetween(start, end);
         Map<Integer, Double> hoursPerTeacher = hoursList.stream()
-                .collect(Collectors.toMap(HoursByTeacher::getTeacherId, h -> Optional.ofNullable(h.getHours()).orElse(0.0)));
+                .collect(Collectors.toMap(
+                        HoursByTeacher::getTeacherId,
+                        h -> Optional.ofNullable(h.getHours()).orElse(0.0)
+                ));
 
-        int totalTeachers = teachers.size();
+        double totalHoursActive = activeTeachers.stream()
+                .map(t -> hoursPerTeacher.getOrDefault(t.getId(), 0.0))
+                .mapToDouble(Double::doubleValue)
+                .sum();
+        double averageHoursActive = totalActive == 0 ? 0.0 : totalHoursActive / totalActive;
 
-        double totalHours = hoursPerTeacher.values().stream().filter(Objects::nonNull).mapToDouble(Double::doubleValue).sum();
+        double totalHourlyRateActive = activeTeachers.stream()
+                .filter(t -> t.getHourlyRate() != null)
+                .mapToDouble(Teacher::getHourlyRate)
+                .sum();
+        double averageHourlyRateActive = totalActive == 0 ? 0.0 : totalHourlyRateActive / totalActive;
 
-        double averageHours = totalTeachers == 0 ? 0.0 : totalHours / totalTeachers;
-
-        double totalHourlyRate = teachers.stream().filter(t -> t.getHourlyRate() != null).mapToDouble(TeacherBasicProjection::getHourlyRate).sum();
-        double averageHourlyRate = totalTeachers == 0 ? 0.0 : totalHourlyRate / totalTeachers;
+        TeacherStatsDTO stats = new TeacherStatsDTO(totalTeachers, averageHoursActive, averageHourlyRateActive, totalHoursActive);
 
         List<Map.Entry<Integer, Double>> top = hoursPerTeacher.entrySet().stream()
+                .filter(e -> activeTeachers.stream().anyMatch(t -> t.getId().equals(e.getKey())))
                 .sorted(Map.Entry.<Integer, Double>comparingByValue().reversed())
                 .limit(5)
                 .toList();
@@ -49,7 +65,7 @@ public class TeacherDashQueryJpaAdapter implements TeacherDashQueryGateway {
         List<ChartBarDTO> topTeachers = top.stream()
                 .map(entry -> {
                     Integer id = entry.getKey();
-                    return teachers.stream()
+                    return activeTeachers.stream()
                             .filter(t -> t.getId().equals(id))
                             .findFirst()
                             .map(t -> new ChartBarDTO(t.getName(), entry.getValue()))
@@ -59,8 +75,9 @@ public class TeacherDashQueryJpaAdapter implements TeacherDashQueryGateway {
                 .collect(Collectors.toList());
 
         Map<String, Long> countBySubject = teachers.stream()
-                .filter(t -> t.getSubjects() != null)
-                .collect(Collectors.groupingBy(TeacherBasicProjection::getSubjects, Collectors.counting()));
+                .flatMap(t -> Optional.ofNullable(t.getSubjects()).orElse(List.of()).stream())
+                .map(Subject::name)
+                .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
 
         List<ChartPieDTO> disciplineDistribution = countBySubject.entrySet().stream()
                 .map(e -> new ChartPieDTO(e.getKey(), totalTeachers == 0 ? 0.0 : (e.getValue() * 100.0) / totalTeachers))
@@ -69,15 +86,17 @@ public class TeacherDashQueryJpaAdapter implements TeacherDashQueryGateway {
         List<TeacherTableDTO> table = teachers.stream()
                 .map(t -> {
                     String name = t.getName();
-                    String subject = t.getSubjects() == null ? "—" : t.getSubjects();
+                    String subject = Optional.ofNullable(t.getSubjects()).orElse(List.of())
+                            .stream()
+                            .map(Subject::name)
+                            .collect(Collectors.joining(","));
+                    if (subject.isBlank()) subject = "—";
                     Double hoursWorked = hoursPerTeacher.getOrDefault(t.getId(), 0.0);
                     String hourlyRate = t.getHourlyRate() != null ? String.format("R$ %.2f", t.getHourlyRate()) : "—";
-                    String status = "Active";
+                    String status = t.isDeleted() ? "Inactive" : "Active";
                     return new TeacherTableDTO(name, subject, hoursWorked, hourlyRate, status);
                 })
                 .collect(Collectors.toList());
-
-        TeacherStatsDTO stats = new TeacherStatsDTO(totalTeachers, averageHours, averageHourlyRate, totalHours);
 
         return new TeacherDashResponseDTO(stats, topTeachers, disciplineDistribution, table);
     }

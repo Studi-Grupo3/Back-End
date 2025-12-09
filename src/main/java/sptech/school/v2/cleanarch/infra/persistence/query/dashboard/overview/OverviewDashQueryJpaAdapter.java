@@ -9,7 +9,7 @@ import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.overview.Overview
 import sptech.school.v2.cleanarch.core.dtos.internal.dashboard.overview.OverviewTableDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.dashboard.overview.OverviewDashResponseDTO;
 import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
-import sptech.school.v2.cleanarch.infra.persistence.repository.TeacherJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.overview.OverviewDashJpaRepository;
 
 import java.time.LocalDateTime;
@@ -65,7 +65,7 @@ public class OverviewDashQueryJpaAdapter implements OverviewDashQueryGateway {
                         p.getSubjects(),
                         p.getHourlyRate(),
                         p.getLessonDuration(),
-                        p.getPaymentStatus()
+                        p.getPaymentStatus().toString()
                 ))
                 .collect(Collectors.toList());
 
