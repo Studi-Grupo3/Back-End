@@ -59,6 +59,7 @@ public class AuthController {
         try {
             teacher = teacherFacade.login(dto.email(), dto.password());
         } catch (AuthenticationException ignored) {}
+
         String token;
         System.out.println("Student: " + student);
         System.out.println("Teacher: " + teacher);

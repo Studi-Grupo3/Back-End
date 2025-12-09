@@ -98,6 +98,7 @@ public class ProfilePhotoController {
         return switch (role.trim().toLowerCase()) {
             case "student" -> Role.STUDENT;
             case "teacher" -> Role.TEACHER;
+            case "admin" -> Role.ADMIN;
             default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unknown role: " + role);
         };
     }
