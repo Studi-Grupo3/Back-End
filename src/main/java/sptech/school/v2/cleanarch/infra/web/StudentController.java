@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sptech.school.v2.cleanarch.core.dtos.in.ResetPasswordRequestDTO;
 import sptech.school.v2.cleanarch.core.dtos.in.student.StudentRegisterDTO;
 import sptech.school.v2.cleanarch.core.dtos.in.student.StudentUpdateDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.student.StudentResponseDTO;
@@ -132,6 +133,21 @@ public class StudentController {
                 .toList();
         Page<StudentResponseDTO> dtoPage = new PageImpl<>(dtos, students.getPageable(), students.getTotalElements());
         return ResponseEntity.ok(dtoPage);
+    }
+
+    @PatchMapping("/reset-password")
+    @Operation(
+            summary = "Redefine a senha do estudante",
+            description = "Atualiza a senha do estudante com base no e-mail informado. Deve ser chamado após a verificação do código de redefinição."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Senha redefinida com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+            @ApiResponse(responseCode = "404", description = "Estudante não encontrado")
+    })
+    public ResponseEntity<Void> resetPassword(@RequestBody @Valid ResetPasswordRequestDTO dto) {
+        studentFacade.resetPassword(dto.email(), dto.newPassword());
+        return ResponseEntity.ok().build();
     }
 
 }

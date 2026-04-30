@@ -19,6 +19,7 @@ public interface StudentFacadeContract {
     Boolean studentExistsByCpf(String cpf);
     Student login(String email, String password);
     void sendResetCode(String email);
+    void resetPassword(String email, String newPassword);
     ResourceFileResponseDTO uploadProfileImage(MultipartFile file, Integer id) throws IOException;
     ResourceFile getProfileImage(Integer id) throws IOException;
 }

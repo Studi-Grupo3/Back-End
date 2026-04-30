@@ -78,4 +78,14 @@ public class StudentCommandUseCase {
     private String generateCode() {
         return String.valueOf((int)(Math.random() * 900000) + 100000);  // Gera um código de 6 dígitos
     }
+
+    public void resetPassword(String email, String newPassword) {
+        Optional<Student> optionalStudent = studentQueryUseCase.findByEmail(email);
+        if (optionalStudent.isEmpty()) {
+            throw new UserNullException("Usuário não encontrado com o e-mail: " + email);
+        }
+        Student student = optionalStudent.get();
+        student.setPassword(passwordEncoder.encode(newPassword));
+        studentCommandGateway.update(student);
+    }
 }
