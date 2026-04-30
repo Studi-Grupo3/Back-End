@@ -8,17 +8,14 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherRegisterDTO;
 import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherUpdateDTO;
-import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherPageResponseDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
 import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
 import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
-import sptech.school.v2.cleanarch.core.application.services.cache.TeacherCacheService;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
 
 @Tag(name = "Teachers", description = "Operações de CRUD para professores")
@@ -29,12 +26,10 @@ public class TeacherController {
 
     private final TeacherFacadeContract teacherFacade;
     private final TeacherMapper teacherMapper;
-    private final TeacherCacheService teacherCacheService;
 
-    public TeacherController(TeacherFacadeContract teacherFacade, TeacherMapper teacherMapper, TeacherCacheService teacherCacheService) {
+    public TeacherController(TeacherFacadeContract teacherFacade, TeacherMapper teacherMapper) {
         this.teacherFacade = teacherFacade;
         this.teacherMapper = teacherMapper;
-        this.teacherCacheService = teacherCacheService;
     }
 
     @PostMapping
@@ -66,8 +61,8 @@ public class TeacherController {
             @Parameter(name = "id", description = "Identificador único do professor", required = true)
             @PathVariable Integer id
     ) {
-        TeacherResponseDTO dto = teacherCacheService.getTeacherById(id);
-        return ResponseEntity.ok(dto);
+        Teacher found = teacherFacade.findById(id);
+        return ResponseEntity.ok(teacherMapper.toDtoResponse(found));
     }
 
     @DeleteMapping("{id}")
@@ -122,12 +117,9 @@ public class TeacherController {
             @Parameter(description = "Quantidade de itens por página", example = "10")
             @RequestParam(defaultValue = "10") int size
     ) {
-        TeacherPageResponseDTO cachedPage = teacherCacheService.listTeachers(page, size);
-        Page<TeacherResponseDTO> dtoPage = new PageImpl<>(
-                cachedPage.getContent(),
-                PageRequest.of(cachedPage.getPageNumber(), cachedPage.getPageSize()),
-                cachedPage.getTotalElements()
-        );
+        var pageable = PageRequest.of(Math.max(page, 0), Math.max(size, 1));
+        var teachers = teacherFacade.listAll(pageable);
+        Page<TeacherResponseDTO> dtoPage = teachers.map(teacherMapper::toDtoResponse);
         return ResponseEntity.ok(dtoPage);
     }
 
