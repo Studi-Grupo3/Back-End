@@ -12,6 +12,7 @@ public class AppointmentTableDTO {
     private Double duration;
     private String location;
     private String status;
+    private String subject;
 
     public AppointmentTableDTO() { }
 
@@ -62,5 +63,12 @@ public class AppointmentTableDTO {
     }
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

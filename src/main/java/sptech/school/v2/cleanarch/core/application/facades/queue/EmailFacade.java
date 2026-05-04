@@ -1,25 +1,32 @@
 package sptech.school.v2.cleanarch.core.application.facades.queue;
 
 import org.springframework.stereotype.Service;
-import sptech.school.v2.cleanarch.core.application.usecases.command.queue.EmailCommandUseCase;
+import sptech.school.v2.cleanarch.core.application.usecases.email.EmailSenderUseCase;
 import sptech.school.v2.cleanarch.core.dtos.out.ContactRequestDTO;
 
 @Service
 public class EmailFacade implements EmailFacadeContract {
 
-    private final EmailCommandUseCase commandUseCase;
+    private final EmailSenderUseCase emailSenderUseCase;
 
-    public EmailFacade(EmailCommandUseCase commandUseCase) {
-        this.commandUseCase = commandUseCase;
+    public EmailFacade(EmailSenderUseCase emailSenderUseCase) {
+        this.emailSenderUseCase = emailSenderUseCase;
     }
 
     @Override
     public void requestContactEmail(ContactRequestDTO dto) {
-        commandUseCase.sendContactRequestedEvent(dto);
+        String subject = "Novo contato de " + dto.getNome();
+        String body = String.format(
+                "Nome: %s\nEmail: %s\nCelular: %s\nMensagem: %s",
+                dto.getNome(), dto.getEmail(), dto.getCelular(), dto.getMensagem()
+        );
+        emailSenderUseCase.sendEmail(dto.getEmail(), subject, body);
     }
 
     @Override
     public void requestPasswordResetEmail(String email, String resetToken) {
-        commandUseCase.sendPasswordResetRequestedEvent(email, resetToken);
+        String subject = "Recuperação de senha - Studi";
+        String body = "Seu código de recuperação é: " + resetToken;
+        emailSenderUseCase.sendEmail(email, subject, body);
     }
 }

@@ -11,4 +11,5 @@ public interface AppointmentNext5 {
     Double getDuration();
     String getLocation();
     AppointmentStatus getStatus();
+    String getSubject();
 }

@@ -113,6 +113,11 @@ public class StudentFacade implements StudentFacadeContract {
     }
 
     @Override
+    public void resetPassword(String email, String newPassword) {
+        studentCommandUseCase.resetPassword(email, newPassword);
+    }
+
+    @Override
     @Transactional
     public ResourceFileResponseDTO uploadProfileImage(MultipartFile file, Integer id) throws IOException {
         if (file == null || file.isEmpty()) {
