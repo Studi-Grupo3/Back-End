@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.AppointmentNext5;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.StatusCount;
+import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.SubjectCount;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,7 +43,8 @@ public interface AppointmentDashJpaRepository extends JpaRepository<Appointment,
 
     @Query("""
         SELECT a.student.name AS studentName, a.teacher.name AS teacherName, a.dateTime AS dateTime, 
-               a.lessonDuration AS duration, a.location AS location, CAST(a.status AS string) AS status
+               a.lessonDuration AS duration, a.location AS location, CAST(a.status AS string) AS status,
+               a.subject AS subject
         FROM Appointment a 
         WHERE a.dateTime BETWEEN :start AND :end
         ORDER BY a.dateTime ASC
@@ -50,4 +52,14 @@ public interface AppointmentDashJpaRepository extends JpaRepository<Appointment,
     List<AppointmentNext5> findNextAppointmentsBetween(@Param("start") LocalDateTime start,
                                                        @Param("end") LocalDateTime end,
                                                        Pageable pageable);
+
+    @Query("""
+        SELECT a.subject AS label, COUNT(a) AS total
+          FROM Appointment a
+         WHERE a.dateTime BETWEEN :start AND :end
+           AND a.status <> 'CANCELLED'
+         GROUP BY a.subject
+         ORDER BY COUNT(a) DESC
+    """)
+    List<SubjectCount> countBySubjectBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }

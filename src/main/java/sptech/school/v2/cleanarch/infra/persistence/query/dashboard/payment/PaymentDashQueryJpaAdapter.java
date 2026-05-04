@@ -84,6 +84,9 @@ public class PaymentDashQueryJpaAdapter implements PaymentDashQueryGateway {
                     total,
                     status));
 
+            // Only count teachers with actual hours worked for KPI calculations
+            if (hours == 0) continue;
+
             totalTeachers++;
             totalAmount += total;
 

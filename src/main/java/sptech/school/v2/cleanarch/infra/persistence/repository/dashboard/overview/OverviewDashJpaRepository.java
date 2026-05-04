@@ -50,7 +50,7 @@ public interface OverviewDashJpaRepository extends JpaRepository<Appointment, In
     long countAppointmentsBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query("""
-        SELECT COALESCE(SUM(COALESCE(a.lessonDuration, 0) * COALESCE(a.teacher.hourlyRate, 0)), 0)
+        SELECT COALESCE(SUM(COALESCE(a.lessonDuration, 0) / 60.0 * COALESCE(a.teacher.hourlyRate, 0)), 0)
           FROM Appointment a
          WHERE a.paymentStatus = :status
            AND a.dateTime BETWEEN :start AND :end
@@ -63,7 +63,7 @@ public interface OverviewDashJpaRepository extends JpaRepository<Appointment, In
         SELECT a.teacher.name AS teacherName,
                FUNCTION('GROUP_CONCAT', DISTINCT s) AS subjects,
                a.teacher.hourlyRate AS hourlyRate,
-               SUM(a.lessonDuration) AS lessonDuration,
+               SUM(a.lessonDuration) / 60.0 AS lessonDuration,
                a.paymentStatus AS paymentStatus,
                SUM(a.totalValue) AS totalRevenue
           FROM Appointment a

@@ -14,10 +14,7 @@ import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appoint
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.appointment.projections.StatusCount;
 
 import java.time.LocalDateTime;
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -46,29 +43,9 @@ public class AppointmentDashQueryJpaAdapter implements AppointmentDashQueryGatew
         Double avg = repository.averageDurationBetween(start, end);
         double avgDuration = avg == null ? 0.0 : avg;
 
-        List<LocalDateTime> dates = repository.findCompletedLessonDatesBetween(start, end);
-
-        List<ChartBarDTO> weekly = dates.stream()
-                .map(LocalDateTime::toLocalDate)
-                .collect(Collectors.groupingBy(
-                        date -> {
-                            LocalDate firstOfMonth = date.withDayOfMonth(1);
-                            WeekFields weekFields = WeekFields.of(Locale.getDefault());
-
-                            int weekOfYear = date.get(weekFields.weekOfYear());
-                            int firstWeekOfYear = firstOfMonth.get(weekFields.weekOfYear());
-
-                            return weekOfYear - firstWeekOfYear + 1;
-                        },
-                        Collectors.counting()
-                ))
-                .entrySet().stream()
-                .map(entry -> new ChartBarDTO("Semana " + entry.getKey(), entry.getValue().doubleValue()))
-                .sorted((a, b) -> {
-                    int weekA = Integer.parseInt(a.getLabel().replaceAll("[^0-9]", ""));
-                    int weekB = Integer.parseInt(b.getLabel().replaceAll("[^0-9]", ""));
-                    return Integer.compare(weekA, weekB);
-                })
+        List<ChartBarDTO> subjectChart = repository.countBySubjectBetween(start, end)
+                .stream()
+                .map(entry -> new ChartBarDTO(entry.getLabel(), entry.getTotal().doubleValue()))
                 .collect(Collectors.toList());
 
         Map<AppointmentStatus, String> statusLabels = Map.of(
@@ -99,11 +76,12 @@ public class AppointmentDashQueryJpaAdapter implements AppointmentDashQueryGatew
             dto.setDuration(p.getDuration());
             dto.setLocation(p.getLocation());
             dto.setStatus(p.getStatus() != null ? String.valueOf(p.getStatus()) : null);
+            dto.setSubject(p.getSubject());
             return dto;
         }).collect(Collectors.toList());
 
         AppointmentStatsDTO stats = new AppointmentStatsDTO(total, confirmed, activeStudents, avgDuration);
 
-        return new AppointmentDashResponseDTO(stats, weekly, pie, table);
+        return new AppointmentDashResponseDTO(stats, subjectChart, pie, table);
     }
 }

@@ -5,5 +5,5 @@ import sptech.school.v2.cleanarch.core.dtos.out.dashboard.overview.OverviewDashR
 import java.time.LocalDateTime;
 
 public interface OverviewDashQueryGateway {
-    OverviewDashResponseDTO getOverviewDashData(LocalDateTime start, LocalDateTime end);
+    OverviewDashResponseDTO getOverviewDashData(LocalDateTime start, LocalDateTime end, LocalDateTime yearStart);
 }

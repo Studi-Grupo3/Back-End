@@ -29,7 +29,7 @@ public class OverviewDashQueryJpaAdapter implements OverviewDashQueryGateway {
     }
 
     @Override
-    public OverviewDashResponseDTO getOverviewDashData(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public OverviewDashResponseDTO getOverviewDashData(LocalDateTime startDateTime, LocalDateTime endDateTime, LocalDateTime yearStart) {
         Double totalRevenueObj = repository.sumTotalByPaymentStatusBetween(PaymentStatus.PAID, startDateTime, endDateTime);
         double totalRevenue = totalRevenueObj == null ? 0.0 : totalRevenueObj;
 
@@ -42,7 +42,7 @@ public class OverviewDashQueryJpaAdapter implements OverviewDashQueryGateway {
 
         OverviewStatsDTO statsDTO = new OverviewStatsDTO(totalRevenue, totalTeachers, pendingAmount, (int) totalAppointments);
 
-        List<ChartLineDTO> monthlyRevenue = repository.sumPaidByMonthBetween(PaymentStatus.PAID, startDateTime, endDateTime)
+        List<ChartLineDTO> monthlyRevenue = repository.sumPaidByMonthBetween(PaymentStatus.PAID, yearStart, endDateTime)
                 .stream()
                 .map(m -> {
                     Integer monthNum = m.getMonth();

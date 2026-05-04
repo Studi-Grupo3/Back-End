@@ -21,6 +21,9 @@ public class OverviewDashQueryUseCase {
         LocalDateTime start = now.atDay(1).atStartOfDay();
         LocalDateTime end = now.atEndOfMonth().atTime(23, 59, 59);
 
-        return gateway.getOverviewDashData(start, end);
+        // For monthly revenue chart, use year-to-date range
+        LocalDateTime yearStart = now.withMonth(1).atDay(1).atStartOfDay();
+
+        return gateway.getOverviewDashData(start, end, yearStart);
     }
 }

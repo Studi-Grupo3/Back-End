@@ -15,10 +15,10 @@ public class PaymentTeacherPeriod {
     @JoinColumn(name = "fkTeacher", nullable = false)
     private Teacher teacher;
 
-    @Column(nullable = false)
+    @Column(name = "period_month", nullable = false)
     private int month;
 
-    @Column(nullable = false)
+    @Column(name = "period_year", nullable = false)
     private int year;
 
     @Enumerated(EnumType.STRING)

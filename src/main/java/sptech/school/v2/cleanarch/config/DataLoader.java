@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.domain.Responsible;
+import sptech.school.v2.cleanarch.domain.entities.Admin;
 import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
@@ -13,6 +14,7 @@ import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
 import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 import sptech.school.v2.cleanarch.infra.persistence.repository.StudentJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.appointment.AppointmentJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.adminsettings.AdminJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
 import java.time.LocalDate;
@@ -24,12 +26,13 @@ import java.util.List;
 import java.util.Random;
 
 @Component
-@Profile("prod")
+@Profile({"dev", "prod"})
 public class DataLoader implements CommandLineRunner {
 
     private final TeacherJpaRepository teacherRepository;
     private final StudentJpaRepository studentRepository;
     private final AppointmentJpaRepository appointmentRepository;
+    private final AdminJpaRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
 
     private final DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -41,10 +44,13 @@ public class DataLoader implements CommandLineRunner {
 
     public DataLoader(TeacherJpaRepository teacherRepository,
                       StudentJpaRepository studentRepository,
-                      AppointmentJpaRepository appointmentRepository, PasswordEncoder passwordEncoder) {
+                      AppointmentJpaRepository appointmentRepository,
+                      AdminJpaRepository adminRepository,
+                      PasswordEncoder passwordEncoder) {
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
         this.appointmentRepository = appointmentRepository;
+        this.adminRepository = adminRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -347,6 +353,211 @@ public class DataLoader implements CommandLineRunner {
                             .findFirst()
                             .orElseThrow(() -> new IllegalStateException("Teacher not found: " + name));
 
+            // ===== JANEIRO 2026 =====
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2026-01-06T10:00", 60.0, AppointmentStatus.COMPLETED, "Online", 75.50, PaymentStatus.PAID, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("ana@gmail.com"),
+                    findTeacherByName.apply("Prof. Beatriz Costa"),
+                    "2026-01-08T14:00", 90.0, AppointmentStatus.COMPLETED, "Presencial", 127.50, PaymentStatus.PAID, "CHEMISTRY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("lucas@gmail.com"),
+                    findTeacherByName.apply("Prof. Fernanda Alvez"),
+                    "2026-01-10T11:00", 60.0, AppointmentStatus.COMPLETED, "Online", 60.00, PaymentStatus.PAID, "PORTUGUESE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("mariana@gmail.com"),
+                    findTeacherByName.apply("Prof. Rodrigo Santos"),
+                    "2026-01-13T09:30", 90.0, AppointmentStatus.COMPLETED, "Presencial", 142.50, PaymentStatus.PAID, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("gabriel@gmail.com"),
+                    findTeacherByName.apply("Prof. Marina Oliveira"),
+                    "2026-01-15T16:00", 60.0, AppointmentStatus.COMPLETED, "Presencial", 70.00, PaymentStatus.PAID, "BIOLOGY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("isabela@gmail.com"),
+                    findTeacherByName.apply("Prof. Gustavo Pereira"),
+                    "2026-01-17T10:00", 60.0, AppointmentStatus.COMPLETED, "Online", 80.00, PaymentStatus.PAID, "SCIENCE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("rafael@gmail.com"),
+                    findTeacherByName.apply("Prof. Helena Moura"),
+                    "2026-01-20T13:00", 90.0, AppointmentStatus.COMPLETED, "Online", 97.50, PaymentStatus.PAID, "ENGLISH"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("larissa@gmail.com"),
+                    findTeacherByName.apply("Prof. João Neto"),
+                    "2026-01-22T15:00", 60.0, AppointmentStatus.COMPLETED, "Presencial", 90.00, PaymentStatus.PAID, "HISTORY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("pedro@gmail.com"),
+                    findTeacherByName.apply("Prof. Carla Mendes"),
+                    "2026-01-24T09:00", 60.0, AppointmentStatus.COMPLETED, "Presencial", 68.00, PaymentStatus.PAID, "ART"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("beatriz@gmail.com"),
+                    findTeacherByName.apply("Prof. Marcos Vinicius"),
+                    "2026-01-27T11:30", 90.0, AppointmentStatus.COMPLETED, "Online", 123.00, PaymentStatus.PAID, "PHILOSOPHY"));
+
+            // ===== FEVEREIRO 2026 =====
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2026-02-03T10:00", 90.0, AppointmentStatus.COMPLETED, "Online", 113.25, PaymentStatus.PAID, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("ana@gmail.com"),
+                    findTeacherByName.apply("Prof. Beatriz Costa"),
+                    "2026-02-05T14:00", 120.0, AppointmentStatus.COMPLETED, "Presencial", 170.00, PaymentStatus.PAID, "CHEMISTRY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("lucas@gmail.com"),
+                    findTeacherByName.apply("Prof. Fernanda Alvez"),
+                    "2026-02-07T11:00", 60.0, AppointmentStatus.COMPLETED, "Online", 60.00, PaymentStatus.PAID, "PORTUGUESE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("mariana@gmail.com"),
+                    findTeacherByName.apply("Prof. Rodrigo Santos"),
+                    "2026-02-10T09:30", 60.0, AppointmentStatus.COMPLETED, "Presencial", 95.00, PaymentStatus.PAID, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("gabriel@gmail.com"),
+                    findTeacherByName.apply("Prof. Marina Oliveira"),
+                    "2026-02-12T16:00", 90.0, AppointmentStatus.COMPLETED, "Presencial", 105.00, PaymentStatus.PAID, "BIOLOGY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("isabela@gmail.com"),
+                    findTeacherByName.apply("Prof. Gustavo Pereira"),
+                    "2026-02-13T10:00", 60.0, AppointmentStatus.COMPLETED, "Online", 80.00, PaymentStatus.PAID, "SCIENCE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("rafael@gmail.com"),
+                    findTeacherByName.apply("Prof. Helena Moura"),
+                    "2026-02-17T13:00", 60.0, AppointmentStatus.COMPLETED, "Online", 65.00, PaymentStatus.PAID, "ENGLISH"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("larissa@gmail.com"),
+                    findTeacherByName.apply("Prof. João Neto"),
+                    "2026-02-19T15:00", 90.0, AppointmentStatus.COMPLETED, "Presencial", 135.00, PaymentStatus.PAID, "HISTORY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("pedro@gmail.com"),
+                    findTeacherByName.apply("Prof. Carla Mendes"),
+                    "2026-02-21T09:00", 60.0, AppointmentStatus.COMPLETED, "Presencial", 68.00, PaymentStatus.PAID, "ART"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Marcos Vinicius"),
+                    "2026-02-24T11:30", 60.0, AppointmentStatus.COMPLETED, "Online", 82.00, PaymentStatus.PAID, "PHILOSOPHY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("ana@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2026-02-26T10:00", 60.0, AppointmentStatus.COMPLETED, "Online", 75.50, PaymentStatus.PAID, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("lucas@gmail.com"),
+                    findTeacherByName.apply("Prof. Rodrigo Santos"),
+                    "2026-02-27T14:00", 90.0, AppointmentStatus.COMPLETED, "Presencial", 142.50, PaymentStatus.PAID, "MATHEMATICS"));
+
+            // ===== MARÇO 2026 =====
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2026-03-02T10:00", 90.0, AppointmentStatus.COMPLETED, "Online", 113.25, PaymentStatus.PAID, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("ana@gmail.com"),
+                    findTeacherByName.apply("Prof. Beatriz Costa"),
+                    "2026-03-04T14:00", 90.0, AppointmentStatus.COMPLETED, "Presencial", 127.50, PaymentStatus.PAID, "CHEMISTRY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("lucas@gmail.com"),
+                    findTeacherByName.apply("Prof. Fernanda Alvez"),
+                    "2026-03-06T11:00", 120.0, AppointmentStatus.COMPLETED, "Online", 120.00, PaymentStatus.PAID, "PORTUGUESE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("mariana@gmail.com"),
+                    findTeacherByName.apply("Prof. Rodrigo Santos"),
+                    "2026-03-09T09:30", 90.0, AppointmentStatus.COMPLETED, "Presencial", 142.50, PaymentStatus.PAID, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("gabriel@gmail.com"),
+                    findTeacherByName.apply("Prof. Marina Oliveira"),
+                    "2026-03-11T16:00", 120.0, AppointmentStatus.COMPLETED, "Presencial", 140.00, PaymentStatus.PAID, "BIOLOGY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("isabela@gmail.com"),
+                    findTeacherByName.apply("Prof. Gustavo Pereira"),
+                    "2026-03-13T10:00", 90.0, AppointmentStatus.COMPLETED, "Online", 120.00, PaymentStatus.PAID, "SCIENCE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("rafael@gmail.com"),
+                    findTeacherByName.apply("Prof. Helena Moura"),
+                    "2026-03-16T13:00", 90.0, AppointmentStatus.COMPLETED, "Online", 97.50, PaymentStatus.PAID, "ENGLISH"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("larissa@gmail.com"),
+                    findTeacherByName.apply("Prof. João Neto"),
+                    "2026-03-18T15:00", 120.0, AppointmentStatus.COMPLETED, "Presencial", 180.00, PaymentStatus.PAID, "HISTORY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("pedro@gmail.com"),
+                    findTeacherByName.apply("Prof. Carla Mendes"),
+                    "2026-03-20T09:00", 90.0, AppointmentStatus.COMPLETED, "Presencial", 102.00, PaymentStatus.PAID, "ART"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("beatriz@gmail.com"),
+                    findTeacherByName.apply("Prof. Marcos Vinicius"),
+                    "2026-03-23T11:30", 90.0, AppointmentStatus.COMPLETED, "Online", 123.00, PaymentStatus.PAID, "PHILOSOPHY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Beatriz Costa"),
+                    "2026-03-25T09:00", 60.0, AppointmentStatus.COMPLETED, "Online", 85.00, PaymentStatus.PAID, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("ana@gmail.com"),
+                    findTeacherByName.apply("Prof. Fernanda Alvez"),
+                    "2026-03-27T11:00", 60.0, AppointmentStatus.COMPLETED, "Online", 60.00, PaymentStatus.PAID, "ENGLISH"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("lucas@gmail.com"),
+                    findTeacherByName.apply("Prof. Marina Oliveira"),
+                    "2026-03-28T14:00", 60.0, AppointmentStatus.CANCELLED, "Presencial", 70.00, PaymentStatus.CANCELLED, "BIOLOGY"));
+
+            // ===== ABRIL 2026 =====
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2026-04-01T10:00", 90.0, AppointmentStatus.COMPLETED, "Online", 113.25, PaymentStatus.PAID, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("ana@gmail.com"),
+                    findTeacherByName.apply("Prof. Beatriz Costa"),
+                    "2026-04-03T14:00", 120.0, AppointmentStatus.COMPLETED, "Presencial", 170.00, PaymentStatus.PAID, "CHEMISTRY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("lucas@gmail.com"),
+                    findTeacherByName.apply("Prof. Fernanda Alvez"),
+                    "2026-04-04T11:00", 60.0, AppointmentStatus.COMPLETED, "Online", 60.00, PaymentStatus.PAID, "PORTUGUESE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("mariana@gmail.com"),
+                    findTeacherByName.apply("Prof. Rodrigo Santos"),
+                    "2026-04-07T09:30", 90.0, AppointmentStatus.COMPLETED, "Presencial", 142.50, PaymentStatus.PAID, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("gabriel@gmail.com"),
+                    findTeacherByName.apply("Prof. Marina Oliveira"),
+                    "2026-04-09T16:00", 90.0, AppointmentStatus.COMPLETED, "Presencial", 105.00, PaymentStatus.PAID, "BIOLOGY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("isabela@gmail.com"),
+                    findTeacherByName.apply("Prof. Gustavo Pereira"),
+                    "2026-04-10T10:00", 60.0, AppointmentStatus.COMPLETED, "Online", 80.00, PaymentStatus.PAID, "SCIENCE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("rafael@gmail.com"),
+                    findTeacherByName.apply("Prof. Helena Moura"),
+                    "2026-04-14T13:00", 90.0, AppointmentStatus.COMPLETED, "Online", 97.50, PaymentStatus.PAID, "ENGLISH"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("larissa@gmail.com"),
+                    findTeacherByName.apply("Prof. João Neto"),
+                    "2026-04-16T15:00", 120.0, AppointmentStatus.COMPLETED, "Presencial", 180.00, PaymentStatus.PAID, "HISTORY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("pedro@gmail.com"),
+                    findTeacherByName.apply("Prof. Carla Mendes"),
+                    "2026-04-18T09:00", 60.0, AppointmentStatus.COMPLETED, "Presencial", 68.00, PaymentStatus.PAID, "ART"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("beatriz@gmail.com"),
+                    findTeacherByName.apply("Prof. Marcos Vinicius"),
+                    "2026-04-21T11:30", 60.0, AppointmentStatus.COMPLETED, "Online", 82.00, PaymentStatus.PAID, "PHILOSOPHY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Rodrigo Santos"),
+                    "2026-04-23T09:00", 60.0, AppointmentStatus.COMPLETED, "Presencial", 95.00, PaymentStatus.PAID, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("ana@gmail.com"),
+                    findTeacherByName.apply("Prof. Marina Oliveira"),
+                    "2026-04-25T11:00", 60.0, AppointmentStatus.COMPLETED, "Presencial", 70.00, PaymentStatus.PAID, "BIOLOGY"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("lucas@gmail.com"),
+                    findTeacherByName.apply("Prof. Helena Moura"),
+                    "2026-04-28T13:00", 60.0, AppointmentStatus.COMPLETED, "Online", 65.00, PaymentStatus.PAID, "ENGLISH"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("mariana@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    "2026-04-29T10:00", 60.0, AppointmentStatus.CANCELLED, "Online", 75.50, PaymentStatus.CANCELLED, "PHYSICS"));
+
+            // ===== MAIO 2026 (mês corrente) =====
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("matheus@gmail.com"),
                     findTeacherByName.apply("Prof. Carlos Lima"),
@@ -370,7 +581,7 @@ public class DataLoader implements CommandLineRunner {
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("mariana@gmail.com"),
                     findTeacherByName.apply("Prof. Rodrigo Santos"),
-                    iso(4, 9, 30), 90.0, AppointmentStatus.SCHEDULED, "Presencial", 142.5, PaymentStatus.PENDING, "MATHEMATICS"));
+                    iso(4, 9, 30), 90.0, AppointmentStatus.SCHEDULED, "Presencial", 142.50, PaymentStatus.PENDING, "MATHEMATICS"));
 
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("gabriel@gmail.com"),
@@ -385,7 +596,7 @@ public class DataLoader implements CommandLineRunner {
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("rafael@gmail.com"),
                     findTeacherByName.apply("Prof. Helena Moura"),
-                    iso(5, 13, 0), 90.0, AppointmentStatus.COMPLETED, "Online", 97.5, PaymentStatus.PAID, "ENGLISH"));
+                    iso(5, 13, 0), 90.0, AppointmentStatus.COMPLETED, "Online", 97.50, PaymentStatus.PAID, "ENGLISH"));
 
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("larissa@gmail.com"),
@@ -440,7 +651,7 @@ public class DataLoader implements CommandLineRunner {
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("larissa@gmail.com"),
                     findTeacherByName.apply("Prof. Marcos Vinicius"),
-                    iso(12, 11, 0), 60.0, AppointmentStatus.SCHEDULED, "Online", 8120.00, PaymentStatus.PENDING, "MATHEMATICS"));
+                    iso(12, 11, 0), 60.0, AppointmentStatus.SCHEDULED, "Online", 82.00, PaymentStatus.PENDING, "MATHEMATICS"));
 
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("pedro@gmail.com"),
@@ -490,14 +701,14 @@ public class DataLoader implements CommandLineRunner {
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("larissa@gmail.com"),
                     findTeacherByName.apply("Prof. Carlos Lima"),
-                    iso(18, 15, 0), 120.0, AppointmentStatus.COMPLETED, "Online", 156.00, PaymentStatus.PENDING, "PHYSICS"));
+                    iso(18, 15, 0), 120.0, AppointmentStatus.COMPLETED, "Online", 151.00, PaymentStatus.PAID, "PHYSICS"));
 
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("pedro@gmail.com"),
                     findTeacherByName.apply("Prof. Beatriz Costa"),
                     iso(19, 9, 0), 90.0, AppointmentStatus.SCHEDULED, "Online", 127.50, PaymentStatus.PENDING, "CHEMISTRY"));
 
-            // Appointments extra para Prof. Carlos Lima (5+)
+            // Extra para Prof. Carlos Lima (5+)
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("matheus@gmail.com"),
                     findTeacherByName.apply("Prof. Carlos Lima"),
@@ -519,7 +730,51 @@ public class DataLoader implements CommandLineRunner {
                     findTeacherByName.apply("Prof. Carlos Lima"),
                     iso(24, 16, 0), 60.0, AppointmentStatus.SCHEDULED, "Online", 75.50, PaymentStatus.PENDING, "PHYSICS"));
 
-            // Appointments extra para aluno Matheus (5+)
+            // Histórico CANCELLED para Prof. Carlos Lima
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("gabriel@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    iso(-12, 11, 0), 60.0, AppointmentStatus.CANCELLED, "Online", 75.50, PaymentStatus.CANCELLED, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("isabela@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    iso(-9, 15, 0), 90.0, AppointmentStatus.CANCELLED, "Presencial", 113.25, PaymentStatus.CANCELLED, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("rafael@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    iso(-5, 10, 0), 60.0, AppointmentStatus.CANCELLED, "Online", 75.50, PaymentStatus.CANCELLED, "SCIENCE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("beatriz@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    iso(-3, 9, 0), 90.0, AppointmentStatus.CANCELLED, "Presencial", 113.25, PaymentStatus.CANCELLED, "MATHEMATICS"));
+
+            // Histórico COMPLETED adicionais para Prof. Carlos Lima
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("gabriel@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    iso(-11, 14, 0), 90.0, AppointmentStatus.COMPLETED, "Online", 113.25, PaymentStatus.PAID, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("isabela@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    iso(-8, 10, 30), 60.0, AppointmentStatus.COMPLETED, "Presencial", 75.50, PaymentStatus.PAID, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("beatriz@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    iso(-6, 9, 0), 120.0, AppointmentStatus.COMPLETED, "Online", 151.00, PaymentStatus.PAID, "SCIENCE"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("rafael@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    iso(-4, 15, 30), 90.0, AppointmentStatus.COMPLETED, "Presencial", 113.25, PaymentStatus.PAID, "PHYSICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("matheus@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    iso(-2, 11, 0), 60.0, AppointmentStatus.COMPLETED, "Online", 75.50, PaymentStatus.PAID, "MATHEMATICS"));
+            appointments.add(buildAppointment(
+                    findStudentByEmail.apply("ana@gmail.com"),
+                    findTeacherByName.apply("Prof. Carlos Lima"),
+                    iso(-1, 14, 0), 90.0, AppointmentStatus.COMPLETED, "Presencial", 113.25, PaymentStatus.PAID, "PHYSICS"));
+
+            // Extra para aluno Matheus (5+)
             appointments.add(buildAppointment(
                     findStudentByEmail.apply("matheus@gmail.com"),
                     findTeacherByName.apply("Prof. Rodrigo Santos"),
@@ -542,6 +797,17 @@ public class DataLoader implements CommandLineRunner {
                     iso(24, 14, 0), 90.0, AppointmentStatus.SCHEDULED, "Presencial", 135.00, PaymentStatus.PENDING, "HISTORY"));
 
             appointmentRepository.saveAll(appointments);
+        }
+
+        // Seed Admin Settings
+        if (adminRepository.count() == 0) {
+            Admin adminSettings = new Admin();
+            adminSettings.setEmail("admin@exemplo.com");
+            adminSettings.setPassword(passwordEncoder.encode("password"));
+            adminSettings.setNotifyPayments(true);
+            adminSettings.setNotifyAppointments(true);
+            adminSettings.setNotifyCancellations(true);
+            adminRepository.save(adminSettings);
         }
     }
 
