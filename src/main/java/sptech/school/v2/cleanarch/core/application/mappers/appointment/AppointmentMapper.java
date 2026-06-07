@@ -29,6 +29,8 @@ public interface AppointmentMapper {
     @Mapping(target = "location", source = "location")
     @Mapping(target = "subject", source = "subject")
     @Mapping(target = "online", expression = "java(appointment.getLocation() != null && appointment.getLocation().equalsIgnoreCase(\"Online\"))")
+    @Mapping(target = "createdAt", source = "createdAt")
+    @Mapping(target = "phase", source = "phase")
     AppointmentResponseDTO toResponseDto(Appointment appointment);
 
     default String mapProfessorImageUrl(Appointment a) {

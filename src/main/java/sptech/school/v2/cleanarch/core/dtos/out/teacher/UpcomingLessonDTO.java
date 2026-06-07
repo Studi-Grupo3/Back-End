@@ -15,6 +15,13 @@ public class UpcomingLessonDTO {
     private Double lessonDuration; // em minutos
     private String location;       // string de localização/link
     private String status;         // status da appointment
+    private String studentAddress;
+    private String responsibleName;
+    private String responsiblePhone;
+    private Integer studentAge;
+    private Boolean isAdult;
+    private String phase;
+    private String schoolGrade;
 
     public UpcomingLessonDTO() { }
 
@@ -22,7 +29,9 @@ public class UpcomingLessonDTO {
                              String studentPhone,
                              String studentImageUrl,
                              LocalDate date, LocalTime time, Double lessonDuration,
-                             String location, String status) {
+                             String location, String status,
+                             String studentAddress, String responsibleName, String responsiblePhone,
+                             Integer studentAge, Boolean isAdult, String phase, String schoolGrade) {
         this.id = id;
         this.disciplina = disciplina;
         this.studentId = studentId;
@@ -34,6 +43,13 @@ public class UpcomingLessonDTO {
         this.lessonDuration = lessonDuration;
         this.location = location;
         this.status = status;
+        this.studentAddress = studentAddress;
+        this.responsibleName = responsibleName;
+        this.responsiblePhone = responsiblePhone;
+        this.studentAge = studentAge;
+        this.isAdult = isAdult;
+        this.phase = phase;
+        this.schoolGrade = schoolGrade;
     }
 
     public Integer getId() { return id; }
@@ -58,4 +74,18 @@ public class UpcomingLessonDTO {
     public void setLocation(String location) { this.location = location; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    public String getStudentAddress() { return studentAddress; }
+    public void setStudentAddress(String studentAddress) { this.studentAddress = studentAddress; }
+    public String getResponsibleName() { return responsibleName; }
+    public void setResponsibleName(String responsibleName) { this.responsibleName = responsibleName; }
+    public String getResponsiblePhone() { return responsiblePhone; }
+    public void setResponsiblePhone(String responsiblePhone) { this.responsiblePhone = responsiblePhone; }
+    public Integer getStudentAge() { return studentAge; }
+    public void setStudentAge(Integer studentAge) { this.studentAge = studentAge; }
+    public Boolean getIsAdult() { return isAdult; }
+    public void setIsAdult(Boolean isAdult) { this.isAdult = isAdult; }
+    public String getPhase() { return phase; }
+    public void setPhase(String phase) { this.phase = phase; }
+    public String getSchoolGrade() { return schoolGrade; }
+    public void setSchoolGrade(String schoolGrade) { this.schoolGrade = schoolGrade; }
 }

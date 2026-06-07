@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import sptech.school.v2.cleanarch.config.security.user.details.service.StudentUserDetailsService;
@@ -45,10 +46,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails =
-                    "TEACHER".equalsIgnoreCase(role) ? teacherUserDetailsService.loadUserByUsername(email)
-                            : "STUDENT".equalsIgnoreCase(role) ? studentUserDetailsService.loadUserByUsername(email)
-                            : null;
+            UserDetails userDetails;
+            try {
+                if ("TEACHER".equalsIgnoreCase(role)) {
+                    userDetails = teacherUserDetailsService.loadUserByUsername(email);
+                } else if ("STUDENT".equalsIgnoreCase(role)) {
+                    userDetails = studentUserDetailsService.loadUserByUsername(email);
+                } else {
+                    userDetails = null;
+                }
+            } catch (UsernameNotFoundException e) {
+                // User not found — email may have been changed; treat token as invalid
+                chain.doFilter(request, response);
+                return;
+            }
 
             if (jwtUseCase.validateToken(token)) {
                 GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);

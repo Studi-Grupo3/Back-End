@@ -68,7 +68,7 @@ public class AdminSettingsCommandUseCase {
                     .map(t -> encoder.matches(dto.getCurrentPassword(), t.getPassword()))
                     .orElseGet(() -> encoder.matches(dto.getCurrentPassword(), admin.getPassword()));
             if (!valid) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Senha atual incorreta");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senha atual incorreta");
             }
         }
 

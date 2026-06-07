@@ -9,14 +9,21 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherAvailabilitySlotDTO;
 import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherRegisterDTO;
 import sptech.school.v2.cleanarch.core.dtos.in.teacher.TeacherUpdateDTO;
+import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherAvailabilityResponseDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.TeacherResponseDTO;
 import sptech.school.v2.cleanarch.core.application.facades.teacher.TeacherFacadeContract;
 import sptech.school.v2.cleanarch.core.application.mappers.TeacherMapper;
+import sptech.school.v2.cleanarch.core.application.usecases.teacher.TeacherAvailabilityUseCase;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Tag(name = "Teachers", description = "Operações de CRUD para professores")
 @SecurityRequirement(name = "bearerAuth")
@@ -26,10 +33,13 @@ public class TeacherController {
 
     private final TeacherFacadeContract teacherFacade;
     private final TeacherMapper teacherMapper;
+    private final TeacherAvailabilityUseCase availabilityUseCase;
 
-    public TeacherController(TeacherFacadeContract teacherFacade, TeacherMapper teacherMapper) {
+    public TeacherController(TeacherFacadeContract teacherFacade, TeacherMapper teacherMapper,
+                             TeacherAvailabilityUseCase availabilityUseCase) {
         this.teacherFacade = teacherFacade;
         this.teacherMapper = teacherMapper;
+        this.availabilityUseCase = availabilityUseCase;
     }
 
     @PostMapping
@@ -121,6 +131,55 @@ public class TeacherController {
         var teachers = teacherFacade.listAll(pageable);
         Page<TeacherResponseDTO> dtoPage = teachers.map(teacherMapper::toDtoResponse);
         return ResponseEntity.ok(dtoPage);
+    }
+
+    @GetMapping("/{id}/availability")
+    @Operation(
+            summary = "Retorna a disponibilidade semanal do professor",
+            description = "Lista todas as janelas de disponibilidade configuradas pelo professor."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Disponibilidade retornada com sucesso")
+    })
+    public ResponseEntity<List<TeacherAvailabilityResponseDTO>> getAvailability(
+            @PathVariable Integer id
+    ) {
+        List<TeacherAvailabilityResponseDTO> slots = availabilityUseCase.getByTeacherId(id);
+        return ResponseEntity.ok(slots);
+    }
+
+    @PutMapping("/{id}/availability")
+    @Operation(
+            summary = "Salva/substitui a disponibilidade semanal do professor",
+            description = "Remove toda a disponibilidade anterior e salva as novas janelas informadas."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Disponibilidade salva com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "404", description = "Professor não encontrado")
+    })
+    public ResponseEntity<List<TeacherAvailabilityResponseDTO>> saveAvailability(
+            @PathVariable Integer id,
+            @RequestBody List<TeacherAvailabilitySlotDTO> slots
+    ) {
+        List<TeacherAvailabilityResponseDTO> saved = availabilityUseCase.replaceAll(id, slots);
+        return ResponseEntity.ok(saved);
+    }
+
+    @GetMapping("/{id}/available-slots")
+    @Operation(
+            summary = "Retorna os horários disponíveis para uma data específica",
+            description = "Calcula os horários livres do professor na data informada, considerando a disponibilidade semanal e os agendamentos existentes."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Horários retornados com sucesso")
+    })
+    public ResponseEntity<List<String>> getAvailableSlots(
+            @PathVariable Integer id,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+    ) {
+        List<String> slots = availabilityUseCase.getAvailableSlotsForDate(id, date);
+        return ResponseEntity.ok(slots);
     }
 
 }

@@ -9,6 +9,7 @@ import sptech.school.v2.cleanarch.core.application.gateways.appointment.Appointm
 import sptech.school.v2.cleanarch.core.application.gateways.student.StudentQueryGateway;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.TeacherQueryGateway;
 import sptech.school.v2.cleanarch.core.application.mappers.appointment.AppointmentMapper;
+import sptech.school.v2.cleanarch.core.application.usecases.teacher.TeacherAvailabilityUseCase;
 import sptech.school.v2.cleanarch.core.dtos.internal.AppointmentDTO;
 import sptech.school.v2.cleanarch.core.dtos.out.appointment.AppointmentResponseDTO;
 import sptech.school.v2.cleanarch.domain.entities.Appointment;
@@ -24,17 +25,20 @@ public class AppointmentCommandUseCase {
     private final StudentQueryGateway studentGateway;
     private final TeacherQueryGateway teacherGateway;
     private final AppointmentMapper mapper;
+    private final TeacherAvailabilityUseCase availabilityUseCase;
 
     public AppointmentCommandUseCase(AppointmentCommandGateway commandGateway,
                                      AppointmentQueryGateway queryGateway,
                                      StudentQueryGateway studentGateway,
                                      TeacherQueryGateway teacherGateway,
-                                     AppointmentMapper mapper) {
+                                     AppointmentMapper mapper,
+                                     TeacherAvailabilityUseCase availabilityUseCase) {
         this.commandGateway = commandGateway;
         this.queryGateway = queryGateway;
         this.studentGateway = studentGateway;
         this.teacherGateway = teacherGateway;
         this.mapper = mapper;
+        this.availabilityUseCase = availabilityUseCase;
     }
 
     @Transactional
@@ -48,6 +52,13 @@ public class AppointmentCommandUseCase {
 
         if (queryGateway.existsByStudentIdAndTeacherIdAndDateTime(dto.idStudent(), dto.idTeacher(), dto.dateTime())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Users already have an appointment at this time.");
+        }
+
+        // Validate against teacher's configured availability
+        if (dto.dateTime() != null && !availabilityUseCase.isTeacherAvailableAt(
+                dto.idTeacher(), dto.dateTime().toLocalDate(), dto.dateTime().toLocalTime())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Teacher is not available at the requested date/time.");
         }
 
         Appointment appointment = mapper.toEntity(dto);
