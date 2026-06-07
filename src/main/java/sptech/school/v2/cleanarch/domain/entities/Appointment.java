@@ -40,6 +40,16 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
+    private String phase;
+
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
     public Appointment() {
     }
 
@@ -134,5 +144,21 @@ public class Appointment {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

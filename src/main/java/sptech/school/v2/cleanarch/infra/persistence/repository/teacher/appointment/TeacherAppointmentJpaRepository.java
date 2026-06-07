@@ -10,7 +10,6 @@ import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
 @Repository
 public interface TeacherAppointmentJpaRepository extends JpaRepository<Appointment, Integer> {
 
@@ -43,4 +42,10 @@ public interface TeacherAppointmentJpaRepository extends JpaRepository<Appointme
 
     @Query("SELECT FUNCTION('DAYOFWEEK', a.dateTime) as weekday, COUNT(a) as total FROM Appointment a WHERE a.teacher.id = :teacherId GROUP BY FUNCTION('DAYOFWEEK', a.dateTime)")
     List<Object[]> countByTeacherGroupByWeekday(@Param("teacherId") Integer teacherId);
+
+    @Query("SELECT COALESCE(SUM(a.totalValue), 0) FROM Appointment a WHERE a.teacher.id = :teacherId AND a.status = :status AND YEAR(a.dateTime) = :year AND MONTH(a.dateTime) = :month")
+    Double sumMonthlyEarningsByTeacher(@Param("teacherId") Integer teacherId, @Param("status") AppointmentStatus status, @Param("year") int year, @Param("month") int month);
+
+    @Query("SELECT COUNT(DISTINCT a.student.id) FROM Appointment a WHERE a.teacher.id = :teacherId")
+    Long countDistinctStudentsByTeacher(@Param("teacherId") Integer teacherId);
 }

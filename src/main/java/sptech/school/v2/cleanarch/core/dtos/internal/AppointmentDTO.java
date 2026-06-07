@@ -11,5 +11,6 @@ public record AppointmentDTO(
         Double totalValue,
         String status,
         String paymentStatus,
-        String subject
+        String subject,
+        String phase
 ) {}

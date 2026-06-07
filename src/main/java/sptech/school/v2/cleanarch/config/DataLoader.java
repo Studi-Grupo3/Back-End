@@ -9,14 +9,17 @@ import sptech.school.v2.cleanarch.domain.entities.Admin;
 import sptech.school.v2.cleanarch.domain.entities.Appointment;
 import sptech.school.v2.cleanarch.domain.entities.Student;
 import sptech.school.v2.cleanarch.domain.entities.Teacher;
+import sptech.school.v2.cleanarch.domain.entities.TeacherAvailability;
 import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 import sptech.school.v2.cleanarch.domain.enumerated.PaymentStatus;
 import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 import sptech.school.v2.cleanarch.infra.persistence.repository.StudentJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.appointment.AppointmentJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.dashboard.adminsettings.AdminJpaRepository;
+import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherAvailabilityJpaRepository;
 import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.TeacherJpaRepository;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -33,6 +36,7 @@ public class DataLoader implements CommandLineRunner {
     private final StudentJpaRepository studentRepository;
     private final AppointmentJpaRepository appointmentRepository;
     private final AdminJpaRepository adminRepository;
+    private final TeacherAvailabilityJpaRepository availabilityRepository;
     private final PasswordEncoder passwordEncoder;
 
     private final DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -46,17 +50,20 @@ public class DataLoader implements CommandLineRunner {
                       StudentJpaRepository studentRepository,
                       AppointmentJpaRepository appointmentRepository,
                       AdminJpaRepository adminRepository,
+                      TeacherAvailabilityJpaRepository availabilityRepository,
                       PasswordEncoder passwordEncoder) {
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
         this.appointmentRepository = appointmentRepository;
         this.adminRepository = adminRepository;
+        this.availabilityRepository = availabilityRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        boolean adminExists = teacherRepository.existsByEmail("admin@exemplo.com");
+        boolean adminExists = teacherRepository.existsByEmail("admin@exemplo.com")
+                || teacherRepository.existsByCpf("685.958.700-80");
         if (!adminExists) {
             Teacher admin = new Teacher(
                     "Admin",
@@ -179,6 +186,12 @@ public class DataLoader implements CommandLineRunner {
             s1.setSchoolGrade("9º Ano - Ensino Fundamental");
             s1.setSchoolName("Escola Estadual Central");
             s1.setStudentImageUrl(buildStudentImageUrl(s1.getName()));
+            s1.setCep("01310100");
+            s1.setRua("Avenida Paulista");
+            s1.setNumero("1000");
+            s1.setBairro("Bela Vista");
+            s1.setCidade("São Paulo");
+            s1.setEstado("SP");
             Responsible r1 = new Responsible();
             r1.setResponsibleName("Ricardo Alves");
             r1.setKinship("Pai");
@@ -808,6 +821,80 @@ public class DataLoader implements CommandLineRunner {
             adminSettings.setNotifyAppointments(true);
             adminSettings.setNotifyCancellations(true);
             adminRepository.save(adminSettings);
+        }
+
+        // Seed Teacher Availability
+        if (availabilityRepository.count() == 0) {
+            List<Teacher> allTeachers = teacherRepository.findAll();
+            List<TeacherAvailability> availabilities = new ArrayList<>();
+
+            for (Teacher teacher : allTeachers) {
+                // Each teacher gets weekday availability (Mon-Fri) with varied hours
+                String name = teacher.getName();
+                if (name.contains("Carlos")) {
+                    // Mon-Fri 8:00-12:00, 14:00-18:00
+                    for (DayOfWeek day : List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(8, 0), LocalTime.of(12, 0)));
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(14, 0), LocalTime.of(18, 0)));
+                    }
+                } else if (name.contains("Beatriz")) {
+                    // Mon-Wed-Fri 9:00-17:00
+                    for (DayOfWeek day : List.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(9, 0), LocalTime.of(17, 0)));
+                    }
+                } else if (name.contains("Fernanda")) {
+                    // Tue-Thu 10:00-18:00, Sat 8:00-12:00
+                    for (DayOfWeek day : List.of(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(10, 0), LocalTime.of(18, 0)));
+                    }
+                    availabilities.add(new TeacherAvailability(teacher, DayOfWeek.SATURDAY, LocalTime.of(8, 0), LocalTime.of(12, 0)));
+                } else if (name.contains("Rodrigo")) {
+                    // Mon-Fri 7:00-11:00, 13:00-17:00
+                    for (DayOfWeek day : List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(7, 0), LocalTime.of(11, 0)));
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(13, 0), LocalTime.of(17, 0)));
+                    }
+                } else if (name.contains("Marina")) {
+                    // Mon-Wed-Fri 14:00-20:00
+                    for (DayOfWeek day : List.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(14, 0), LocalTime.of(20, 0)));
+                    }
+                } else if (name.contains("Gustavo")) {
+                    // Mon-Fri 8:00-16:00
+                    for (DayOfWeek day : List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(8, 0), LocalTime.of(16, 0)));
+                    }
+                } else if (name.contains("Helena")) {
+                    // Tue-Thu-Sat 9:00-13:00, 15:00-19:00
+                    for (DayOfWeek day : List.of(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY, DayOfWeek.SATURDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(9, 0), LocalTime.of(13, 0)));
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(15, 0), LocalTime.of(19, 0)));
+                    }
+                } else if (name.contains("João")) {
+                    // Mon-Wed-Fri 10:00-18:00
+                    for (DayOfWeek day : List.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(10, 0), LocalTime.of(18, 0)));
+                    }
+                } else if (name.contains("Carla")) {
+                    // Tue-Thu 8:00-12:00, 14:00-17:00
+                    for (DayOfWeek day : List.of(DayOfWeek.TUESDAY, DayOfWeek.THURSDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(8, 0), LocalTime.of(12, 0)));
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(14, 0), LocalTime.of(17, 0)));
+                    }
+                } else if (name.contains("Marcos")) {
+                    // Mon-Fri 9:00-12:00, 14:00-18:00
+                    for (DayOfWeek day : List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(9, 0), LocalTime.of(12, 0)));
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(14, 0), LocalTime.of(18, 0)));
+                    }
+                } else {
+                    // Admin / default: Mon-Fri 8:00-18:00
+                    for (DayOfWeek day : List.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)) {
+                        availabilities.add(new TeacherAvailability(teacher, day, LocalTime.of(8, 0), LocalTime.of(18, 0)));
+                    }
+                }
+            }
+            availabilityRepository.saveAll(availabilities);
         }
     }
 

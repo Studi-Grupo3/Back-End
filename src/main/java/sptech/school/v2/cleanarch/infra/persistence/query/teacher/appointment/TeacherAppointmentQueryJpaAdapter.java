@@ -3,6 +3,9 @@ package sptech.school.v2.cleanarch.infra.persistence.query.teacher.appointment;
 import org.springframework.stereotype.Component;
 import sptech.school.v2.cleanarch.core.application.gateways.teacher.appointment.TeacherAppointmentQueryGateway;
 import sptech.school.v2.cleanarch.core.dtos.out.teacher.*;
+import sptech.school.v2.cleanarch.domain.entities.Student;
+import sptech.school.v2.cleanarch.domain.entities.Appointment;
+import sptech.school.v2.cleanarch.domain.Responsible;
 import sptech.school.v2.cleanarch.domain.enumerated.AppointmentStatus;
 import sptech.school.v2.cleanarch.domain.enumerated.Subject;
 import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.appointment.TeacherAppointmentJpaRepository;
@@ -10,10 +13,10 @@ import sptech.school.v2.cleanarch.infra.persistence.repository.teacher.appointme
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Component
 public class TeacherAppointmentQueryJpaAdapter implements TeacherAppointmentQueryGateway {
 
@@ -26,32 +29,44 @@ public class TeacherAppointmentQueryJpaAdapter implements TeacherAppointmentQuer
     @Override
     public List<UpcomingLessonDTO> findUpcomingLessons(Integer teacherId, LocalDateTime fromDate) {
         return repository.findUpcomingByTeacher(teacherId, AppointmentStatus.SCHEDULED).stream()
-                .map(a -> new UpcomingLessonDTO(
+                .map(a -> {
+                    Student s = a.getStudent();
+                    return new UpcomingLessonDTO(
                         a.getId(),
                         a.getSubject(),
-                        a.getStudent().getId(),
-                        a.getStudent().getName(),
-                        a.getStudent().getCellphoneNumber(),
-                        a.getStudent().getStudentImageUrl(),
+                        s.getId(),
+                        s.getName(),
+                        s.getCellphoneNumber(),
+                        s.getStudentImageUrl(),
                         a.getDateTime().toLocalDate(),
                         a.getDateTime().toLocalTime(),
                         a.getLessonDuration(),
                         a.getLocation(),
-                        a.getStatus().toString()
-                ))
+                        a.getStatus().toString(),
+                        formatAddress(s),
+                        getResponsibleName(s),
+                        getResponsiblePhone(s),
+                        calculateAge(s),
+                        resolveIsAdult(s),
+                        a.getPhase(),
+                        s.getSchoolGrade()
+                    );
+                })
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<LessonHistoryDTO> findLessonsHistory(Integer teacherId) {
         return repository.findAllByTeacherIdOrderByDateDesc(teacherId).stream()
-                .map(a -> new LessonHistoryDTO(
+                .map(a -> {
+                    Student s = a.getStudent();
+                    return new LessonHistoryDTO(
                         a.getId(),
                         a.getSubject(),
-                        a.getStudent().getId(),
-                        a.getStudent().getName(),
-                        a.getStudent().getCellphoneNumber(),
-                        a.getStudent().getStudentImageUrl(),
+                        s.getId(),
+                        s.getName(),
+                        s.getCellphoneNumber(),
+                        s.getStudentImageUrl(),
                         a.getDateTime().toLocalDate(),
                         a.getDateTime().toLocalTime(),
                         a.getLessonDuration(),
@@ -60,8 +75,16 @@ public class TeacherAppointmentQueryJpaAdapter implements TeacherAppointmentQuer
                         a.getStatus().toString(),
                         a.getTotalValue(),
                         null,
-                        null
-                ))
+                        null,
+                        formatAddress(s),
+                        getResponsibleName(s),
+                        getResponsiblePhone(s),
+                        calculateAge(s),
+                        resolveIsAdult(s),
+                        a.getPhase(),
+                        s.getSchoolGrade()
+                    );
+                })
                 .collect(Collectors.toList());
     }
 
@@ -69,9 +92,16 @@ public class TeacherAppointmentQueryJpaAdapter implements TeacherAppointmentQuer
     public TeacherDashboardDTO getDashboardData(Integer teacherId) {
         Long total = repository.countByTeacherId(teacherId);
         Long cancelled = repository.countByTeacherAndStatus(teacherId, AppointmentStatus.CANCELLED);
+        Long completed = repository.countByTeacherAndStatus(teacherId, AppointmentStatus.COMPLETED);
+        Long upcoming = repository.countByTeacherAndStatus(teacherId, AppointmentStatus.SCHEDULED);
+        Long totalStudents = repository.countDistinctStudentsByTeacher(teacherId);
         Double hours = repository.sumTotalDurationByTeacher(teacherId);
 
         double pctCancel = (total == 0) ? 0.0 : (cancelled.doubleValue() / total.doubleValue()) * 100.0;
+
+        LocalDate now = LocalDate.now();
+        Double monthlyEarnings = repository.sumMonthlyEarningsByTeacher(
+                teacherId, AppointmentStatus.COMPLETED, now.getYear(), now.getMonthValue());
 
         List<Object[]> rawDisciplines = repository.countByTeacherGroupBySubject(teacherId);
         List<DisciplineStatsDTO> byDisc = rawDisciplines.stream()
@@ -93,6 +123,10 @@ public class TeacherAppointmentQueryJpaAdapter implements TeacherAppointmentQuer
                 total,
                 pctCancel,
                 hours,
+                monthlyEarnings,
+                completed,
+                upcoming,
+                totalStudents,
                 byDisc,
                 byWeekday
         );
@@ -125,5 +159,42 @@ public class TeacherAppointmentQueryJpaAdapter implements TeacherAppointmentQuer
         int m = total % 60;
         if (m == 0) return h + "h";
         return String.format("%dh %02dm", h, m);
+    }
+
+    private String formatAddress(Student s) {
+        if (s.getRua() == null || s.getRua().isBlank()) return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append(s.getRua());
+        if (s.getNumero() != null && !s.getNumero().isBlank()) sb.append(", ").append(s.getNumero());
+        if (s.getBairro() != null && !s.getBairro().isBlank()) sb.append(" - ").append(s.getBairro());
+        if (s.getCidade() != null && !s.getCidade().isBlank()) {
+            sb.append(", ").append(s.getCidade());
+            if (s.getEstado() != null && !s.getEstado().isBlank()) sb.append("/").append(s.getEstado());
+        }
+        if (s.getCep() != null && !s.getCep().isBlank()) sb.append(" - CEP ").append(s.getCep());
+        return sb.toString();
+    }
+
+    private String getResponsibleName(Student s) {
+        Responsible r = s.getResponsible();
+        return (r != null && r.getResponsibleName() != null && !r.getResponsibleName().isBlank())
+                ? r.getResponsibleName() : null;
+    }
+
+    private String getResponsiblePhone(Student s) {
+        Responsible r = s.getResponsible();
+        return (r != null && r.getResponsibleCellphoneNumber() != null && !r.getResponsibleCellphoneNumber().isBlank())
+                ? r.getResponsibleCellphoneNumber() : null;
+    }
+
+    private Integer calculateAge(Student s) {
+        if (s.getDateBirth() == null) return null;
+        return Period.between(s.getDateBirth(), LocalDate.now()).getYears();
+    }
+
+    private Boolean resolveIsAdult(Student s) {
+        if (s.getIsAdult() != null) return s.getIsAdult();
+        Integer age = calculateAge(s);
+        return age != null && age >= 18;
     }
 }

@@ -16,5 +16,7 @@ public record AppointmentResponseDTO(
         String location,
         String status,
         Double totalValue,
-        boolean online
+        boolean online,
+        LocalDateTime createdAt,
+        String phase
 ) {}

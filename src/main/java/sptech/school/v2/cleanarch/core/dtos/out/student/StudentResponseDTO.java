@@ -22,5 +22,13 @@ public record StudentResponseDTO(
         , Responsible responsible
         , String yearsExperience
         , String academicFormation
+        , String cep
+        , String rua
+        , String numero
+        , String complemento
+        , String bairro
+        , String cidade
+        , String estado
+        , Boolean isAdult
 ) {
 }
